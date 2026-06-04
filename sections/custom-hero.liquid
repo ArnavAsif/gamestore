@@ -1,0 +1,1656 @@
+{% comment %}
+  Gaming Hero Section - Premium Cyberpunk Style
+  Version: 1.0.0
+  Compatible with: Shopify OS 2.0+
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'gaming-hero-' | append: section.id
+  assign heading = section.settings.heading | default: 'ENTER THE NEXT LEVEL OF GAMING'
+  assign subheading = section.settings.subheading | default: 'Upgrade your setup with elite gaming gear built for performance'
+  assign primary_btn_text = section.settings.primary_btn_text | default: 'Shop Now'
+  assign primary_btn_link = section.settings.primary_btn_link | default: '#'
+  assign secondary_btn_text = section.settings.secondary_btn_text | default: 'Explore Gear'
+  assign secondary_btn_link = section.settings.secondary_btn_link | default: '#'
+  assign overlay_opacity = section.settings.overlay_opacity | default: 60
+  assign enable_animations = section.settings.enable_animations
+  assign show_scroll_indicator = section.settings.show_scroll_indicator
+  assign enable_cursor_glow = section.settings.enable_cursor_glow
+  assign overlay_opacity_decimal = overlay_opacity | divided_by: 100.0
+-%}
+
+<style>
+  /* ============================================
+     CSS VARIABLES - COLOR SYSTEM
+  ============================================ */
+  #{{ section_id }} {
+    --gh-bg: #0D0D0D;
+    --gh-primary: #B11226;
+    --gh-accent-glow: #FF2A2A;
+    --gh-secondary: #1A1A1A;
+    --gh-cyan: #00F0FF;
+    --gh-white: #FFFFFF;
+    --gh-text-muted: rgba(255, 255, 255, 0.6);
+    --gh-border: rgba(177, 18, 38, 0.3);
+    --gh-glow-sm: 0 0 10px rgba(255, 42, 42, 0.4);
+    --gh-glow-md: 0 0 25px rgba(255, 42, 42, 0.5);
+    --gh-glow-lg: 0 0 50px rgba(255, 42, 42, 0.35);
+    --gh-glow-cyan: 0 0 20px rgba(0, 240, 255, 0.4);
+    --gh-transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --gh-font-heading: 'Arial Black', 'Impact', sans-serif;
+  }
+
+  /* ============================================
+     SECTION BASE
+  ============================================ */
+  #{{ section_id }} {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--gh-bg);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    font-family: var(--gh-font-heading);
+  }
+
+  /* ============================================
+     BACKGROUND VIDEO / IMAGE
+  ============================================ */
+  #{{ section_id }} .gh-bg-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  #{{ section_id }} .gh-bg-media img,
+  #{{ section_id }} .gh-bg-media video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* ============================================
+     OVERLAY
+  ============================================ */
+  #{{ section_id }} .gh-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      135deg,
+      rgba(13, 13, 13, {{ overlay_opacity_decimal }}) 0%,
+      rgba(13, 13, 13, {{ overlay_opacity_decimal | times: 0.85 }}) 40%,
+      rgba(177, 18, 38, {{ overlay_opacity_decimal | times: 0.15 }}) 100%
+    );
+  }
+
+  /* ============================================
+     CSS GRID / PARTICLE BACKGROUND
+  ============================================ */
+  #{{ section_id }} .gh-grid-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image:
+      linear-gradient(rgba(177, 18, 38, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(177, 18, 38, 0.04) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gh-grid-pulse 8s ease-in-out infinite;
+  }
+
+  @keyframes gh-grid-pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
+  }
+
+  /* ============================================
+     SCANLINE EFFECT
+  ============================================ */
+  #{{ section_id }} .gh-scanlines {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 2px,
+      rgba(0, 0, 0, 0.03) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* ============================================
+     CORNER DECORATIONS
+  ============================================ */
+  #{{ section_id }} .gh-corner {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .gh-corner--tl {
+    top: 20px;
+    left: 20px;
+    border-top: 2px solid var(--gh-primary);
+    border-left: 2px solid var(--gh-primary);
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  #{{ section_id }} .gh-corner--tr {
+    top: 20px;
+    right: 20px;
+    border-top: 2px solid var(--gh-primary);
+    border-right: 2px solid var(--gh-primary);
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  #{{ section_id }} .gh-corner--bl {
+    bottom: 20px;
+    left: 20px;
+    border-bottom: 2px solid var(--gh-primary);
+    border-left: 2px solid var(--gh-primary);
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  #{{ section_id }} .gh-corner--br {
+    bottom: 20px;
+    right: 20px;
+    border-bottom: 2px solid var(--gh-primary);
+    border-right: 2px solid var(--gh-primary);
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  /* ============================================
+     MAIN CONTAINER
+  ============================================ */
+  #{{ section_id }} .gh-container {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 80px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 60px;
+    min-height: 100vh;
+  }
+
+  /* ============================================
+     CONTENT COLUMN - LEFT
+  ============================================ */
+  #{{ section_id }} .gh-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+
+  /* ============================================
+     TAG / BADGE
+  ============================================ */
+  #{{ section_id }} .gh-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border: 1px solid var(--gh-primary);
+    background: rgba(177, 18, 38, 0.1);
+    color: var(--gh-accent-glow);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    position: relative;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+
+  #{{ section_id }} .gh-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    background: var(--gh-accent-glow);
+    border-radius: 50%;
+    animation: gh-blink 1.5s ease-in-out infinite;
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  @keyframes gh-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.2; }
+  }
+
+  /* ============================================
+     HEADING
+  ============================================ */
+  #{{ section_id }} .gh-heading {
+    font-family: var(--gh-font-heading);
+    font-size: clamp(36px, 4.5vw, 68px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.5px;
+    color: var(--gh-white);
+    text-transform: uppercase;
+    margin: 0;
+    position: relative;
+  }
+
+  #{{ section_id }} .gh-heading-line {
+    display: block;
+    position: relative;
+  }
+
+  #{{ section_id }} .gh-heading-accent {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--gh-primary);
+    text-shadow: var(--gh-glow-sm);
+    position: relative;
+  }
+
+  /* ============================================
+     GLITCH ANIMATION
+  ============================================ */
+  {% if enable_animations %}
+  #{{ section_id }} .gh-heading-glitch {
+    position: relative;
+    display: inline-block;
+  }
+
+  #{{ section_id }} .gh-heading-glitch::before,
+  #{{ section_id }} .gh-heading-glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  #{{ section_id }} .gh-heading-glitch::before {
+    color: var(--gh-cyan);
+    animation: gh-glitch-1 4s infinite linear;
+    opacity: 0.7;
+  }
+
+  #{{ section_id }} .gh-heading-glitch::after {
+    color: var(--gh-primary);
+    animation: gh-glitch-2 4s infinite linear;
+    opacity: 0.7;
+  }
+
+  @keyframes gh-glitch-1 {
+    0%, 90%, 100% {
+      transform: translate(0);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      opacity: 0;
+    }
+    92% {
+      transform: translate(-3px, 1px);
+      clip-path: polygon(0 20%, 100% 20%, 100% 40%, 0 40%);
+      opacity: 0.7;
+    }
+    94% {
+      transform: translate(3px, -1px);
+      clip-path: polygon(0 60%, 100% 60%, 100% 80%, 0 80%);
+      opacity: 0.7;
+    }
+    96% {
+      transform: translate(-2px, 2px);
+      clip-path: polygon(0 5%, 100% 5%, 100% 25%, 0 25%);
+      opacity: 0.7;
+    }
+    98% {
+      transform: translate(0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes gh-glitch-2 {
+    0%, 91%, 100% {
+      transform: translate(0);
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      opacity: 0;
+    }
+    93% {
+      transform: translate(3px, -2px);
+      clip-path: polygon(0 50%, 100% 50%, 100% 70%, 0 70%);
+      opacity: 0.7;
+    }
+    95% {
+      transform: translate(-3px, 1px);
+      clip-path: polygon(0 30%, 100% 30%, 100% 50%, 0 50%);
+      opacity: 0.7;
+    }
+    97% {
+      transform: translate(2px, -1px);
+      clip-path: polygon(0 75%, 100% 75%, 100% 90%, 0 90%);
+      opacity: 0.7;
+    }
+    99% {
+      transform: translate(0);
+      opacity: 0;
+    }
+  }
+  {% endif %}
+
+  /* ============================================
+     HEADING DIVIDER
+  ============================================ */
+  #{{ section_id }} .gh-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  #{{ section_id }} .gh-divider-line {
+    height: 1px;
+    flex: 1;
+    background: linear-gradient(90deg, var(--gh-primary), transparent);
+    max-width: 120px;
+  }
+
+  #{{ section_id }} .gh-divider-icon {
+    width: 8px;
+    height: 8px;
+    background: var(--gh-primary);
+    transform: rotate(45deg);
+    box-shadow: var(--gh-glow-sm);
+    flex-shrink: 0;
+  }
+
+  /* ============================================
+     SUBHEADING
+  ============================================ */
+  #{{ section_id }} .gh-subheading {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(14px, 1.4vw, 18px);
+    font-weight: 400;
+    line-height: 1.7;
+    color: var(--gh-text-muted);
+    margin: 0;
+    max-width: 480px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ============================================
+     STATS ROW
+  ============================================ */
+  #{{ section_id }} .gh-stats {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  #{{ section_id }} .gh-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  #{{ section_id }} .gh-stat-number {
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--gh-white);
+    line-height: 1;
+    font-family: var(--gh-font-heading);
+  }
+
+  #{{ section_id }} .gh-stat-number span {
+    color: var(--gh-accent-glow);
+  }
+
+  #{{ section_id }} .gh-stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--gh-text-muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  #{{ section_id }} .gh-stat-divider {
+    width: 1px;
+    height: 40px;
+    background: var(--gh-border);
+  }
+
+  /* ============================================
+     BUTTON GROUP
+  ============================================ */
+  #{{ section_id }} .gh-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* PRIMARY BUTTON */
+  #{{ section_id }} .gh-btn-primary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: var(--gh-primary);
+    color: var(--gh-white);
+    font-family: var(--gh-font-heading);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: var(--gh-transition);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+
+  #{{ section_id }} .gh-btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+    opacity: 0;
+    transition: var(--gh-transition);
+  }
+
+  #{{ section_id }} .gh-btn-primary::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gh-accent-glow);
+    opacity: 0;
+    transition: var(--gh-transition);
+  }
+
+  #{{ section_id }} .gh-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--gh-glow-md), 0 8px 30px rgba(177, 18, 38, 0.4);
+    color: var(--gh-white);
+    text-decoration: none;
+  }
+
+  #{{ section_id }} .gh-btn-primary:hover::before {
+    opacity: 1;
+  }
+
+  #{{ section_id }} .gh-btn-primary-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  #{{ section_id }} .gh-btn-primary-arrow {
+    position: relative;
+    z-index: 1;
+    width: 16px;
+    height: 16px;
+    transition: transform 0.25s ease;
+  }
+
+  #{{ section_id }} .gh-btn-primary:hover .gh-btn-primary-arrow {
+    transform: translateX(4px);
+  }
+
+  /* SECONDARY BUTTON */
+  #{{ section_id }} .gh-btn-secondary {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 32px;
+    background: transparent;
+    color: var(--gh-white);
+    font-family: var(--gh-font-heading);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    overflow: hidden;
+    transition: var(--gh-transition);
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+
+  #{{ section_id }} .gh-btn-secondary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.05);
+    opacity: 0;
+    transition: var(--gh-transition);
+  }
+
+  #{{ section_id }} .gh-btn-secondary:hover {
+    border-color: var(--gh-accent-glow);
+    color: var(--gh-accent-glow);
+    box-shadow: var(--gh-glow-sm), inset var(--gh-glow-sm);
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  #{{ section_id }} .gh-btn-secondary:hover::before {
+    opacity: 1;
+  }
+
+  #{{ section_id }} .gh-btn-secondary-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============================================
+     IMAGE COLUMN - RIGHT
+  ============================================ */
+  #{{ section_id }} .gh-image-col {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Image glow background */
+  #{{ section_id }} .gh-image-glow {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(ellipse at center, rgba(177, 18, 38, 0.25) 0%, transparent 70%);
+    filter: blur(40px);
+    z-index: 0;
+    animation: gh-glow-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes gh-glow-pulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+    }
+  }
+
+  /* Image wrapper */
+  #{{ section_id }} .gh-image-wrapper {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  /* Floating animation */
+  {% if enable_animations %}
+  #{{ section_id }} .gh-image-float {
+    animation: gh-float 4s ease-in-out infinite;
+  }
+
+  @keyframes gh-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-12px) rotate(0.5deg); }
+    66% { transform: translateY(-6px) rotate(-0.3deg); }
+  }
+  {% endif %}
+
+  #{{ section_id }} .gh-image-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 20px 60px rgba(177, 18, 38, 0.4)) drop-shadow(0 0 30px rgba(255, 42, 42, 0.2));
+  }
+
+  /* Image border frame */
+  #{{ section_id }} .gh-image-frame {
+    position: absolute;
+    inset: -2px;
+    border: 1px solid rgba(177, 18, 38, 0.3);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  #{{ section_id }} .gh-image-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 20px;
+    width: 60px;
+    height: 1px;
+    background: var(--gh-primary);
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  #{{ section_id }} .gh-image-frame::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    width: 60px;
+    height: 1px;
+    background: var(--gh-primary);
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  /* Image decorative elements */
+  #{{ section_id }} .gh-image-deco {
+    position: absolute;
+    z-index: 1;
+  }
+
+  #{{ section_id }} .gh-image-deco--line-h {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(177, 18, 38, 0.4), transparent);
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+  }
+
+  #{{ section_id }} .gh-image-deco--line-v {
+    height: 100%;
+    width: 1px;
+    background: linear-gradient(180deg, transparent, rgba(177, 18, 38, 0.4), transparent);
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Cyan accent corner */
+  #{{ section_id }} .gh-image-cyan-accent {
+    position: absolute;
+    bottom: -10px;
+    left: -10px;
+    width: 50px;
+    height: 50px;
+    border-left: 2px solid var(--gh-cyan);
+    border-bottom: 2px solid var(--gh-cyan);
+    box-shadow: var(--gh-glow-cyan);
+    z-index: 4;
+  }
+
+  #{{ section_id }} .gh-image-red-accent {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 50px;
+    height: 50px;
+    border-right: 2px solid var(--gh-accent-glow);
+    border-top: 2px solid var(--gh-accent-glow);
+    box-shadow: var(--gh-glow-sm);
+    z-index: 4;
+  }
+
+  /* Floating particles around image */
+  #{{ section_id }} .gh-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: var(--gh-primary);
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  {% if enable_animations %}
+  #{{ section_id }} .gh-particle--1 {
+    top: 15%;
+    left: -5%;
+    animation: gh-particle-1 5s ease-in-out infinite;
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  #{{ section_id }} .gh-particle--2 {
+    top: 70%;
+    right: -5%;
+    width: 6px;
+    height: 6px;
+    background: var(--gh-cyan);
+    animation: gh-particle-2 7s ease-in-out infinite;
+    box-shadow: var(--gh-glow-cyan);
+  }
+
+  #{{ section_id }} .gh-particle--3 {
+    bottom: 20%;
+    left: 10%;
+    animation: gh-particle-3 6s ease-in-out infinite;
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  #{{ section_id }} .gh-particle--4 {
+    top: 30%;
+    right: 5%;
+    width: 3px;
+    height: 3px;
+    animation: gh-particle-1 4s ease-in-out infinite reverse;
+    box-shadow: var(--gh-glow-sm);
+  }
+
+  @keyframes gh-particle-1 {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+    50% { transform: translate(8px, -15px) scale(1.5); opacity: 0.3; }
+  }
+
+  @keyframes gh-particle-2 {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+    50% { transform: translate(-10px, 10px) scale(0.8); opacity: 1; }
+  }
+
+  @keyframes gh-particle-3 {
+    0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+    50% { transform: translate(5px, 8px) scale(1.3); opacity: 0.9; }
+  }
+  {% endif %}
+
+  /* ============================================
+     SCROLL INDICATOR
+  ============================================ */
+  #{{ section_id }} .gh-scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  #{{ section_id }} .gh-scroll-text {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gh-text-muted);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  #{{ section_id }} .gh-scroll-mouse {
+    width: 22px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 11px;
+    display: flex;
+    justify-content: center;
+    padding-top: 6px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .gh-scroll-wheel {
+    width: 3px;
+    height: 8px;
+    background: var(--gh-accent-glow);
+    border-radius: 2px;
+    box-shadow: var(--gh-glow-sm);
+    animation: gh-scroll-wheel 2s ease-in-out infinite;
+  }
+
+  @keyframes gh-scroll-wheel {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(16px); opacity: 0; }
+  }
+
+  /* ============================================
+     CURSOR GLOW
+  ============================================ */
+  {% if enable_cursor_glow and enable_animations %}
+  #{{ section_id }} .gh-cursor-glow {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(177, 18, 38, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: width 0.3s, height 0.3s;
+    will-change: transform;
+  }
+  {% endif %}
+
+  /* ============================================
+     ENTRANCE ANIMATIONS
+  ============================================ */
+  {% if enable_animations %}
+  #{{ section_id }} [data-gh-animate] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  #{{ section_id }} [data-gh-animate].gh-animated {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #{{ section_id }} [data-gh-animate-delay="1"] { transition-delay: 0.1s; }
+  #{{ section_id }} [data-gh-animate-delay="2"] { transition-delay: 0.2s; }
+  #{{ section_id }} [data-gh-animate-delay="3"] { transition-delay: 0.35s; }
+  #{{ section_id }} [data-gh-animate-delay="4"] { transition-delay: 0.5s; }
+  #{{ section_id }} [data-gh-animate-delay="5"] { transition-delay: 0.65s; }
+  #{{ section_id }} [data-gh-animate-delay="6"] { transition-delay: 0.8s; }
+
+  #{{ section_id }} .gh-image-col[data-gh-animate] {
+    transform: translateX(40px);
+  }
+
+  #{{ section_id }} .gh-image-col[data-gh-animate].gh-animated {
+    transform: translateX(0);
+  }
+  {% endif %}
+
+  /* ============================================
+     TABLET LAYOUT
+  ============================================ */
+  @media (max-width: 1024px) {
+    #{{ section_id }} .gh-container {
+      padding: 60px 40px;
+      gap: 40px;
+    }
+
+    #{{ section_id }} .gh-stats {
+      gap: 20px;
+    }
+
+    #{{ section_id }} .gh-stat-number {
+      font-size: 22px;
+    }
+  }
+
+  /* ============================================
+     MOBILE LAYOUT
+  ============================================ */
+  @media (max-width: 768px) {
+    #{{ section_id }} .gh-container {
+      grid-template-columns: 1fr;
+      padding: 40px 20px 80px;
+      gap: 32px;
+      text-align: center;
+      grid-template-rows: auto auto;
+    }
+
+    /* Image on top on mobile */
+    #{{ section_id }} .gh-image-col {
+      order: -1;
+    }
+
+    #{{ section_id }} .gh-content {
+      align-items: center;
+      order: 1;
+    }
+
+    #{{ section_id }} .gh-subheading {
+      max-width: 100%;
+    }
+
+    #{{ section_id }} .gh-divider {
+      justify-content: center;
+    }
+
+    #{{ section_id }} .gh-btn-group {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    #{{ section_id }} .gh-btn-primary,
+    #{{ section_id }} .gh-btn-secondary {
+      width: 100%;
+      justify-content: center;
+      padding: 16px 24px;
+    }
+
+    #{{ section_id }} .gh-image-wrapper {
+      max-width: 320px;
+    }
+
+    #{{ section_id }} .gh-stats {
+      justify-content: center;
+    }
+
+    /* Reduce animation intensity on mobile */
+    {% if enable_animations %}
+    #{{ section_id }} .gh-image-float {
+      animation: gh-float-mobile 5s ease-in-out infinite;
+    }
+
+    @keyframes gh-float-mobile {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-6px); }
+    }
+    {% endif %}
+
+    #{{ section_id }} .gh-corner {
+      width: 25px;
+      height: 25px;
+    }
+
+    #{{ section_id }} .gh-image-cyan-accent,
+    #{{ section_id }} .gh-image-red-accent {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #{{ section_id }} .gh-heading {
+      font-size: 30px;
+    }
+
+    #{{ section_id }} .gh-stats {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    #{{ section_id }} .gh-badge {
+      font-size: 9px;
+      letter-spacing: 2px;
+    }
+  }
+
+  /* ============================================
+     REDUCED MOTION ACCESSIBILITY
+  ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    #{{ section_id }} * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+
+    #{{ section_id }} [data-gh-animate] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<section id="{{ section_id }}" class="gaming-hero" aria-label="Hero Banner">
+
+  {% comment %} Cursor Glow {% endcomment %}
+  {% if section.settings.enable_cursor_glow and section.settings.enable_animations %}
+    <div class="gh-cursor-glow" id="gh-cursor-{{ section.id }}" aria-hidden="true"></div>
+  {% endif %}
+
+  {% comment %} Background Media {% endcomment %}
+  {% if section.settings.bg_video != blank %}
+    <div class="gh-bg-media" aria-hidden="true">
+      <video
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      >
+        <source src="{{ section.settings.bg_video }}" type="video/mp4">
+      </video>
+    </div>
+  {% elsif section.settings.bg_image != blank %}
+    <div class="gh-bg-media" aria-hidden="true">
+      {{
+        section.settings.bg_image
+        | image_url: width: 2000
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: 'high',
+          alt: section.settings.bg_image.alt | escape
+      }}
+    </div>
+  {% endif %}
+
+  {% comment %} Overlay {% endcomment %}
+  <div class="gh-overlay" aria-hidden="true"></div>
+
+  {% comment %} Grid Background {% endcomment %}
+  <div class="gh-grid-bg" aria-hidden="true"></div>
+
+  {% comment %} Scanlines {% endcomment %}
+  <div class="gh-scanlines" aria-hidden="true"></div>
+
+  {% comment %} Corner Decorations {% endcomment %}
+  <div class="gh-corner gh-corner--tl" aria-hidden="true"></div>
+  <div class="gh-corner gh-corner--tr" aria-hidden="true"></div>
+  <div class="gh-corner gh-corner--bl" aria-hidden="true"></div>
+  <div class="gh-corner gh-corner--br" aria-hidden="true"></div>
+
+  {% comment %} Main Container {% endcomment %}
+  <div class="gh-container">
+
+    {% comment %} LEFT - Text Content {% endcomment %}
+    <div class="gh-content">
+
+      {% comment %} Badge {% endcomment %}
+      <div
+        class="gh-badge"
+        {% if section.settings.enable_animations %}
+          data-gh-animate
+          data-gh-animate-delay="1"
+        {% endif %}
+      >
+        {{ section.settings.badge_text | default: 'New Collection 2025' }}
+      </div>
+
+      {% comment %} Heading {% endcomment %}
+      <h1
+        class="gh-heading"
+        {% if section.settings.enable_animations %}
+          data-gh-animate
+          data-gh-animate-delay="2"
+        {% endif %}
+      >
+        {%- assign heading_words = heading | split: ' ' -%}
+        {%- assign heading_word_count = heading_words | size -%}
+        {%- assign split_point = heading_word_count | divided_by: 2 -%}
+
+        <span class="gh-heading-line">
+          {%- for word in heading_words -%}
+            {%- if forloop.index <= split_point -%}
+              {{ word }}{% unless forloop.index == split_point %} {% endunless %}
+            {%- endif -%}
+          {%- endfor %}
+        </span>
+        <span class="gh-heading-line gh-heading-accent">
+          <span
+            class="gh-heading-glitch"
+            data-text="
+              {%- for word in heading_words -%}
+                {%- if forloop.index > split_point -%}
+                  {{ word }}{% unless forloop.last %} {% endunless %}
+                {%- endif -%}
+              {%- endfor -%}
+            "
+          >
+            {%- for word in heading_words -%}
+              {%- if forloop.index > split_point -%}
+                {{ word }}{% unless forloop.last %} {% endunless %}
+              {%- endif -%}
+            {%- endfor -%}
+          </span>
+        </span>
+      </h1>
+
+      {% comment %} Divider {% endcomment %}
+      <div
+        class="gh-divider"
+        {% if section.settings.enable_animations %}
+          data-gh-animate
+          data-gh-animate-delay="3"
+        {% endif %}
+        aria-hidden="true"
+      >
+        <div class="gh-divider-line"></div>
+        <div class="gh-divider-icon"></div>
+        <div class="gh-divider-line" style="background: linear-gradient(270deg, var(--gh-primary), transparent);"></div>
+      </div>
+
+      {% comment %} Subheading {% endcomment %}
+      <p
+        class="gh-subheading"
+        {% if section.settings.enable_animations %}
+          data-gh-animate
+          data-gh-animate-delay="3"
+        {% endif %}
+      >
+        {{ subheading }}
+      </p>
+
+      {% comment %} Stats {% endcomment %}
+      {% if section.settings.show_stats %}
+        <div
+          class="gh-stats"
+          {% if section.settings.enable_animations %}
+            data-gh-animate
+            data-gh-animate-delay="4"
+          {% endif %}
+          aria-label="Store statistics"
+        >
+          <div class="gh-stat">
+            <div class="gh-stat-number">{{ section.settings.stat_1_number | default: '50K' }}<span>+</span></div>
+            <div class="gh-stat-label">{{ section.settings.stat_1_label | default: 'Products' }}</div>
+          </div>
+          <div class="gh-stat-divider" aria-hidden="true"></div>
+          <div class="gh-stat">
+            <div class="gh-stat-number">{{ section.settings.stat_2_number | default: '4.9' }}<span>★</span></div>
+            <div class="gh-stat-label">{{ section.settings.stat_2_label | default: 'Rating' }}</div>
+          </div>
+          <div class="gh-stat-divider" aria-hidden="true"></div>
+          <div class="gh-stat">
+            <div class="gh-stat-number">{{ section.settings.stat_3_number | default: '24/7' }}</div>
+            <div class="gh-stat-label">{{ section.settings.stat_3_label | default: 'Support' }}</div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% comment %} Buttons {% endcomment %}
+      <div
+        class="gh-btn-group"
+        {% if section.settings.enable_animations %}
+          data-gh-animate
+          data-gh-animate-delay="5"
+        {% endif %}
+      >
+        {% if primary_btn_text != blank %}
+          <a
+            href="{{ primary_btn_link }}"
+            class="gh-btn-primary"
+            {% if primary_btn_link contains 'http' %}target="_blank" rel="noopener noreferrer"{% endif %}
+          >
+            <span class="gh-btn-primary-text">{{ primary_btn_text }}</span>
+            <svg class="gh-btn-primary-arrow" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        {% endif %}
+
+        {% if secondary_btn_text != blank %}
+          <a
+            href="{{ secondary_btn_link }}"
+            class="gh-btn-secondary"
+            {% if secondary_btn_link contains 'http' %}target="_blank" rel="noopener noreferrer"{% endif %}
+          >
+            <span class="gh-btn-secondary-text">{{ secondary_btn_text }}</span>
+          </a>
+        {% endif %}
+      </div>
+
+    </div>
+    {% comment %} END LEFT CONTENT {% endcomment %}
+
+    {% comment %} RIGHT - Hero Image {% endcomment %}
+    <div
+      class="gh-image-col"
+      {% if section.settings.enable_animations %}
+        data-gh-animate
+        data-gh-animate-delay="2"
+      {% endif %}
+    >
+
+      {% comment %} Glow Orb {% endcomment %}
+      <div class="gh-image-glow" aria-hidden="true"></div>
+
+      {% comment %} Decorative Lines {% endcomment %}
+      <div class="gh-image-deco gh-image-deco--line-h" aria-hidden="true"></div>
+      <div class="gh-image-deco gh-image-deco--line-v" aria-hidden="true"></div>
+
+      {% comment %} Floating Particles {% endcomment %}
+      <div class="gh-particle gh-particle--1" aria-hidden="true"></div>
+      <div class="gh-particle gh-particle--2" aria-hidden="true"></div>
+      <div class="gh-particle gh-particle--3" aria-hidden="true"></div>
+      <div class="gh-particle gh-particle--4" aria-hidden="true"></div>
+
+      {% comment %} Image Wrapper {% endcomment %}
+      <div class="gh-image-wrapper {% if section.settings.enable_animations %}gh-image-float{% endif %}">
+
+        {% comment %} Corner Accents {% endcomment %}
+        <div class="gh-image-red-accent" aria-hidden="true"></div>
+        <div class="gh-image-cyan-accent" aria-hidden="true"></div>
+
+        {% comment %} Frame {% endcomment %}
+        <div class="gh-image-frame" aria-hidden="true"></div>
+
+        {% comment %} Hero Image {% endcomment %}
+        {% if section.settings.hero_image != blank %}
+  {%- assign hero_alt = section.settings.hero_image.alt | default: heading | escape -%}
+  
+  {{ section.settings.hero_image 
+    | image_url: width: 800 
+    | image_tag: 
+      loading: 'eager', 
+      fetchpriority: 'high', 
+      alt: hero_alt, 
+      widths: '400, 600, 800', 
+      sizes: '(max-width: 768px) 320px, (max-width: 1024px) 45vw, 560px' 
+  }}
+{% else %}
+          {% comment %} Placeholder when no image selected {% endcomment %}
+          <div
+            style="
+              width: 100%;
+              aspect-ratio: 4/3;
+              background: linear-gradient(135deg, var(--gh-secondary) 0%, #222 100%);
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border: 1px dashed var(--gh-border);
+            "
+            aria-hidden="true"
+          >
+            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="2" stroke="rgba(177,18,38,0.4)" stroke-width="1.5"/>
+              <circle cx="8.5" cy="8.5" r="1.5" stroke="rgba(177,18,38,0.4)" stroke-width="1.5"/>
+              <path d="M21 15L16 10L8 18" stroke="rgba(177,18,38,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        {% endif %}
+
+      </div>
+      {% comment %} END .gh-image-wrapper {% endcomment %}
+
+    </div>
+    {% comment %} END RIGHT IMAGE {% endcomment %}
+
+  </div>
+  {% comment %} END .gh-container {% endcomment %}
+
+  {% comment %} Scroll Indicator {% endcomment %}
+  {% if section.settings.show_scroll_indicator %}
+    <a
+      href="#next-section"
+      class="gh-scroll-indicator"
+      aria-label="Scroll down"
+      onclick="
+        event.preventDefault();
+        const hero = document.getElementById('{{ section_id }}');
+        const next = hero.nextElementSibling;
+        if (next) next.scrollIntoView({ behavior: 'smooth' });
+      "
+    >
+      <span class="gh-scroll-text">Scroll</span>
+      <div class="gh-scroll-mouse" aria-hidden="true">
+        <div class="gh-scroll-wheel"></div>
+      </div>
+    </a>
+  {% endif %}
+
+</section>
+
+{% comment %} ============================================
+   JAVASCRIPT - Animations + Interactions
+============================================ {% endcomment %}
+<script>
+(function() {
+  'use strict';
+
+  const SECTION_ID = '{{ section_id }}';
+  const ENABLE_ANIMATIONS = {{ section.settings.enable_animations | json }};
+  const ENABLE_CURSOR = {{ section.settings.enable_cursor_glow | json }};
+
+  // Wait for DOM ready
+  function onReady(fn) {
+    if (document.readyState !== 'loading') {
+      fn();
+    } else {
+      document.addEventListener('DOMContentLoaded', fn);
+    }
+  }
+
+  onReady(function() {
+    const section = document.getElementById(SECTION_ID);
+    if (!section) return;
+
+    // ============================================
+    // ENTRANCE ANIMATIONS - Intersection Observer
+    // ============================================
+    if (ENABLE_ANIMATIONS) {
+      const animatableElements = section.querySelectorAll('[data-gh-animate]');
+
+      if (animatableElements.length > 0) {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              // Small delay to ensure CSS transition plays
+              requestAnimationFrame(function() {
+                entry.target.classList.add('gh-animated');
+              });
+              observer.unobserve(entry.target);
+            }
+          });
+        }, observerOptions);
+
+        animatableElements.forEach(function(el) {
+          observer.observe(el);
+        });
+      }
+    }
+
+    // ============================================
+    // CURSOR GLOW EFFECT
+    // ============================================
+    if (ENABLE_CURSOR && ENABLE_ANIMATIONS) {
+      const cursorGlow = document.getElementById('gh-cursor-{{ section.id }}');
+
+      if (cursorGlow) {
+        let mouseX = 0, mouseY = 0;
+        let currentX = 0, currentY = 0;
+        let rafId = null;
+        let isInSection = false;
+
+        function lerp(start, end, factor) {
+          return start + (end - start) * factor;
+        }
+
+        function animateCursor() {
+          currentX = lerp(currentX, mouseX, 0.12);
+          currentY = lerp(currentY, mouseY, 0.12);
+
+          cursorGlow.style.transform = 'translate(' + (currentX - 150) + 'px, ' + (currentY - 150) + 'px)';
+
+          if (isInSection) {
+            rafId = requestAnimationFrame(animateCursor);
+          }
+        }
+
+        section.addEventListener('mouseenter', function() {
+          isInSection = true;
+          cursorGlow.style.opacity = '1';
+          if (!rafId) {
+            rafId = requestAnimationFrame(animateCursor);
+          }
+        });
+
+        section.addEventListener('mouseleave', function() {
+          isInSection = false;
+          cursorGlow.style.opacity = '0';
+          if (rafId) {
+            cancelAnimationFrame(rafId);
+            rafId = null;
+          }
+        });
+
+        section.addEventListener('mousemove', function(e) {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        // Hover state - enlarge on interactive elements
+        const interactiveEls = section.querySelectorAll('a, button');
+        interactiveEls.forEach(function(el) {
+          el.addEventListener('mouseenter', function() {
+            cursorGlow.style.width = '500px';
+            cursorGlow.style.height = '500px';
+          });
+          el.addEventListener('mouseleave', function() {
+            cursorGlow.style.width = '300px';
+            cursorGlow.style.height = '300px';
+          });
+        });
+      }
+    }
+
+    // ============================================
+    // PARALLAX EFFECT ON IMAGE (Desktop only)
+    // ============================================
+    if (ENABLE_ANIMATIONS && window.innerWidth > 768) {
+      const imageWrapper = section.querySelector('.gh-image-wrapper');
+      const glow = section.querySelector('.gh-image-glow');
+
+      if (imageWrapper) {
+        let ticking = false;
+
+        window.addEventListener('scroll', function() {
+          if (!ticking) {
+            requestAnimationFrame(function() {
+              const rect = section.getBoundingClientRect();
+              const sectionHeight = section.offsetHeight;
+
+              // Only apply if section is visible
+              if (rect.top < window.innerHeight && rect.bottom > 0) {
+                const progress = -rect.top / sectionHeight;
+                const parallaxY = progress * 40;
+
+                // Subtle parallax - doesn't override float animation
+                if (!imageWrapper.classList.contains('gh-image-float')) {
+                  imageWrapper.style.transform = 'translateY(' + parallaxY + 'px)';
+                }
+
+                if (glow) {
+                  glow.style.transform = 'scale(' + (1 + Math.abs(progress) * 0.3) + ')';
+                }
+              }
+
+              ticking = false;
+            });
+            ticking = true;
+          }
+        }, { passive: true });
+      }
+    }
+
+    // ============================================
+    // BUTTON RIPPLE EFFECT
+    // ============================================
+    const primaryBtns = section.querySelectorAll('.gh-btn-primary');
+    primaryBtns.forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const ripple = document.createElement('span');
+        ripple.style.cssText = [
+          'position:absolute',
+          'width:4px',
+          'height:4px',
+          'background:rgba(255,255,255,0.4)',
+          'border-radius:50%',
+          'pointer-events:none',
+          'transform:scale(0)',
+          'left:' + x + 'px',
+          'top:' + y + 'px',
+          'animation:gh-ripple 0.6s linear',
+          'z-index:10'
+        ].join(';');
+
+        btn.appendChild(ripple);
+
+        setTimeout(function() {
+          if (ripple.parentNode) {
+            ripple.parentNode.removeChild(ripple);
+          }
+        }, 600);
+      });
+    });
+
+  }); // end onReady
+
+})();
+</script>
+
+<style>
+  /* Ripple keyframe injected via JS needs global scope */
+  @keyframes gh-ripple {
+    to {
+      transform: scale(150);
+      opacity: 0;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Gaming Hero",
+  "tag": "div",
+  "class": "gaming-hero-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content Settings"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "New Collection 2025"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "ENTER THE NEXT LEVEL OF GAMING"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Upgrade your setup with elite gaming gear built for performance"
+    },
+    {
+      "type": "header",
+      "content": "Primary Button"
+    },
+    {
+      "type": "text",
+      "id": "primary_btn_text",
+      "label": "Primary Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "primary_btn_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Secondary Button"
+    },
+    {
+      "type": "text",
+      "id": "secondary_btn_text",
+      "label": "Secondary Button Text",
+      "default": "Explore Gear"
+    },
+    {
+      "type": "url",
+      "id": "secondary_btn_link",
+      "label": "Secondary Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Stats Section"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Stats Row",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "label": "Stat 1 Number",
+      "default": "50K"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 Label",
+      "default": "Products"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "label": "Stat 2 Number",
+      "default": "4.9"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 Label",
+      "default": "Rating"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_number",
+      "label": "Stat 3 Number",
+      "default": "24/7"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 Label",
+      "default": "Support"
+    },
+    {
+      "type": "header",
+      "content": "Hero Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Product Image",
+      "info": "Recommended: PNG with transparent background, min 800x600px"
+    },
+    {
+      "type": "header",
+      "content": "Background Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image",
+      "info": "Used as section background. Recommended: 1920x1080px minimum."
+    },
+    {
+    "type": "url",
+    "id": "bg_video_url",
+    "label": "Background Video URL",
+    "info": "Paste a direct link to an .mp4 file. This will override the background image."
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Background Overlay Opacity",
+      "default": 60,
+      "info": "Controls how dark the overlay on the background media is."
+    },
+    {
+      "type": "header",
+      "content": "Animations & Effects"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_animations",
+      "label": "Enable Animations",
+      "default": true,
+      "info": "Toggle all entrance animations, glitch effects, and floating image."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_cursor_glow",
+      "label": "Enable Cursor Glow Effect",
+      "default": true,
+      "info": "Adds a subtle red glow that follows the cursor on desktop."
+    },
+    {
+      "type": "header",
+      "content": "Extras"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "label": "Show Scroll Indicator",
+      "default": true,
+      "info": "Displays an animated scroll-down indicator at the bottom of the section."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gaming Hero",
+      "category": "Hero"
+    }
+  ]
+}
+{% endschema %}

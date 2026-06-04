@@ -1,0 +1,424 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_hero_f3LXEL": {
+      "type": "custom-hero",
+      "name": "Gaming Hero",
+      "settings": {
+        "badge_text": "New Collection 2025",
+        "heading": "ENTER THE NEXT LEVEL OF GAMING",
+        "subheading": "Upgrade your setup with elite gaming gear built for performance",
+        "primary_btn_text": "Shop Now",
+        "primary_btn_link": "",
+        "secondary_btn_text": "Explore Gear",
+        "secondary_btn_link": "",
+        "show_stats": false,
+        "stat_1_number": "50K",
+        "stat_1_label": "Products",
+        "stat_2_number": "4.9",
+        "stat_2_label": "Rating",
+        "stat_3_number": "24/7",
+        "stat_3_label": "Support",
+        "hero_image": "shopify://shop_images/Gaming_desk_setup_RGB_lighting_202605021030_1.jpg",
+        "bg_video_url": "",
+        "overlay_opacity": 60,
+        "enable_animations": true,
+        "enable_cursor_glow": true,
+        "show_scroll_indicator": true
+      }
+    },
+    "feature_collection_gaming_fRhctA": {
+      "type": "feature-collection-gaming",
+      "blocks": {
+        "category_card_djwBdg": {
+          "type": "category_card",
+          "settings": {
+            "title": "PlayStation",
+            "tag_text": "Console",
+            "product_count": "240+ Products",
+            "cta_text": "Shop Now",
+            "card_link": "",
+            "image": "shopify://shop_images/Futuristic_gaming_console_with_c__202605021123.jpg",
+            "placeholder_icon": "playstation",
+            "card_size": "tall",
+            "featured": true
+          }
+        },
+        "category_card_mLbEhT": {
+          "type": "category_card",
+          "settings": {
+            "title": "Xbox",
+            "tag_text": "Console",
+            "product_count": "180+ Products",
+            "cta_text": "Shop Now",
+            "card_link": "",
+            "image": "shopify://shop_images/Black_gaming_console_red_lighting_202605021142.jpg",
+            "placeholder_icon": "xbox",
+            "card_size": "tall",
+            "featured": false
+          }
+        },
+        "category_card_LNqWMR": {
+          "type": "category_card",
+          "settings": {
+            "title": "Gaming Chairs",
+            "tag_text": "Furniture",
+            "product_count": "60+ Products",
+            "cta_text": "Shop Now",
+            "card_link": "",
+            "image": "shopify://shop_images/Luxury_gaming_chair_ergonomic_de__202605021028_1.jpg",
+            "placeholder_icon": "chair",
+            "card_size": "tall",
+            "featured": false
+          }
+        },
+        "category_card_HzzYme": {
+          "type": "category_card",
+          "settings": {
+            "title": "Accessories",
+            "tag_text": "Peripherals",
+            "product_count": "500+ Products",
+            "cta_text": "Shop Now",
+            "card_link": "",
+            "image": "shopify://shop_images/Product_render_dark_matte_black_202605021026.jpg",
+            "placeholder_icon": "controller",
+            "card_size": "tall",
+            "featured": false
+          }
+        }
+      },
+      "block_order": [
+        "category_card_djwBdg",
+        "category_card_mLbEhT",
+        "category_card_LNqWMR",
+        "category_card_HzzYme"
+      ],
+      "name": "Featured Categories",
+      "settings": {
+        "eyebrow": "Browse By",
+        "heading": "Shop By Category",
+        "subheading": "Find the perfect gear for your setup",
+        "view_all_text": "All Categories",
+        "view_all_link": "",
+        "columns_desktop": 4,
+        "columns_tablet": 2,
+        "columns_mobile": 2,
+        "card_gap": 20,
+        "section_padding_top": 96,
+        "section_padding_bottom": 96
+      }
+    },
+    "build_setup_cE4jh4": {
+      "type": "build-setup",
+      "blocks": {
+        "category_q8cpHb": {
+          "type": "category",
+          "settings": {
+            "category_name": "Gaming Chair",
+            "category_icon": "chair",
+            "collection": "chair",
+            "max_products": 6,
+            "show_ratings": true
+          }
+        },
+        "category_EqKaeg": {
+          "type": "category",
+          "settings": {
+            "category_name": "Console",
+            "category_icon": "console",
+            "collection": "consol",
+            "max_products": 6,
+            "show_ratings": true
+          }
+        },
+        "category_xAMMCG": {
+          "type": "category",
+          "settings": {
+            "category_name": "Accessories",
+            "category_icon": "headset",
+            "collection": "accessories",
+            "max_products": 6,
+            "show_ratings": true
+          }
+        }
+      },
+      "block_order": [
+        "category_q8cpHb",
+        "category_EqKaeg",
+        "category_xAMMCG"
+      ],
+      "name": "Build Your Setup",
+      "settings": {
+        "eyebrow": "Custom Bundle",
+        "heading": "Build Your Setup",
+        "subheading": "Select your gear and build the ultimate gaming station",
+        "bundle_discount": 10,
+        "require_all": false,
+        "cta_text": "Add Setup to Cart",
+        "show_save_btn": true,
+        "save_btn_text": "Save This Setup",
+        "helper_text": "Select at least one item to continue",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "why_us_JiyAXt": {
+      "type": "why-us",
+      "blocks": {
+        "feature_3gV4Uy": {
+          "type": "feature",
+          "settings": {
+            "icon": "shield",
+            "tag": "Guarantee",
+            "title": "Built to Last",
+            "description": "Every product is stress-tested to pro-grade standards. We stand behind everything we sell with an industry-leading warranty.",
+            "metric_value": "2",
+            "metric_suffix": "yr",
+            "metric_label": "Warranty"
+          }
+        },
+        "feature_7LfCdf": {
+          "type": "feature",
+          "settings": {
+            "icon": "bolt",
+            "tag": "Performance",
+            "title": "Zero Compromise Speed",
+            "description": "From ultra-low latency mice to 165Hz monitors — our gear is tuned for peak competitive performance at every price point.",
+            "metric_value": "1",
+            "metric_suffix": "ms",
+            "metric_label": "Response Time"
+          }
+        },
+        "feature_aTrMNW": {
+          "type": "feature",
+          "settings": {
+            "icon": "truck",
+            "tag": "Delivery",
+            "title": "Fast Free Shipping",
+            "description": "Get your gear fast. Free express shipping on all orders over $99, with same-day dispatch on in-stock items ordered before 2pm.",
+            "metric_value": "24",
+            "metric_suffix": "hr",
+            "metric_label": "Dispatch"
+          }
+        },
+        "story_GLjb6i": {
+          "type": "story",
+          "settings": {
+            "image": "shopify://shop_images/Gaming_setup_red_cyberpunk_lighting_202605021134_1.jpg",
+            "badge_value": "50K+",
+            "badge_label": "Happy Gamers",
+            "eyebrow": "Who We Are",
+            "title": "Pro Gear for Every Player",
+            "body": "Founded by competitive gamers, we understand what it takes to perform at the highest level. That is why we handpick every product in our catalog from the world's top gaming brands.",
+            "bullet_1": "Hand-picked from 50+ professional gaming brands",
+            "bullet_2": "Expert support team available 7 days a week",
+            "bullet_3": "Free shipping on all orders over $99",
+            "cta_text": "Shop All Gear",
+            "cta_url": ""
+          }
+        },
+        "story_aX4Qkd": {
+          "type": "story",
+          "settings": {
+            "image": "shopify://shop_images/Gaming_setup_red_cyberpunk_lighting_202605021134.jpg",
+            "badge_value": "4.9★",
+            "badge_label": "Avg. Rating",
+            "eyebrow": "Our Commitment",
+            "title": "The Ultimate Setup Experience",
+            "body": "We do not just sell gear. We help you build a complete gaming environment optimised for your playstyle, budget, and space — from chair to monitor to peripherals.",
+            "bullet_1": "Bundle builder to match gear across categories",
+            "bullet_2": "Expert setup guides and comparison tools",
+            "bullet_3": "30-day hassle-free returns on everything",
+            "cta_text": "Build My Setup",
+            "cta_url": ""
+          }
+        },
+        "testimonial_xKHQAK": {
+          "type": "testimonial",
+          "settings": {
+            "text": "Absolute game changer. The setup I built from this store completely transformed how I play. The quality is insane for the price.",
+            "rating": 5,
+            "name": "Alex M.",
+            "handle": "@alexgaming · Pro Ranked",
+            "verified": true
+          }
+        },
+        "testimonial_x8DcMg": {
+          "type": "testimonial",
+          "settings": {
+            "text": "Fast shipping, incredible packaging, and the gear is exactly as described. I have ordered three times now and every experience has been flawless.",
+            "rating": 5,
+            "name": "Jordan K.",
+            "handle": "@jkplays · Streamer",
+            "verified": true
+          }
+        },
+        "testimonial_Bj4dLV": {
+          "type": "testimonial",
+          "settings": {
+            "text": "Used the bundle builder to put together my whole setup. Saved a ton compared to buying separately. 10 out of 10 experience start to finish.",
+            "rating": 5,
+            "name": "Sam R.",
+            "handle": "@samrigs · Content Creator",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "feature_3gV4Uy",
+        "feature_7LfCdf",
+        "feature_aTrMNW",
+        "story_GLjb6i",
+        "story_aX4Qkd",
+        "testimonial_xKHQAK",
+        "testimonial_x8DcMg",
+        "testimonial_Bj4dLV"
+      ],
+      "name": "Gaming Experience",
+      "settings": {
+        "eyebrow": "Why Choose Us",
+        "heading": "The Gaming Experience",
+        "subheading": "We are not just a store. We are your competitive edge.",
+        "show_hero": true,
+        "hero_image": "shopify://shop_images/Ultra-realistic_premium_product_render...___202605021139.jpg",
+        "hero_status": "Level Up Your Game",
+        "hero_quote": "Gear built for *champions*",
+        "hero_quote_sub": "Every peripheral engineered to give you the edge.",
+        "show_features": true,
+        "show_stories": true,
+        "show_manifesto": true,
+        "manifesto_text": "We believe every gamer deserves *professional-grade* gear — without compromise.",
+        "manifesto_attr": "Our Promise",
+        "show_testimonials": true,
+        "show_final_cta": true,
+        "final_cta_eyebrow": "Your Setup Awaits",
+        "final_cta_heading": "Ready to Level Up?",
+        "final_cta_sub": "Browse our full range of professional gaming gear and build your ultimate setup today.",
+        "final_cta_primary_text": "Shop All Gear",
+        "final_cta_primary_url": "",
+        "final_cta_secondary_text": "Build My Setup",
+        "final_cta_secondary_url": "",
+        "padding_top": 96,
+        "padding_bottom": 96
+      }
+    },
+    "brand_partners_KiEhKp": {
+      "type": "brand-partners",
+      "blocks": {
+        "brand_V3AAkt": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "PlayStation",
+            "brand_color": "playstation",
+            "brand_url": ""
+          }
+        },
+        "brand_iXQcrB": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Xbox",
+            "brand_color": "xbox",
+            "brand_url": ""
+          }
+        },
+        "brand_9c8eEa": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Razer",
+            "brand_color": "razer",
+            "brand_url": ""
+          }
+        },
+        "brand_LgxDgF": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Corsair",
+            "brand_color": "corsair",
+            "brand_url": ""
+          }
+        },
+        "brand_9Ff48y": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "SteelSeries",
+            "brand_color": "steelseries",
+            "brand_url": ""
+          }
+        },
+        "brand_bw3yPH": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "Logitech G",
+            "brand_color": "logitech",
+            "brand_url": ""
+          }
+        },
+        "brand_bELp48": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "HyperX",
+            "brand_color": "hyperx",
+            "brand_url": ""
+          }
+        },
+        "brand_9CHkPD": {
+          "type": "brand",
+          "settings": {
+            "brand_name": "ASUS ROG",
+            "brand_color": "asus",
+            "brand_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "brand_V3AAkt",
+        "brand_iXQcrB",
+        "brand_9c8eEa",
+        "brand_LgxDgF",
+        "brand_9Ff48y",
+        "brand_bw3yPH",
+        "brand_bELp48",
+        "brand_9CHkPD"
+      ],
+      "name": "Brand Partners",
+      "settings": {
+        "show_header": true,
+        "eyebrow": "Trusted By The Best",
+        "heading": "Brand Partners",
+        "subheading": "Powered by the world's most trusted gaming brands",
+        "scroll_speed": 30,
+        "show_second_row": true,
+        "show_stats": true,
+        "stat_1_value": "50",
+        "stat_1_suffix": "+",
+        "stat_1_label": "Brand Partners",
+        "stat_2_value": "10K",
+        "stat_2_suffix": "+",
+        "stat_2_label": "Products Available",
+        "stat_3_value": "500K",
+        "stat_3_suffix": "+",
+        "stat_3_label": "Happy Gamers",
+        "stat_4_value": "8",
+        "stat_4_suffix": "",
+        "stat_4_label": "Years of Trust",
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
+    }
+  },
+  "order": [
+    "custom_hero_f3LXEL",
+    "feature_collection_gaming_fRhctA",
+    "build_setup_cE4jh4",
+    "why_us_JiyAXt",
+    "brand_partners_KiEhKp"
+  ]
+}

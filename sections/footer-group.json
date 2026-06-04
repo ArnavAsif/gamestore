@@ -1,0 +1,395 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "custom_footer_McGjCX": {
+      "type": "custom-footer",
+      "blocks": {
+        "nav_column_BbrGNG": {
+          "type": "nav_column",
+          "settings": {
+            "title": "Shop",
+            "link_1_label": "Gaming Chairs",
+            "link_1_url": "",
+            "link_1_badge": "",
+            "link_2_label": "Monitors",
+            "link_2_url": "",
+            "link_2_badge": "",
+            "link_3_label": "Headsets",
+            "link_3_url": "",
+            "link_3_badge": "",
+            "link_4_label": "Mice & Keyboards",
+            "link_4_url": "",
+            "link_4_badge": "New",
+            "link_5_label": "Controllers",
+            "link_5_url": "",
+            "link_5_badge": "",
+            "link_6_label": "All Products",
+            "link_6_url": "",
+            "link_6_badge": "",
+            "link_7_label": "",
+            "link_7_url": "",
+            "link_7_badge": "",
+            "link_8_label": "",
+            "link_8_url": "",
+            "link_8_badge": "",
+            "promo_label": "",
+            "promo_title": "",
+            "promo_cta": "Learn More",
+            "promo_url": ""
+          }
+        },
+        "nav_column_hQbWQt": {
+          "type": "nav_column",
+          "settings": {
+            "title": "Brands",
+            "link_1_label": "PlayStation",
+            "link_1_url": "",
+            "link_1_badge": "",
+            "link_2_label": "Xbox",
+            "link_2_url": "",
+            "link_2_badge": "",
+            "link_3_label": "Razer",
+            "link_3_url": "",
+            "link_3_badge": "",
+            "link_4_label": "Corsair",
+            "link_4_url": "",
+            "link_4_badge": "",
+            "link_5_label": "SteelSeries",
+            "link_5_url": "",
+            "link_5_badge": "",
+            "link_6_label": "All Brands",
+            "link_6_url": "",
+            "link_6_badge": "",
+            "link_7_label": "",
+            "link_7_url": "",
+            "link_7_badge": "",
+            "link_8_label": "",
+            "link_8_url": "",
+            "link_8_badge": "",
+            "promo_label": "",
+            "promo_title": "",
+            "promo_cta": "Learn More",
+            "promo_url": ""
+          }
+        },
+        "nav_column_bczbcT": {
+          "type": "nav_column",
+          "settings": {
+            "title": "Support",
+            "link_1_label": "Help Center",
+            "link_1_url": "",
+            "link_1_badge": "",
+            "link_2_label": "Track My Order",
+            "link_2_url": "",
+            "link_2_badge": "",
+            "link_3_label": "Returns & Exchanges",
+            "link_3_url": "",
+            "link_3_badge": "",
+            "link_4_label": "Warranty Claims",
+            "link_4_url": "",
+            "link_4_badge": "",
+            "link_5_label": "Contact Us",
+            "link_5_url": "",
+            "link_5_badge": "",
+            "link_6_label": "",
+            "link_6_url": "",
+            "link_6_badge": "",
+            "link_7_label": "",
+            "link_7_url": "",
+            "link_7_badge": "",
+            "link_8_label": "",
+            "link_8_url": "",
+            "link_8_badge": "",
+            "promo_label": "Pro Tip",
+            "promo_title": "Build Your Setup",
+            "promo_cta": "Start Building",
+            "promo_url": ""
+          }
+        },
+        "nav_column_AVGiQY": {
+          "type": "nav_column",
+          "settings": {
+            "title": "Company",
+            "link_1_label": "About Us",
+            "link_1_url": "",
+            "link_1_badge": "",
+            "link_2_label": "Blog",
+            "link_2_url": "",
+            "link_2_badge": "",
+            "link_3_label": "Careers",
+            "link_3_url": "",
+            "link_3_badge": "",
+            "link_4_label": "Press",
+            "link_4_url": "",
+            "link_4_badge": "",
+            "link_5_label": "Affiliate Program",
+            "link_5_url": "",
+            "link_5_badge": "",
+            "link_6_label": "Sitemap",
+            "link_6_url": "",
+            "link_6_badge": "",
+            "link_7_label": "",
+            "link_7_url": "",
+            "link_7_badge": "",
+            "link_8_label": "",
+            "link_8_url": "",
+            "link_8_badge": "",
+            "promo_label": "",
+            "promo_title": "",
+            "promo_cta": "Learn More",
+            "promo_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "nav_column_BbrGNG",
+        "nav_column_hQbWQt",
+        "nav_column_bczbcT",
+        "nav_column_AVGiQY"
+      ],
+      "name": "Gaming Footer",
+      "settings": {
+        "logo_text": "GameStore",
+        "logo_tagline": "Pro Gaming Gear",
+        "brand_description": "Founded by gamers, for gamers. We source the world's best gaming gear so you can focus on what matters — winning.",
+        "show_trust_badges": true,
+        "trust_1": "2-Year Warranty on All Products",
+        "trust_2": "Free Shipping on Orders Over $99",
+        "trust_3": "30-Day Hassle-Free Returns",
+        "social_twitter": "",
+        "social_instagram": "",
+        "social_youtube": "",
+        "social_twitch": "",
+        "social_discord": "",
+        "social_tiktok": "",
+        "show_newsletter": true,
+        "newsletter_eyebrow": "Stay in the Game",
+        "newsletter_heading": "Level Up Your Inbox",
+        "newsletter_sub": "Get exclusive deals, new arrivals, and pro tips delivered straight to your inbox.",
+        "newsletter_placeholder": "Enter your email address...",
+        "newsletter_btn": "Subscribe",
+        "newsletter_success": "You're in! Welcome to the squad.",
+        "newsletter_privacy": "No spam, ever. Unsubscribe at any time. Read our Privacy Policy.",
+        "show_payments": true,
+        "legal_1_label": "Privacy Policy",
+        "legal_1_url": "",
+        "legal_2_label": "Terms of Service",
+        "legal_2_url": "",
+        "legal_3_label": "Refund Policy",
+        "legal_3_url": "",
+        "legal_4_label": "Shipping Policy",
+        "legal_4_url": "",
+        "copyright_text": ""
+      }
+    },
+    "footer_m9NzUG": {
+      "type": "footer",
+      "blocks": {
+        "group_H6VpwJ": {
+          "type": "group",
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 6,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "link": "",
+            "open_in_new_tab": false,
+            "placeholder": "",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_LWt8Pz": {
+              "type": "text",
+              "settings": {
+                "text": "<h2>Join our email list</h2>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h4",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_f9CFLH": {
+              "type": "text",
+              "settings": {
+                "text": "<p>Get exclusive deals and early access to new products.</p>",
+                "width": "100%",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_LWt8Pz",
+            "text_f9CFLH"
+          ]
+        },
+        "email_signup_crihX7": {
+          "type": "email-signup",
+          "settings": {
+            "width": "fill",
+            "custom_width": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "heading": "",
+            "heading_preset": "h3",
+            "border_style": "all",
+            "border_width": 1,
+            "border_radius": 100,
+            "input_type_preset": "paragraph",
+            "style_class": "button-unstyled",
+            "display_type": "arrow",
+            "label": "Sign up",
+            "integrated_button": true,
+            "button_type_preset": "paragraph",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "group_H6VpwJ",
+        "email_signup_crihX7"
+      ],
+      "disabled": true,
+      "name": "t:names.footer",
+      "settings": {
+        "section_width": "page-width",
+        "gap": 20,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 30,
+        "padding-block-end": 30
+      }
+    },
+    "footer_utilities_jLGE8U": {
+      "type": "footer-utilities",
+      "blocks": {
+        "footer_copyright_jweRK8": {
+          "type": "footer-copyright",
+          "settings": {
+            "show_powered_by": true,
+            "font_size": "0.75rem",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "footer_policy_list_VCdnpa": {
+          "type": "footer-policy-list",
+          "settings": {
+            "font_size": "0.75rem",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "social_links_Ew63Kq": {
+          "type": "social-links",
+          "settings": {
+            "facebook_url": "https://www.facebook.com/",
+            "instagram_url": "https://www.instagram.com/",
+            "youtube_url": "https://www.youtube.com/",
+            "tiktok_url": "https://www.tiktok.com/",
+            "twitter_url": "https://x.com/",
+            "threads_url": "",
+            "linkedin_url": "",
+            "bluesky_url": "",
+            "snapchat_url": "",
+            "pinterest_url": "",
+            "tumblr_url": "",
+            "vimeo_url": "",
+            "custom_url": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "footer_copyright_jweRK8",
+        "footer_policy_list_VCdnpa",
+        "social_links_Ew63Kq"
+      ],
+      "disabled": true,
+      "name": "t:names.utilities",
+      "settings": {
+        "section_width": "page-width",
+        "gap": 24,
+        "divider_thickness": 0,
+        "color_scheme": "",
+        "padding-block-start": 20,
+        "padding-block-end": 48
+      }
+    }
+  },
+  "order": [
+    "custom_footer_McGjCX",
+    "footer_m9NzUG",
+    "footer_utilities_jLGE8U"
+  ]
+}

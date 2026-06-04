@@ -1,0 +1,2740 @@
+{% comment %}
+  Build Your Setup - Interactive Bundle Builder Section
+  Version: 1.0.0
+  Compatible with: Shopify OS 2.0+
+  Style: Cyberpunk / Gaming UI
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'bys-' | append: section.id
+  assign heading = section.settings.heading | default: 'Build Your Setup'
+  assign subheading = section.settings.subheading | default: 'Select your gear and build the ultimate gaming station'
+-%}
+
+<style>
+  /* ============================================
+     CSS VARIABLES
+  ============================================ */
+  #{{ section_id }} {
+    --bys-bg: #0A0A0A;
+    --bys-bg-card: #0F0F0F;
+    --bys-bg-elevated: #141414;
+    --bys-bg-input: #111111;
+    --bys-primary: #B11226;
+    --bys-accent: #FF2A2A;
+    --bys-cyan: #00F0FF;
+    --bys-gold: #FFB800;
+    --bys-white: #FFFFFF;
+    --bys-text-muted: rgba(255,255,255,0.5);
+    --bys-text-dim: rgba(255,255,255,0.25);
+    --bys-border: rgba(255,255,255,0.06);
+    --bys-border-hover: rgba(177,18,38,0.5);
+    --bys-border-active: rgba(255,42,42,0.8);
+    --bys-glow-red: 0 0 20px rgba(255,42,42,0.3);
+    --bys-glow-red-lg: 0 0 50px rgba(177,18,38,0.25);
+    --bys-glow-cyan: 0 0 20px rgba(0,240,255,0.3);
+    --bys-glow-gold: 0 0 20px rgba(255,184,0,0.3);
+    --bys-transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    --bys-transition-fast: all 0.18s ease;
+    --bys-radius: 2px;
+  }
+
+  /* ============================================
+     SECTION BASE
+  ============================================ */
+  #{{ section_id }} {
+    position: relative;
+    width: 100%;
+    background: var(--bys-bg);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* ============================================
+     BACKGROUND
+  ============================================ */
+  #{{ section_id }} .bys-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(177,18,38,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(177,18,38,0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #{{ section_id }} .bys-bg-radial {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(ellipse, rgba(177,18,38,0.06) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(60px);
+  }
+
+  /* ============================================
+     CONTAINER
+  ============================================ */
+  #{{ section_id }} .bys-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  /* ============================================
+     SECTION HEADER
+  ============================================ */
+  #{{ section_id }} .bys-header {
+    text-align: center;
+    margin-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  #{{ section_id }} .bys-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--bys-accent);
+  }
+
+  #{{ section_id }} .bys-eyebrow::before,
+  #{{ section_id }} .bys-eyebrow::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--bys-accent);
+    box-shadow: var(--bys-glow-red);
+  }
+
+  #{{ section_id }} .bys-heading {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(30px, 4vw, 56px);
+    font-weight: 900;
+    color: var(--bys-white);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  #{{ section_id }} .bys-heading mark {
+    background: none;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--bys-primary);
+  }
+
+  #{{ section_id }} .bys-subheading {
+    font-size: 15px;
+    color: var(--bys-text-muted);
+    max-width: 500px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* Step indicator */
+  #{{ section_id }} .bys-steps-bar {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 8px;
+  }
+
+  #{{ section_id }} .bys-step-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--bys-text-dim);
+    transition: var(--bys-transition);
+    white-space: nowrap;
+  }
+
+  #{{ section_id }} .bys-step-item.is-active {
+    color: var(--bys-white);
+  }
+
+  #{{ section_id }} .bys-step-item.is-done {
+    color: var(--bys-accent);
+  }
+
+  #{{ section_id }} .bys-step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    flex-shrink: 0;
+    transition: var(--bys-transition);
+  }
+
+  #{{ section_id }} .bys-step-item.is-active .bys-step-num {
+    background: var(--bys-primary);
+    border-color: var(--bys-accent);
+    box-shadow: var(--bys-glow-red);
+    color: var(--bys-white);
+  }
+
+  #{{ section_id }} .bys-step-item.is-done .bys-step-num {
+    background: rgba(177,18,38,0.15);
+    border-color: var(--bys-accent);
+    color: var(--bys-accent);
+  }
+
+  #{{ section_id }} .bys-step-connector {
+    width: 40px;
+    height: 1px;
+    background: var(--bys-border);
+    margin: 0 8px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .bys-step-connector-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: var(--bys-accent);
+    box-shadow: var(--bys-glow-red);
+    transition: width 0.4s ease;
+  }
+
+  /* ============================================
+     MAIN LAYOUT
+  ============================================ */
+  #{{ section_id }} .bys-layout {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  /* ============================================
+     LEFT PANEL - CATEGORY TABS + PRODUCTS
+  ============================================ */
+  #{{ section_id }} .bys-builder {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ============================================
+     CATEGORY TABS
+  ============================================ */
+  #{{ section_id }} .bys-tabs {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    border: 1px solid var(--bys-border);
+    background: var(--bys-bg-card);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .bys-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 12px;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: var(--bys-text-muted);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    transition: var(--bys-transition);
+    position: relative;
+    border-right: 1px solid var(--bys-border);
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .bys-tab:last-child {
+    border-right: none;
+  }
+
+  #{{ section_id }} .bys-tab::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--bys-accent);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+    box-shadow: var(--bys-glow-red);
+  }
+
+  #{{ section_id }} .bys-tab:hover {
+    color: var(--bys-white);
+    background: rgba(255,255,255,0.03);
+  }
+
+  #{{ section_id }} .bys-tab.is-active {
+    color: var(--bys-white);
+    background: rgba(177,18,38,0.08);
+  }
+
+  #{{ section_id }} .bys-tab.is-active::before {
+    transform: scaleX(1);
+  }
+
+  #{{ section_id }} .bys-tab-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    transition: var(--bys-transition);
+  }
+
+  #{{ section_id }} .bys-tab.is-active .bys-tab-icon {
+    color: var(--bys-accent);
+    filter: drop-shadow(0 0 6px rgba(255,42,42,0.5));
+  }
+
+  /* Tab selected badge */
+  #{{ section_id }} .bys-tab-check {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bys-accent);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--bys-glow-red);
+  }
+
+  #{{ section_id }} .bys-tab-check svg {
+    width: 8px;
+    height: 8px;
+    color: var(--bys-white);
+  }
+
+  #{{ section_id }} .bys-tab.has-selection .bys-tab-check {
+    display: flex;
+  }
+
+  /* ============================================
+     PRODUCT PANELS
+  ============================================ */
+  #{{ section_id }} .bys-panel {
+    display: none;
+  }
+
+  #{{ section_id }} .bys-panel.is-active {
+    display: block;
+  }
+
+  #{{ section_id }} .bys-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    gap: 16px;
+  }
+
+  #{{ section_id }} .bys-panel-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--bys-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #{{ section_id }} .bys-panel-title::before {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: var(--bys-accent);
+    transform: rotate(45deg);
+    box-shadow: var(--bys-glow-red);
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .bys-panel-count {
+    font-size: 11px;
+    color: var(--bys-text-dim);
+    font-weight: 400;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  /* Search filter */
+  #{{ section_id }} .bys-search {
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .bys-search-input {
+    background: var(--bys-bg-input);
+    border: 1px solid var(--bys-border);
+    color: var(--bys-white);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 8px 12px 8px 34px;
+    outline: none;
+    width: 180px;
+    transition: var(--bys-transition);
+    letter-spacing: 0.3px;
+  }
+
+  #{{ section_id }} .bys-search-input::placeholder {
+    color: var(--bys-text-dim);
+  }
+
+  #{{ section_id }} .bys-search-input:focus {
+    border-color: var(--bys-border-hover);
+    box-shadow: var(--bys-glow-red);
+  }
+
+  #{{ section_id }} .bys-search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--bys-text-dim);
+    pointer-events: none;
+  }
+
+  /* ============================================
+     PRODUCT GRID INSIDE PANEL
+  ============================================ */
+  #{{ section_id }} .bys-products {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-height: 480px;
+    overflow-y: auto;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(177,18,38,0.4) transparent;
+  }
+
+  #{{ section_id }} .bys-products::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  #{{ section_id }} .bys-products::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #{{ section_id }} .bys-products::-webkit-scrollbar-thumb {
+    background: rgba(177,18,38,0.4);
+    border-radius: 2px;
+  }
+
+  /* ============================================
+     PRODUCT CARD
+  ============================================ */
+  #{{ section_id }} .bys-product-card {
+    position: relative;
+    background: var(--bys-bg-card);
+    border: 1px solid var(--bys-border);
+    cursor: pointer;
+    transition: var(--bys-transition);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    outline: none;
+    user-select: none;
+  }
+
+  #{{ section_id }} .bys-product-card:hover {
+    border-color: var(--bys-border-hover);
+    background: var(--bys-bg-elevated);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4), var(--bys-glow-red);
+  }
+
+  #{{ section_id }} .bys-product-card.is-selected {
+    border-color: var(--bys-border-active);
+    background: rgba(177,18,38,0.06);
+    box-shadow: var(--bys-glow-red), 0 0 0 1px rgba(255,42,42,0.2);
+  }
+
+  #{{ section_id }} .bys-product-card:focus-visible {
+    outline: 2px solid var(--bys-accent);
+    outline-offset: 2px;
+  }
+
+  /* Selected overlay pulse */
+  #{{ section_id }} .bys-product-card.is-selected::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(177,18,38,0.04);
+    pointer-events: none;
+    animation: bys-selected-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes bys-selected-pulse {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+  }
+
+  /* Product image */
+  #{{ section_id }} .bys-product-image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: var(--bys-bg-input);
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .bys-product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  #{{ section_id }} .bys-product-card:hover .bys-product-image img {
+    transform: scale(1.06);
+  }
+
+  /* Product placeholder image */
+  #{{ section_id }} .bys-product-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #111 0%, #161616 100%);
+  }
+
+  /* Sale badge */
+  #{{ section_id }} .bys-product-badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    padding: 3px 8px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+
+  #{{ section_id }} .bys-product-badge--sale {
+    background: var(--bys-primary);
+    color: var(--bys-white);
+    box-shadow: var(--bys-glow-red);
+  }
+
+  #{{ section_id }} .bys-product-badge--new {
+    background: rgba(0,240,255,0.15);
+    color: var(--bys-cyan);
+    border: 1px solid rgba(0,240,255,0.3);
+  }
+
+  /* Selected checkmark */
+  #{{ section_id }} .bys-product-select-indicator {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: var(--bys-transition);
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .bys-product-select-indicator svg {
+    opacity: 0;
+    transform: scale(0.5);
+    transition: var(--bys-transition);
+    color: var(--bys-white);
+  }
+
+  #{{ section_id }} .bys-product-card.is-selected .bys-product-select-indicator {
+    background: var(--bys-primary);
+    border-color: var(--bys-accent);
+    box-shadow: var(--bys-glow-red);
+  }
+
+  #{{ section_id }} .bys-product-card.is-selected .bys-product-select-indicator svg {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Product info */
+  #{{ section_id }} .bys-product-info {
+    padding: 12px 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  #{{ section_id }} .bys-product-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--bys-white);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    letter-spacing: 0.2px;
+  }
+
+  #{{ section_id }} .bys-product-meta {
+    font-size: 10px;
+    color: var(--bys-text-dim);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  #{{ section_id }} .bys-product-price-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  #{{ section_id }} .bys-product-price {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--bys-white);
+    font-family: 'Arial Black', sans-serif;
+    letter-spacing: -0.3px;
+  }
+
+  #{{ section_id }} .bys-product-price-compare {
+    font-size: 11px;
+    color: var(--bys-text-dim);
+    text-decoration: line-through;
+  }
+
+  #{{ section_id }} .bys-product-rating {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    margin-top: 4px;
+  }
+
+  #{{ section_id }} .bys-star {
+    color: var(--bys-gold);
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  #{{ section_id }} .bys-rating-count {
+    font-size: 10px;
+    color: var(--bys-text-dim);
+  }
+
+  /* No results state */
+  #{{ section_id }} .bys-no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 48px 24px;
+    color: var(--bys-text-dim);
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    display: none;
+  }
+
+  #{{ section_id }} .bys-no-results.is-visible {
+    display: block;
+  }
+
+  /* ============================================
+     RIGHT PANEL - SUMMARY CARD
+  ============================================ */
+  #{{ section_id }} .bys-summary {
+    position: sticky;
+    top: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--bys-border);
+    background: var(--bys-bg-card);
+    overflow: hidden;
+  }
+
+  /* Summary Header */
+  #{{ section_id }} .bys-summary-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--bys-border);
+    background: var(--bys-bg-elevated);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .bys-summary-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--bys-primary), var(--bys-accent), transparent);
+    box-shadow: var(--bys-glow-red);
+  }
+
+  #{{ section_id }} .bys-summary-title {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--bys-white);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin: 0 0 4px;
+  }
+
+  #{{ section_id }} .bys-summary-subtitle {
+    font-size: 11px;
+    color: var(--bys-text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  /* Progress bar */
+  #{{ section_id }} .bys-progress {
+    margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #{{ section_id }} .bys-progress-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 10px;
+    color: var(--bys-text-muted);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  #{{ section_id }} .bys-progress-count {
+    color: var(--bys-accent);
+    font-weight: 800;
+  }
+
+  #{{ section_id }} .bys-progress-track {
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .bys-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--bys-primary), var(--bys-accent));
+    box-shadow: var(--bys-glow-red);
+    transition: width 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+    width: 0%;
+  }
+
+  /* Summary Items */
+  #{{ section_id }} .bys-summary-items {
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid var(--bys-border);
+    min-height: 180px;
+  }
+
+  #{{ section_id }} .bys-summary-slot {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px dashed rgba(255,255,255,0.08);
+    background: rgba(255,255,255,0.02);
+    position: relative;
+    transition: var(--bys-transition);
+    min-height: 62px;
+  }
+
+  #{{ section_id }} .bys-summary-slot.is-filled {
+    border-style: solid;
+    border-color: rgba(177,18,38,0.25);
+    background: rgba(177,18,38,0.04);
+  }
+
+  #{{ section_id }} .bys-slot-image {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    overflow: hidden;
+    background: var(--bys-bg-input);
+    border: 1px solid var(--bys-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  #{{ section_id }} .bys-slot-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #{{ section_id }} .bys-slot-image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  #{{ section_id }} .bys-slot-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  #{{ section_id }} .bys-slot-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--bys-text-dim);
+    margin-bottom: 2px;
+  }
+
+  #{{ section_id }} .bys-slot-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--bys-text-muted);
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: var(--bys-transition);
+  }
+
+  #{{ section_id }} .bys-summary-slot.is-filled .bys-slot-name {
+    color: var(--bys-white);
+    font-style: normal;
+  }
+
+  #{{ section_id }} .bys-slot-price {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--bys-accent);
+    font-family: 'Arial Black', sans-serif;
+    opacity: 0;
+    transition: var(--bys-transition);
+    white-space: nowrap;
+  }
+
+  #{{ section_id }} .bys-summary-slot.is-filled .bys-slot-price {
+    opacity: 1;
+  }
+
+  /* Slot remove button */
+  #{{ section_id }} .bys-slot-remove {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    border: none;
+    background: rgba(177,18,38,0.15);
+    color: var(--bys-accent);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: var(--bys-transition);
+    padding: 0;
+    line-height: 1;
+  }
+
+  #{{ section_id }} .bys-summary-slot.is-filled .bys-slot-remove {
+    display: flex;
+  }
+
+  #{{ section_id }} .bys-slot-remove:hover {
+    background: var(--bys-primary);
+    box-shadow: var(--bys-glow-red);
+  }
+
+  /* ============================================
+     SAVINGS / DISCOUNT BADGE
+  ============================================ */
+  #{{ section_id }} .bys-savings-badge {
+    margin: 0 24px;
+    padding: 10px 16px;
+    background: rgba(177,18,38,0.08);
+    border: 1px solid rgba(177,18,38,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: var(--bys-transition);
+    margin-bottom: 0;
+  }
+
+  #{{ section_id }} .bys-savings-badge.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #{{ section_id }} .bys-savings-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bys-accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #{{ section_id }} .bys-savings-label svg {
+    color: var(--bys-accent);
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .bys-savings-amount {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--bys-accent);
+    font-family: 'Arial Black', sans-serif;
+  }
+
+  /* ============================================
+     PRICE BREAKDOWN
+  ============================================ */
+  #{{ section_id }} .bys-price-section {
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid var(--bys-border);
+  }
+
+  #{{ section_id }} .bys-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  #{{ section_id }} .bys-price-row-label {
+    font-size: 11px;
+    color: var(--bys-text-muted);
+    font-weight: 500;
+    letter-spacing: 0.3px;
+  }
+
+  #{{ section_id }} .bys-price-row-value {
+    font-size: 12px;
+    color: var(--bys-white);
+    font-weight: 700;
+    font-family: 'Arial Black', sans-serif;
+  }
+
+  #{{ section_id }} .bys-price-row--total {
+    padding-top: 10px;
+    border-top: 1px solid var(--bys-border);
+    margin-top: 4px;
+  }
+
+  #{{ section_id }} .bys-price-row--total .bys-price-row-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--bys-white);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  #{{ section_id }} .bys-price-row--total .bys-price-row-value {
+    font-size: 22px;
+    color: var(--bys-white);
+  }
+
+  #{{ section_id }} .bys-price-row--savings .bys-price-row-value {
+    color: var(--bys-accent);
+  }
+
+  /* ============================================
+     CTA AREA
+  ============================================ */
+  #{{ section_id }} .bys-cta-area {
+    padding: 20px 24px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #{{ section_id }} .bys-btn-add-all {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 24px;
+    background: var(--bys-primary);
+    color: var(--bys-white);
+    border: none;
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--bys-transition);
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+
+  #{{ section_id }} .bys-btn-add-all::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 100%);
+    opacity: 0;
+    transition: var(--bys-transition);
+  }
+
+  #{{ section_id }} .bys-btn-add-all:hover:not(:disabled) {
+    box-shadow: var(--bys-glow-red-lg), 0 8px 30px rgba(177,18,38,0.4);
+    transform: translateY(-1px);
+  }
+
+  #{{ section_id }} .bys-btn-add-all:hover:not(:disabled)::before {
+    opacity: 1;
+  }
+
+  #{{ section_id }} .bys-btn-add-all:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  #{{ section_id }} .bys-btn-add-all:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  #{{ section_id }} .bys-btn-add-all svg {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  #{{ section_id }} .bys-btn-add-all:hover:not(:disabled) svg {
+    transform: translateX(3px);
+  }
+
+  #{{ section_id }} .bys-btn-add-all-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Secondary button */
+  #{{ section_id }} .bys-btn-save {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: transparent;
+    color: var(--bys-text-muted);
+    border: 1px solid var(--bys-border);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--bys-transition);
+  }
+
+  #{{ section_id }} .bys-btn-save:hover {
+    color: var(--bys-cyan);
+    border-color: rgba(0,240,255,0.3);
+    box-shadow: var(--bys-glow-cyan);
+  }
+
+  /* Helper text */
+  #{{ section_id }} .bys-cta-helper {
+    text-align: center;
+    font-size: 10px;
+    color: var(--bys-text-dim);
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  #{{ section_id }} .bys-cta-helper svg {
+    color: var(--bys-text-dim);
+    flex-shrink: 0;
+  }
+
+  /* ============================================
+     SUCCESS STATE
+  ============================================ */
+  #{{ section_id }} .bys-success-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+
+  #{{ section_id }} .bys-success-overlay.is-visible {
+    display: flex;
+    animation: bys-fade-in 0.3s ease;
+  }
+
+  @keyframes bys-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  #{{ section_id }} .bys-success-box {
+    background: var(--bys-bg-card);
+    border: 1px solid rgba(177,18,38,0.4);
+    padding: 48px 56px;
+    text-align: center;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    box-shadow: var(--bys-glow-red-lg), 0 40px 80px rgba(0,0,0,0.8);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+    animation: bys-scale-in 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  @keyframes bys-scale-in {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  #{{ section_id }} .bys-success-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(177,18,38,0.12);
+    border: 2px solid var(--bys-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: var(--bys-glow-red);
+    animation: bys-icon-pulse 1s ease-in-out infinite;
+  }
+
+  @keyframes bys-icon-pulse {
+    0%, 100% { box-shadow: var(--bys-glow-red); }
+    50% { box-shadow: 0 0 40px rgba(255,42,42,0.6); }
+  }
+
+  #{{ section_id }} .bys-success-title {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--bys-white);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 12px;
+  }
+
+  #{{ section_id }} .bys-success-text {
+    font-size: 14px;
+    color: var(--bys-text-muted);
+    line-height: 1.6;
+    margin: 0 0 32px;
+  }
+
+  #{{ section_id }} .bys-success-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  #{{ section_id }} .bys-success-btn-cart {
+    padding: 12px 24px;
+    background: var(--bys-primary);
+    color: var(--bys-white);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: var(--bys-transition);
+    font-family: 'Arial Black', sans-serif;
+  }
+
+  #{{ section_id }} .bys-success-btn-cart:hover {
+    box-shadow: var(--bys-glow-red);
+    text-decoration: none;
+    color: var(--bys-white);
+  }
+
+  #{{ section_id }} .bys-success-btn-continue {
+    padding: 12px 24px;
+    background: transparent;
+    color: var(--bys-text-muted);
+    border: 1px solid var(--bys-border);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: var(--bys-transition);
+  }
+
+  #{{ section_id }} .bys-success-btn-continue:hover {
+    color: var(--bys-white);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  /* ============================================
+     EMPTY STATE
+  ============================================ */
+  #{{ section_id }} .bys-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 24px;
+    gap: 12px;
+    flex: 1;
+  }
+
+  #{{ section_id }} .bys-empty-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.03);
+    border: 1px dashed rgba(255,255,255,0.1);
+    border-radius: 50%;
+    color: var(--bys-text-dim);
+  }
+
+  #{{ section_id }} .bys-empty-label {
+    font-size: 12px;
+    color: var(--bys-text-dim);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ============================================
+     LOADING STATE
+  ============================================ */
+  #{{ section_id }} .bys-btn-add-all.is-loading {
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .bys-spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: var(--bys-white);
+    border-radius: 50%;
+    animation: bys-spin 0.7s linear infinite;
+    display: none;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .bys-btn-add-all.is-loading .bys-spinner {
+    display: block;
+  }
+
+  #{{ section_id }} .bys-btn-add-all.is-loading .bys-btn-add-icon,
+  #{{ section_id }} .bys-btn-add-all.is-loading .bys-btn-add-text {
+    display: none;
+  }
+
+  @keyframes bys-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ============================================
+     TOAST NOTIFICATION
+  ============================================ */
+  #{{ section_id }} .bys-toast {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    padding: 14px 20px;
+    background: var(--bys-bg-elevated);
+    border: 1px solid rgba(177,18,38,0.3);
+    border-left: 3px solid var(--bys-accent);
+    color: var(--bys-white);
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 9998;
+    max-width: 320px;
+    box-shadow: var(--bys-glow-red), 0 20px 60px rgba(0,0,0,0.6);
+    transform: translateX(120%);
+    transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    letter-spacing: 0.3px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  #{{ section_id }} .bys-toast.is-visible {
+    transform: translateX(0);
+  }
+
+  #{{ section_id }} .bys-toast-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: var(--bys-accent);
+  }
+
+  /* ============================================
+     RESPONSIVE - TABLET
+  ============================================ */
+  @media (max-width: 1100px) {
+    #{{ section_id }} .bys-layout {
+      grid-template-columns: 1fr 320px;
+      gap: 20px;
+    }
+
+    #{{ section_id }} .bys-products {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    #{{ section_id }} .bys-layout {
+      grid-template-columns: 1fr;
+    }
+
+    #{{ section_id }} .bys-summary {
+      position: static;
+    }
+
+    #{{ section_id }} .bys-products {
+      grid-template-columns: repeat(3, 1fr);
+      max-height: 360px;
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE - MOBILE
+  ============================================ */
+  @media (max-width: 768px) {
+    #{{ section_id }} .bys-container {
+      padding: 0 16px;
+    }
+
+    #{{ section_id }} .bys-header {
+      margin-bottom: 40px;
+    }
+
+    #{{ section_id }} .bys-products {
+      grid-template-columns: repeat(2, 1fr);
+      max-height: 320px;
+      gap: 10px;
+    }
+
+    #{{ section_id }} .bys-steps-bar {
+      display: none;
+    }
+
+    #{{ section_id }} .bys-tabs {
+      overflow-x: auto;
+    }
+
+    #{{ section_id }} .bys-tab {
+      min-width: 80px;
+      padding: 12px 8px;
+    }
+
+    #{{ section_id }} .bys-panel-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    #{{ section_id }} .bys-search-input {
+      width: 100%;
+    }
+
+    #{{ section_id }} .bys-search {
+      width: 100%;
+    }
+
+    #{{ section_id }} .bys-summary-slot {
+      padding: 8px 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #{{ section_id }} .bys-products {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* ============================================
+     REDUCED MOTION
+  ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    #{{ section_id }} * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<section
+  id="{{ section_id }}"
+  class="build-your-setup"
+  aria-label="{{ heading }}"
+>
+
+  {% comment %} Success Overlay {% endcomment %}
+  <div class="bys-success-overlay" id="bys-success-{{ section.id }}" role="dialog" aria-modal="true" aria-label="Setup added to cart">
+    <div class="bys-success-box">
+      <div class="bys-success-icon" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 6L9 17L4 12" stroke="#FF2A2A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3 class="bys-success-title">Setup Added!</h3>
+      <p class="bys-success-text">Your custom gaming setup has been added to the cart. Ready to dominate?</p>
+      <div class="bys-success-actions">
+        <a href="{{ routes.cart_url }}" class="bys-success-btn-cart">View Cart</a>
+        <button class="bys-success-btn-continue" id="bys-continue-{{ section.id }}">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  {% comment %} Toast {% endcomment %}
+  <div class="bys-toast" id="bys-toast-{{ section.id }}" role="alert" aria-live="polite">
+    <svg class="bys-toast-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <span class="bys-toast-message"></span>
+  </div>
+
+  {% comment %} Background {% endcomment %}
+  <div class="bys-bg-grid" aria-hidden="true"></div>
+  <div class="bys-bg-radial" aria-hidden="true"></div>
+
+  <div class="bys-container">
+
+    {% comment %} ============================================
+       SECTION HEADER
+    ============================================ {% endcomment %}
+    <div class="bys-header">
+      {% if section.settings.eyebrow != blank %}
+        <div class="bys-eyebrow" aria-hidden="true">{{ section.settings.eyebrow }}</div>
+      {% endif %}
+
+      <h2 class="bys-heading">
+        {{ heading | split: ' ' | first }}
+        <mark>
+          {%- assign words = heading | split: ' ' -%}
+          {%- for w in words -%}
+            {%- unless forloop.first -%}{{ w }}{% unless forloop.last %} {% endunless %}{%- endunless -%}
+          {%- endfor -%}
+        </mark>
+      </h2>
+
+      {% if subheading != blank %}
+        <p class="bys-subheading">{{ subheading }}</p>
+      {% endif %}
+
+      {% comment %} Steps Bar {% endcomment %}
+      <div class="bys-steps-bar" id="bys-steps-{{ section.id }}" aria-label="Setup progress">
+        {%- for block in section.blocks -%}
+          {%- if forloop.index > 1 -%}
+            <div class="bys-step-connector" aria-hidden="true">
+              <div class="bys-step-connector-fill" data-step-connector="{{ forloop.index | minus: 1 }}"></div>
+            </div>
+          {%- endif -%}
+          <div
+            class="bys-step-item{% if forloop.first %} is-active{% endif %}"
+            data-step="{{ forloop.index }}"
+            aria-label="Step {{ forloop.index }}: {{ block.settings.category_name }}"
+          >
+            <div class="bys-step-num">
+              {{ forloop.index }}
+            </div>
+            <span>{{ block.settings.category_name | default: 'Category' }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {% comment %} ============================================
+       MAIN LAYOUT
+    ============================================ {% endcomment %}
+    <div class="bys-layout">
+
+      {% comment %} LEFT: BUILDER {% endcomment %}
+      <div class="bys-builder">
+
+        {% comment %} CATEGORY TABS {% endcomment %}
+        <div class="bys-tabs" role="tablist" aria-label="Select category">
+          {%- for block in section.blocks -%}
+            <button
+              class="bys-tab{% if forloop.first %} is-active{% endif %}"
+              role="tab"
+              id="bys-tab-{{ section.id }}-{{ forloop.index }}"
+              aria-controls="bys-panel-{{ section.id }}-{{ forloop.index }}"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              data-tab="{{ forloop.index }}"
+              data-category="{{ block.settings.category_name | handleize }}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="bys-tab-check" aria-hidden="true">
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M20 6L9 17L4 12" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+
+              <div class="bys-tab-icon" aria-hidden="true">
+                {%- case block.settings.category_icon -%}
+                  {%- when 'chair' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="7" y="3" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                      <rect x="5" y="12" width="14" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M8 16L7 21M16 16L17 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M7 21H17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M4 12V17M20 12V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  {%- when 'console' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="2" y="7" width="20" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                      <circle cx="7" cy="13" r="2" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M14 11H18M16 9V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <path d="M9 4H15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  {%- when 'headset' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 14C3 10.134 6.13401 7 10 7H14C17.866 7 21 10.134 21 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                      <rect x="2" y="14" width="4" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                      <rect x="18" y="14" width="4" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+                    </svg>
+                  {%- when 'monitor' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="2" y="3" width="20" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                      <path d="M8 21H16M12 17V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  {%- when 'mouse' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="6" y="3" width="12" height="18" rx="6" stroke="currentColor" stroke-width="1.5"/>
+                      <line x1="12" y1="3" x2="12" y2="9" stroke="currentColor" stroke-width="1.5"/>
+                      <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                    </svg>
+                  {%- else -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L15 9H22L17 14L19 21L12 17L5 21L7 14L2 9H9L12 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                    </svg>
+                {%- endcase -%}
+              </div>
+
+              {{ block.settings.category_name | default: 'Category' }}
+            </button>
+          {%- endfor -%}
+        </div>
+
+        {% comment %} PRODUCT PANELS {% endcomment %}
+        {%- for block in section.blocks -%}
+          <div
+            class="bys-panel{% if forloop.first %} is-active{% endif %}"
+            id="bys-panel-{{ section.id }}-{{ forloop.index }}"
+            role="tabpanel"
+            aria-labelledby="bys-tab-{{ section.id }}-{{ forloop.index }}"
+          >
+
+            <div class="bys-panel-header">
+              <div class="bys-panel-title">
+                {{ block.settings.category_name | default: 'Category' }}
+                <span class="bys-panel-count">
+                  — {{ block.settings.collection.products_count | default: 0 }} items
+                </span>
+              </div>
+
+              <div class="bys-search" role="search">
+                <svg class="bys-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                  <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <input
+                  type="search"
+                  class="bys-search-input"
+                  placeholder="Filter {{ block.settings.category_name | downcase }}..."
+                  aria-label="Search {{ block.settings.category_name }}"
+                  data-panel-search="{{ forloop.index }}"
+                >
+              </div>
+            </div>
+
+            <div
+              class="bys-products"
+              data-products-grid="{{ forloop.index }}"
+              role="listbox"
+              aria-label="Select {{ block.settings.category_name }}"
+              aria-multiselectable="false"
+            >
+
+              {%- if block.settings.collection != blank -%}
+                {%- assign products = block.settings.collection.products -%}
+                {%- assign max_products = block.settings.max_products | default: 6 -%}
+
+                {%- for product in products limit: max_products -%}
+                  {%- liquid
+                    assign has_compare = false
+                    if product.compare_at_price > product.price
+                      assign has_compare = true
+                    endif
+                    assign is_new = false
+                    if product.tags contains 'new'
+                      assign is_new = true
+                    endif
+                  -%}
+                  <div
+                    class="bys-product-card"
+                    role="option"
+                    aria-selected="false"
+                    tabindex="0"
+                    data-product-id="{{ product.id }}"
+                    data-product-variant="{{ product.selected_or_first_available_variant.id }}"
+                    data-product-price="{{ product.price | money }}"
+                    data-product-price-cents="{{ product.price }}"
+                    data-product-compare="{{ product.compare_at_price | money }}"
+                    data-product-compare-cents="{{ product.compare_at_price }}"
+                    data-product-name="{{ product.title | escape }}"
+                    data-product-image="{{ product.featured_image | image_url: width: 400 }}"
+                    data-product-url="{{ product.url }}"
+                    data-category-index="{{ forloop.parentloop.index }}"
+                    data-category-name="{{ block.settings.category_name | handleize }}"
+                    data-searchable="{{ product.title | downcase | append: ' ' | append: product.vendor | downcase }}"
+                  >
+                    <div class="bys-product-image">
+                      {% if has_compare %}
+                        <div class="bys-product-badge bys-product-badge--sale" aria-label="Sale">Sale</div>
+                      {% elsif is_new %}
+                        <div class="bys-product-badge bys-product-badge--new" aria-label="New">New</div>
+                      {% endif %}
+
+                      <div class="bys-product-select-indicator" aria-hidden="true">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+
+                      {% if product.featured_image %}
+  {%- assign product_alt = product.featured_image.alt | default: product.title | escape -%}
+
+  {{ product.featured_image
+    | image_url: width: 400
+    | image_tag:
+      loading: 'lazy',
+      alt: product_alt,
+      widths: '200, 300, 400',
+      sizes: '(max-width: 768px) 40vw, 15vw'
+  }}
+{% else %}
+                        <div class="bys-product-placeholder" aria-hidden="true">
+                          {{ product.title | slice: 0, 1 | upcase }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="bys-product-info">
+                      <div class="bys-product-name">{{ product.title }}</div>
+
+                      {% if product.vendor != blank %}
+                        <div class="bys-product-meta">{{ product.vendor }}</div>
+                      {% endif %}
+
+                      <div class="bys-product-price-row">
+                        <span class="bys-product-price">{{ product.price | money }}</span>
+                        {% if has_compare %}
+                          <span class="bys-product-price-compare" aria-label="Original price">{{ product.compare_at_price | money }}</span>
+                        {% endif %}
+                      </div>
+
+                      {% if block.settings.show_ratings %}
+                        <div class="bys-product-rating" aria-label="Rating: 4.5 out of 5">
+                          {%- for i in (1..5) -%}
+                            <span class="bys-star" aria-hidden="true">★</span>
+                          {%- endfor -%}
+                          <span class="bys-rating-count">({{ product.metafields.reviews.rating_count | default: '0' }})</span>
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                {%- endfor -%}
+
+              {%- else -%}
+                {% comment %} Demo cards when no collection assigned {% endcomment %}
+                {%- for i in (1..6) -%}
+                  {%- liquid
+                    case forloop.index
+                      when 1
+                        assign demo_name = 'GT Racing Pro X1 Chair'
+                        assign demo_price = 29999
+                        assign demo_vendor = 'GTRacing'
+                      when 2
+                        assign demo_name = 'SecretLab Titan EVO'
+                        assign demo_price = 49999
+                        assign demo_vendor = 'Secretlab'
+                      when 3
+                        assign demo_name = 'DXRacer Formula Series'
+                        assign demo_price = 23999
+                        assign demo_vendor = 'DXRacer'
+                      when 4
+                        assign demo_name = 'Corsair TC100 Chair'
+                        assign demo_price = 19999
+                        assign demo_vendor = 'Corsair'
+                      when 5
+                        assign demo_name = 'AKRacing Masters Pro'
+                        assign demo_price = 39999
+                        assign demo_vendor = 'AKRacing'
+                      else
+                        assign demo_name = 'Razer Iskur Gaming Chair'
+                        assign demo_price = 44999
+                        assign demo_vendor = 'Razer'
+                    endcase
+                    assign demo_price_display = demo_price | money
+                  -%}
+
+                  <div
+                    class="bys-product-card"
+                    role="option"
+                    aria-selected="false"
+                    tabindex="0"
+                    data-product-id="demo-{{ section.id }}-{{ forloop.parentloop.index }}-{{ forloop.index }}"
+                    data-product-variant="demo-{{ forloop.index }}"
+                    data-product-price="{{ demo_price_display }}"
+                    data-product-price-cents="{{ demo_price }}"
+                    data-product-name="{{ demo_name }}"
+                    data-product-image=""
+                    data-product-url="#"
+                    data-category-index="{{ forloop.parentloop.index }}"
+                    data-category-name="{{ block.settings.category_name | handleize }}"
+                    data-searchable="{{ demo_name | downcase }} {{ demo_vendor | downcase }}"
+                  >
+                    <div class="bys-product-image">
+                      {% if forloop.index == 1 %}
+                        <div class="bys-product-badge bys-product-badge--new" aria-label="New">New</div>
+                      {% elsif forloop.index == 3 %}
+                        <div class="bys-product-badge bys-product-badge--sale" aria-label="Sale">Sale</div>
+                      {% endif %}
+
+                      <div class="bys-product-select-indicator" aria-hidden="true">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </div>
+
+                      <div class="bys-product-placeholder" aria-hidden="true">
+                        {%- case block.settings.category_icon -%}
+                          {%- when 'chair' -%}
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="7" y="3" width="10" height="9" rx="1.5" stroke="rgba(177,18,38,0.5)" stroke-width="1.5"/>
+                              <rect x="5" y="12" width="14" height="4" rx="1" stroke="rgba(177,18,38,0.5)" stroke-width="1.5"/>
+                              <path d="M8 16L7 21M16 16L17 21M7 21H17" stroke="rgba(177,18,38,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                          {%- when 'console' -%}
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <rect x="2" y="7" width="20" height="12" rx="2" stroke="rgba(177,18,38,0.5)" stroke-width="1.5"/>
+                              <circle cx="7" cy="13" r="2" stroke="rgba(177,18,38,0.5)" stroke-width="1.5"/>
+                              <path d="M14 11H18M16 9V13" stroke="rgba(177,18,38,0.5)" stroke-width="1.5" stroke-linecap="round"/>
+                            </svg>
+                          {%- else -%}
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M12 2L15 9H22L17 14L19 21L12 17L5 21L7 14L2 9H9L12 2Z" stroke="rgba(177,18,38,0.5)" stroke-width="1.5" stroke-linejoin="round"/>
+                            </svg>
+                        {%- endcase -%}
+                      </div>
+                    </div>
+
+                    <div class="bys-product-info">
+                      <div class="bys-product-name">{{ demo_name }}</div>
+                      <div class="bys-product-meta">{{ demo_vendor }}</div>
+                      <div class="bys-product-price-row">
+                        <span class="bys-product-price">{{ demo_price_display }}</span>
+                        {% if forloop.index == 3 %}
+                          <span class="bys-product-price-compare" aria-label="Original price">
+                            {{ demo_price | times: 1.2 | round | money }}
+                          </span>
+                        {% endif %}
+                      </div>
+                      {% if block.settings.show_ratings %}
+                        <div class="bys-product-rating" aria-label="Rating">
+                          {%- for s in (1..5) -%}<span class="bys-star" aria-hidden="true">★</span>{%- endfor -%}
+                          <span class="bys-rating-count">({{ forloop.index | times: 23 }})</span>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {%- endfor -%}
+              {%- endif -%}
+
+              <div class="bys-no-results" aria-live="polite">No products match your search.</div>
+
+            </div>
+            {% comment %} END .bys-products {% endcomment %}
+
+          </div>
+          {% comment %} END .bys-panel {% endcomment %}
+        {%- endfor -%}
+
+      </div>
+      {% comment %} END .bys-builder {% endcomment %}
+
+      {% comment %} RIGHT: SUMMARY PANEL {% endcomment %}
+      <div class="bys-summary" id="bys-summary-{{ section.id }}" aria-label="Your setup summary">
+
+        <div class="bys-summary-header">
+          <h3 class="bys-summary-title">Your Setup</h3>
+          <p class="bys-summary-subtitle">Build your perfect battle station</p>
+
+          <div class="bys-progress">
+            <div class="bys-progress-label">
+              <span>Items Selected</span>
+              <span class="bys-progress-count">
+                <span id="bys-selected-count-{{ section.id }}">0</span> / {{ section.blocks.size }}
+              </span>
+            </div>
+            <div class="bys-progress-track" aria-hidden="true">
+              <div
+                class="bys-progress-fill"
+                id="bys-progress-fill-{{ section.id }}"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        {% comment %} Summary Item Slots {% endcomment %}
+        <div class="bys-summary-items" id="bys-summary-items-{{ section.id }}">
+          {%- for block in section.blocks -%}
+            <div
+              class="bys-summary-slot"
+              id="bys-slot-{{ section.id }}-{{ forloop.index }}"
+              data-slot="{{ forloop.index }}"
+              data-category="{{ block.settings.category_name | handleize }}"
+              aria-label="{{ block.settings.category_name }}: not selected"
+            >
+              <div class="bys-slot-image" aria-hidden="true">
+                <div class="bys-slot-image-placeholder">
+                  {%- case block.settings.category_icon -%}
+                    {%- when 'chair' -%}
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="7" y="3" width="10" height="9" rx="1.5" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                        <rect x="5" y="12" width="14" height="4" rx="1" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                        <path d="M8 16L7 21M16 16L17 21M7 21H17" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    {%- when 'console' -%}
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="7" width="20" height="12" rx="2" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                        <circle cx="7" cy="13" r="2" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                        <path d="M14 11H18M16 9V13" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    {%- when 'headset' -%}
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 14C3 10.134 6.13401 7 10 7H14C17.866 7 21 10.134 21 14" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round"/>
+                        <rect x="2" y="14" width="4" height="6" rx="1" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                        <rect x="18" y="14" width="4" height="6" rx="1" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                      </svg>
+                    {%- when 'monitor' -%}
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="3" width="20" height="14" rx="2" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                        <path d="M8 21H16M12 17V21" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    {%- when 'mouse' -%}
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="6" y="3" width="12" height="18" rx="6" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                        <line x1="12" y1="3" x2="12" y2="9" stroke="rgba(255,255,255,0.2)" stroke-width="1.5"/>
+                      </svg>
+                    {%- else -%}
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L15 9H22L17 14L19 21L12 17L5 21L7 14L2 9H9L12 2Z" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-linejoin="round"/>
+                      </svg>
+                  {%- endcase -%}
+                </div>
+              </div>
+
+              <div class="bys-slot-info">
+                <div class="bys-slot-label">{{ block.settings.category_name }}</div>
+                <div class="bys-slot-name">Not selected</div>
+              </div>
+
+              <div class="bys-slot-price" aria-hidden="true">—</div>
+
+              <button
+                class="bys-slot-remove"
+                aria-label="Remove {{ block.settings.category_name }} from setup"
+                data-slot-remove="{{ forloop.index }}"
+                type="button"
+              >
+                <svg width="8" height="8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        {% comment %} Bundle Savings Badge {% endcomment %}
+        {% if section.settings.bundle_discount > 0 %}
+          <div class="bys-savings-badge" id="bys-savings-{{ section.id }}">
+            <div class="bys-savings-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+              Bundle Discount
+            </div>
+            <span class="bys-savings-amount">-{{ section.settings.bundle_discount }}%</span>
+          </div>
+        {% endif %}
+
+        {% comment %} Price Breakdown {% endcomment %}
+        <div class="bys-price-section">
+          <div class="bys-price-row">
+            <span class="bys-price-row-label">Subtotal</span>
+            <span class="bys-price-row-value" id="bys-subtotal-{{ section.id }}">—</span>
+          </div>
+
+          {% if section.settings.bundle_discount > 0 %}
+            <div class="bys-price-row bys-price-row--savings">
+              <span class="bys-price-row-label">Bundle Savings ({{ section.settings.bundle_discount }}%)</span>
+              <span class="bys-price-row-value" id="bys-savings-val-{{ section.id }}">—</span>
+            </div>
+          {% endif %}
+
+          <div class="bys-price-row bys-price-row--total">
+            <span class="bys-price-row-label">Total</span>
+            <span class="bys-price-row-value" id="bys-total-{{ section.id }}">—</span>
+          </div>
+        </div>
+
+        {% comment %} CTA Area {% endcomment %}
+        <div class="bys-cta-area">
+          <button
+            class="bys-btn-add-all"
+            id="bys-add-all-{{ section.id }}"
+            type="button"
+            disabled
+            aria-label="Add complete setup to cart"
+          >
+            <div class="bys-spinner" aria-hidden="true"></div>
+            <svg class="bys-btn-add-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M6 2L3 6V20C3 20.5304 3.21071 21.0391 3.58579 21.4142C3.96086 21.7893 4.46957 22 5 22H19C19.5304 22 20.0391 21.7893 20.4142 21.4142C20.7893 21.0391 21 20.5304 21 20V6L18 2H6Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M3 6H21M16 10C16 11.0609 15.5786 12.0783 14.8284 12.8284C14.0783 13.5786 13.0609 14 12 14C10.9391 14 9.92172 13.5786 9.17157 12.8284C8.42143 12.0783 8 11.0609 8 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="bys-btn-add-text">{{ section.settings.cta_text | default: 'Add Setup to Cart' }}</span>
+          </button>
+
+          {% if section.settings.show_save_btn %}
+            <button class="bys-btn-save" type="button" id="bys-save-{{ section.id }}">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {{ section.settings.save_btn_text | default: 'Save This Setup' }}
+            </button>
+          {% endif %}
+
+          <p class="bys-cta-helper">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            {{ section.settings.helper_text | default: 'Select at least one item to continue' }}
+          </p>
+        </div>
+
+      </div>
+      {% comment %} END .bys-summary {% endcomment %}
+
+    </div>
+    {% comment %} END .bys-layout {% endcomment %}
+
+  </div>
+  {% comment %} END .bys-container {% endcomment %}
+
+</section>
+
+<script>
+(function() {
+  'use strict';
+
+  const SID = '{{ section.id }}';
+  const SECTION_EL = document.getElementById('bys-' + SID);
+  if (!SECTION_EL) return;
+
+  // ============================================
+  // CONFIG
+  // ============================================
+  const CONFIG = {
+    totalCategories: {{ section.blocks.size }},
+    bundleDiscount: {{ section.settings.bundle_discount | default: 0 }},
+    currencySymbol: '{{ cart.currency.symbol }}',
+    moneyFormat: '{{ shop.money_format }}',
+    cartUrl: '{{ routes.cart_url }}',
+    addToCartUrl: '/cart/add.js',
+    requireAllCategories: {{ section.settings.require_all | default: false | json }}
+  };
+
+  // ============================================
+  // STATE
+  // ============================================
+  const state = {
+    selections: {},       // { categoryIndex: { productData } }
+    totalCents: 0,
+    activeTab: 1
+  };
+
+  // ============================================
+  // ELEMENT REFERENCES
+  // ============================================
+  const els = {
+    tabs: SECTION_EL.querySelectorAll('.bys-tab'),
+    panels: SECTION_EL.querySelectorAll('.bys-panel'),
+    steps: SECTION_EL.querySelectorAll('.bys-step-item'),
+    connectors: SECTION_EL.querySelectorAll('.bys-step-connector-fill'),
+    progressFill: document.getElementById('bys-progress-fill-' + SID),
+    selectedCount: document.getElementById('bys-selected-count-' + SID),
+    summaryItems: document.getElementById('bys-summary-items-' + SID),
+    subtotal: document.getElementById('bys-subtotal-' + SID),
+    savingsVal: document.getElementById('bys-savings-val-' + SID),
+    total: document.getElementById('bys-total-' + SID),
+    addAllBtn: document.getElementById('bys-add-all-' + SID),
+    savingsBadge: document.getElementById('bys-savings-' + SID),
+    successOverlay: document.getElementById('bys-success-' + SID),
+    continueBtn: document.getElementById('bys-continue-' + SID),
+    saveBtn: document.getElementById('bys-save-' + SID),
+    toast: document.getElementById('bys-toast-' + SID)
+  };
+
+  // ============================================
+  // FORMAT MONEY
+  // ============================================
+  function formatMoney(cents) {
+    if (cents === null || cents === undefined || isNaN(cents)) return '—';
+    const amount = (cents / 100);
+    try {
+        return new Intl.NumberFormat(undefined, {
+            style: 'currency',
+            currency: '{{ cart.currency.iso_code | default: "EUR" }}'
+        }).format(amount);
+    } catch(e) {
+        const symbol = CONFIG.currencySymbol || '€';
+        return symbol + amount.toFixed(2).replace('.', ',');
+    }
+}
+
+
+  // ============================================
+  // TAB SWITCHING
+  // ============================================
+  function switchTab(index) {
+    state.activeTab = index;
+
+    // Update tabs
+    els.tabs.forEach(function(tab) {
+      const isActive = parseInt(tab.dataset.tab) === index;
+      tab.classList.toggle('is-active', isActive);
+      tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    // Update panels
+    els.panels.forEach(function(panel, i) {
+      panel.classList.toggle('is-active', i + 1 === index);
+    });
+
+    // Update step indicators
+    updateSteps();
+  }
+
+  function updateSteps() {
+    const selectedCount = Object.keys(state.selections).length;
+
+    els.steps.forEach(function(step, i) {
+      const stepNum = i + 1;
+      const isActive = stepNum === state.activeTab;
+      const isDone = state.selections[stepNum] !== undefined;
+
+      step.classList.toggle('is-active', isActive && !isDone);
+      step.classList.toggle('is-done', isDone);
+    });
+
+    // Update connectors
+    els.connectors.forEach(function(conn, i) {
+      const stepNum = i + 1;
+      const isDone = state.selections[stepNum] !== undefined;
+      conn.style.width = isDone ? '100%' : '0%';
+    });
+  }
+
+  // Tab click listeners
+  els.tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      switchTab(parseInt(tab.dataset.tab));
+    });
+
+    // Keyboard navigation
+    tab.addEventListener('keydown', function(e) {
+      const tabsArr = Array.from(els.tabs);
+      const currentIndex = tabsArr.indexOf(tab);
+
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        const next = tabsArr[currentIndex + 1] || tabsArr[0];
+        next.focus();
+        switchTab(parseInt(next.dataset.tab));
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prev = tabsArr[currentIndex - 1] || tabsArr[tabsArr.length - 1];
+        prev.focus();
+        switchTab(parseInt(prev.dataset.tab));
+      }
+    });
+  });
+
+  // ============================================
+  // PRODUCT SELECTION
+  // ============================================
+  function selectProduct(card) {
+    const categoryIndex = parseInt(card.dataset.categoryIndex);
+    const grid = card.closest('.bys-products');
+
+    // Deselect all in same category
+    grid.querySelectorAll('.bys-product-card').forEach(function(c) {
+      c.classList.remove('is-selected');
+      c.setAttribute('aria-selected', 'false');
+    });
+
+    // Check if clicking already selected
+    const wasSelected = state.selections[categoryIndex] &&
+      state.selections[categoryIndex].id === card.dataset.productId;
+
+    if (wasSelected) {
+      // Deselect
+      delete state.selections[categoryIndex];
+      card.setAttribute('aria-selected', 'false');
+
+      // Update tab
+      const tab = SECTION_EL.querySelector('[data-tab="' + categoryIndex + '"]');
+      if (tab) tab.classList.remove('has-selection');
+    } else {
+      // Select
+      card.classList.add('is-selected');
+      card.setAttribute('aria-selected', 'true');
+
+      state.selections[categoryIndex] = {
+        id: card.dataset.productId,
+        variantId: card.dataset.productVariant,
+        name: card.dataset.productName,
+        price: card.dataset.productPrice,
+        priceCents: parseInt(card.dataset.productPriceCents) || 0,
+        image: card.dataset.productImage,
+        url: card.dataset.productUrl,
+        categoryIndex: categoryIndex
+      };
+
+      // Update tab
+      const tab = SECTION_EL.querySelector('[data-tab="' + categoryIndex + '"]');
+      if (tab) tab.classList.add('has-selection');
+
+      // Auto advance to next tab after short delay
+      setTimeout(function() {
+        const nextTab = categoryIndex + 1;
+        if (nextTab <= CONFIG.totalCategories && !state.selections[nextTab]) {
+          switchTab(nextTab);
+        }
+      }, 400);
+    }
+
+    updateSummary();
+  }
+
+  // ============================================
+  // UPDATE SUMMARY PANEL
+  // ============================================
+  function updateSummary() {
+    const selectedCount = Object.keys(state.selections).length;
+
+    // Update progress
+    const progressPct = (selectedCount / CONFIG.totalCategories) * 100;
+    if (els.progressFill) els.progressFill.style.width = progressPct + '%';
+    if (els.selectedCount) els.selectedCount.textContent = selectedCount;
+
+    // Calculate totals
+    let subtotalCents = 0;
+    Object.values(state.selections).forEach(function(item) {
+      subtotalCents += item.priceCents;
+    });
+
+    const discountMultiplier = 1 - (CONFIG.bundleDiscount / 100);
+    const discountCents = selectedCount > 1 ? Math.round(subtotalCents * (CONFIG.bundleDiscount / 100)) : 0;
+    const totalCents = subtotalCents - discountCents;
+
+    // Update slot items
+    for (let i = 1; i <= CONFIG.totalCategories; i++) {
+      const slot = document.getElementById('bys-slot-' + SID + '-' + i);
+      if (!slot) continue;
+
+      const selection = state.selections[i];
+      const nameEl = slot.querySelector('.bys-slot-name');
+      const priceEl = slot.querySelector('.bys-slot-price');
+      const imageEl = slot.querySelector('.bys-slot-image');
+
+      if (selection) {
+        slot.classList.add('is-filled');
+        slot.setAttribute('aria-label', slot.querySelector('.bys-slot-label').textContent + ': ' + selection.name);
+
+        if (nameEl) nameEl.textContent = selection.name;
+        if (priceEl) priceEl.textContent = selection.price;
+
+        // Update slot image
+        if (imageEl && selection.image) {
+          const existingImg = imageEl.querySelector('img');
+          if (existingImg) {
+            existingImg.src = selection.image;
+            existingImg.alt = selection.name;
+          } else {
+            const placeholder = imageEl.querySelector('.bys-slot-image-placeholder');
+            if (placeholder) {
+              const img = document.createElement('img');
+              img.src = selection.image;
+              img.alt = selection.name;
+              img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+              imageEl.appendChild(img);
+            }
+          }
+        }
+      } else {
+        slot.classList.remove('is-filled');
+        slot.setAttribute('aria-label', slot.querySelector('.bys-slot-label').textContent + ': not selected');
+
+        if (nameEl) nameEl.textContent = 'Not selected';
+        if (priceEl) priceEl.textContent = '—';
+
+        // Remove dynamic image
+        const dynamicImg = imageEl ? imageEl.querySelector('img') : null;
+        if (dynamicImg) dynamicImg.remove();
+      }
+    }
+
+    // Update price displays
+    if (els.subtotal) {
+      els.subtotal.textContent = selectedCount > 0 ? formatMoney(subtotalCents) : '—';
+    }
+
+    if (els.savingsVal && discountCents > 0) {
+      els.savingsVal.textContent = '-' + formatMoney(discountCents);
+    } else if (els.savingsVal) {
+      els.savingsVal.textContent = '—';
+    }
+
+    if (els.total) {
+      els.total.textContent = selectedCount > 0 ? formatMoney(totalCents) : '—';
+    }
+
+    // Show/hide savings badge
+    if (els.savingsBadge) {
+      if (selectedCount > 1 && CONFIG.bundleDiscount > 0) {
+        els.savingsBadge.classList.add('is-visible');
+      } else {
+        els.savingsBadge.classList.remove('is-visible');
+      }
+    }
+
+    // Update add to cart button
+    if (els.addAllBtn) {
+      const canAdd = CONFIG.requireAllCategories
+        ? selectedCount === CONFIG.totalCategories
+        : selectedCount > 0;
+      els.addAllBtn.disabled = !canAdd;
+    }
+
+    updateSteps();
+  }
+
+  // ============================================
+  // REMOVE FROM SLOT
+  // ============================================
+  SECTION_EL.querySelectorAll('[data-slot-remove]').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const slotIndex = parseInt(btn.dataset.slotRemove);
+      delete state.selections[slotIndex];
+
+      // Deselect card in grid
+      const grid = SECTION_EL.querySelector('[data-products-grid="' + slotIndex + '"]');
+      if (grid) {
+        grid.querySelectorAll('.bys-product-card').forEach(function(c) {
+          c.classList.remove('is-selected');
+          c.setAttribute('aria-selected', 'false');
+        });
+      }
+
+      // Remove tab has-selection class
+      const tab = SECTION_EL.querySelector('[data-tab="' + slotIndex + '"]');
+      if (tab) tab.classList.remove('has-selection');
+
+      updateSummary();
+      showToast('Item removed from your setup.');
+    });
+  });
+
+  // ============================================
+  // PRODUCT CARD CLICK
+  // ============================================
+  SECTION_EL.querySelectorAll('.bys-product-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      selectProduct(card);
+    });
+
+    card.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        selectProduct(card);
+      }
+    });
+  });
+
+  // ============================================
+  // SEARCH / FILTER
+  // ============================================
+  SECTION_EL.querySelectorAll('[data-panel-search]').forEach(function(input) {
+    const panelIndex = input.dataset.panelSearch;
+    const grid = SECTION_EL.querySelector('[data-products-grid="' + panelIndex + '"]');
+    const noResults = grid ? grid.querySelector('.bys-no-results') : null;
+
+    if (!grid) return;
+
+    input.addEventListener('input', function() {
+      const query = input.value.toLowerCase().trim();
+      const cards = grid.querySelectorAll('.bys-product-card');
+      let visibleCount = 0;
+
+      cards.forEach(function(card) {
+        const searchable = (card.dataset.searchable || '').toLowerCase();
+        const matches = !query || searchable.includes(query);
+        card.style.display = matches ? '' : 'none';
+        if (matches) visibleCount++;
+      });
+
+      if (noResults) {
+        noResults.classList.toggle('is-visible', visibleCount === 0);
+      }
+    });
+  });
+
+  // ============================================
+  // ADD ALL TO CART
+  // ============================================
+  if (els.addAllBtn) {
+    els.addAllBtn.addEventListener('click', async function() {
+      const selectedItems = Object.values(state.selections);
+      if (selectedItems.length === 0) return;
+
+      // Loading state
+      els.addAllBtn.classList.add('is-loading');
+      els.addAllBtn.disabled = true;
+
+      try {
+        // Build items array for cart
+        const items = selectedItems
+          .filter(function(item) {
+            return item.variantId && !item.variantId.startsWith('demo-');
+          })
+          .map(function(item) {
+            return { id: parseInt(item.variantId), quantity: 1 };
+          });
+
+        if (items.length > 0) {
+          // Real Shopify cart add
+          const response = await fetch(CONFIG.addToCartUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ items: items })
+          });
+
+          if (!response.ok) throw new Error('Cart add failed');
+        }
+
+        // Show success
+        els.addAllBtn.classList.remove('is-loading');
+        showSuccess();
+
+      } catch (error) {
+        els.addAllBtn.classList.remove('is-loading');
+        els.addAllBtn.disabled = false;
+
+        // Demo mode - show success anyway
+        if (selectedItems.every(function(i) { return i.variantId && i.variantId.startsWith('demo-'); })) {
+          showSuccess();
+        } else {
+          showToast('Something went wrong. Please try again.');
+          console.error('Cart add error:', error);
+        }
+      }
+    });
+  }
+
+  // ============================================
+  // SUCCESS OVERLAY
+  // ============================================
+  function showSuccess() {
+    if (els.successOverlay) {
+      els.successOverlay.classList.add('is-visible');
+      const firstBtn = els.successOverlay.querySelector('a, button');
+      if (firstBtn) firstBtn.focus();
+    }
+  }
+
+  function hideSuccess() {
+    if (els.successOverlay) {
+      els.successOverlay.classList.remove('is-visible');
+      if (els.addAllBtn) els.addAllBtn.focus();
+    }
+  }
+
+  // Continue button
+  if (els.continueBtn) {
+    els.continueBtn.addEventListener('click', hideSuccess);
+  }
+
+  // Click outside to close
+  if (els.successOverlay) {
+    els.successOverlay.addEventListener('click', function(e) {
+      if (e.target === els.successOverlay) hideSuccess();
+    });
+
+    // Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && els.successOverlay.classList.contains('is-visible')) {
+        hideSuccess();
+      }
+    });
+  }
+
+  // ============================================
+  // SAVE SETUP
+  // ============================================
+  if (els.saveBtn) {
+    els.saveBtn.addEventListener('click', function() {
+      const selectedItems = Object.values(state.selections);
+      if (selectedItems.length === 0) {
+        showToast('Select items to save your setup.');
+        return;
+      }
+
+      // Store in localStorage
+      try {
+        const setupData = {
+          timestamp: Date.now(),
+          items: selectedItems
+        };
+        localStorage.setItem('bys_saved_setup_' + SID, JSON.stringify(setupData));
+        showToast('Setup saved! Come back anytime.');
+      } catch(e) {
+        showToast('Could not save setup. Please try again.');
+      }
+    });
+
+    // Restore saved setup on load
+    try {
+      const saved = localStorage.getItem('bys_saved_setup_' + SID);
+      if (saved) {
+        // Silently restore (don't auto-select to avoid confusing UX)
+      }
+    } catch(e) {}
+  }
+
+  // ============================================
+  // TOAST NOTIFICATION
+  // ============================================
+  let toastTimeout = null;
+
+  function showToast(message, duration) {
+    if (!els.toast) return;
+    duration = duration || 3000;
+
+    const msgEl = els.toast.querySelector('.bys-toast-message');
+    if (msgEl) msgEl.textContent = message;
+
+    els.toast.classList.add('is-visible');
+
+    if (toastTimeout) clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(function() {
+      els.toast.classList.remove('is-visible');
+    }, duration);
+  }
+
+  // ============================================
+  // INITIALIZE
+  // ============================================
+  updateSummary();
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Build Your Setup",
+  "tag": "div",
+  "class": "build-your-setup-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Custom Bundle"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Build Your Setup"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Select your gear and build the ultimate gaming station"
+    },
+    {
+      "type": "header",
+      "content": "Bundle Settings"
+    },
+    {
+      "type": "range",
+      "id": "bundle_discount",
+      "min": 0,
+      "max": 30,
+      "step": 1,
+      "unit": "%",
+      "label": "Bundle Discount",
+      "default": 10,
+      "info": "Applied when more than one item is selected. Set to 0 to disable."
+    },
+    {
+      "type": "checkbox",
+      "id": "require_all",
+      "label": "Require All Categories Selected",
+      "default": false,
+      "info": "If enabled, the Add to Cart button is only active when all categories have a selection."
+    },
+    {
+      "type": "header",
+      "content": "CTA Buttons"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Add to Cart Button Text",
+      "default": "Add Setup to Cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_save_btn",
+      "label": "Show Save Setup Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "save_btn_text",
+      "label": "Save Button Text",
+      "default": "Save This Setup"
+    },
+    {
+      "type": "text",
+      "id": "helper_text",
+      "label": "Helper Text",
+      "default": "Select at least one item to continue"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Category Info"
+        },
+        {
+          "type": "text",
+          "id": "category_name",
+          "label": "Category Name",
+          "default": "Gaming Chair"
+        },
+        {
+          "type": "select",
+          "id": "category_icon",
+          "label": "Category Icon",
+          "options": [
+            { "value": "chair", "label": "Gaming Chair" },
+            { "value": "console", "label": "Console / Controller" },
+            { "value": "headset", "label": "Headset" },
+            { "value": "monitor", "label": "Monitor" },
+            { "value": "mouse", "label": "Mouse / Keyboard" },
+            { "value": "default", "label": "Default Star" }
+          ],
+          "default": "chair"
+        },
+        {
+          "type": "header",
+          "content": "Products"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Product Collection",
+          "info": "Products from this collection will appear in the builder."
+        },
+        {
+          "type": "range",
+          "id": "max_products",
+          "min": 3,
+          "max": 12,
+          "step": 1,
+          "label": "Max Products Shown",
+          "default": 6
+        },
+        {
+          "type": "checkbox",
+          "id": "show_ratings",
+          "label": "Show Star Ratings",
+          "default": true,
+          "info": "Requires product review metafields."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Build Your Setup",
+      "category": "Custom Sections",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "Gaming Chair",
+            "category_icon": "chair",
+            "max_products": 6,
+            "show_ratings": true
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "Console",
+            "category_icon": "console",
+            "max_products": 6,
+            "show_ratings": true
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "category_name": "Accessories",
+            "category_icon": "headset",
+            "max_products": 6,
+            "show_ratings": true
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6
+}
+{% endschema %}

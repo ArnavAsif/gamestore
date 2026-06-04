@@ -1,0 +1,2361 @@
+{% comment %}
+  Gaming Experience — Storytelling / Why Choose Us
+  Version: 1.0.0
+  Compatible with: Shopify OS 2.0+
+  Style: Cyberpunk / Gaming UI — matches Build Your Setup section
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'ge-' | append: section.id
+  assign heading = section.settings.heading | default: 'The Gaming Experience'
+  assign subheading = section.settings.subheading | default: 'We are not just a store. We are your competitive edge.'
+-%}
+
+<style>
+  /* ============================================
+     CSS VARIABLES — mirrors BYS / BP token system
+  ============================================ */
+  #{{ section_id }} {
+    --ge-bg:           #0A0A0A;
+    --ge-bg-card:      #0F0F0F;
+    --ge-bg-elevated:  #141414;
+    --ge-bg-input:     #111111;
+    --ge-primary:      #B11226;
+    --ge-accent:       #FF2A2A;
+    --ge-cyan:         #00F0FF;
+    --ge-gold:         #FFB800;
+    --ge-white:        #FFFFFF;
+    --ge-text-muted:   rgba(255,255,255,0.5);
+    --ge-text-dim:     rgba(255,255,255,0.25);
+    --ge-border:       rgba(255,255,255,0.06);
+    --ge-border-hover: rgba(177,18,38,0.5);
+    --ge-border-active:rgba(255,42,42,0.8);
+    --ge-glow-red:     0 0 20px rgba(255,42,42,0.3);
+    --ge-glow-red-lg:  0 0 60px rgba(177,18,38,0.25);
+    --ge-glow-cyan:    0 0 20px rgba(0,240,255,0.3);
+    --ge-glow-gold:    0 0 20px rgba(255,184,0,0.3);
+    --ge-transition:   all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    --ge-transition-fast: all 0.18s ease;
+    --ge-radius:       2px;
+  }
+
+  /* ============================================
+     SECTION BASE
+  ============================================ */
+  #{{ section_id }} {
+    position: relative;
+    width: 100%;
+    background: var(--ge-bg);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* ============================================
+     BACKGROUND LAYERS
+  ============================================ */
+  #{{ section_id }} .ge-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(177,18,38,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(177,18,38,0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #{{ section_id }} .ge-bg-radial-left {
+    position: absolute;
+    top: 20%;
+    left: -10%;
+    width: 700px;
+    height: 700px;
+    background: radial-gradient(ellipse, rgba(177,18,38,0.07) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+  }
+
+  #{{ section_id }} .ge-bg-radial-right {
+    position: absolute;
+    bottom: 10%;
+    right: -5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(0,240,255,0.04) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+  }
+
+  #{{ section_id }} .ge-bg-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.06) 2px,
+      rgba(0,0,0,0.06) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ============================================
+     CONTAINER
+  ============================================ */
+  #{{ section_id }} .ge-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  /* ============================================
+     SECTION HEADER
+  ============================================ */
+  #{{ section_id }} .ge-header {
+    text-align: center;
+    margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  #{{ section_id }} .ge-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--ge-accent);
+  }
+
+  #{{ section_id }} .ge-eyebrow::before,
+  #{{ section_id }} .ge-eyebrow::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--ge-accent);
+    box-shadow: var(--ge-glow-red);
+  }
+
+  #{{ section_id }} .ge-heading {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(32px, 5vw, 72px);
+    font-weight: 900;
+    color: var(--ge-white);
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    line-height: 1.0;
+    margin: 0;
+  }
+
+  #{{ section_id }} .ge-heading mark {
+    background: none;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ge-primary);
+  }
+
+  #{{ section_id }} .ge-subheading {
+    font-size: 16px;
+    color: var(--ge-text-muted);
+    max-width: 560px;
+    line-height: 1.75;
+    margin: 0;
+    font-style: italic;
+  }
+
+  /* ============================================
+     HERO VISUAL — full-width cinematic strip
+  ============================================ */
+  #{{ section_id }} .ge-hero {
+    position: relative;
+    width: 100%;
+    margin-bottom: 100px;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .ge-hero-inner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 21 / 8;
+    overflow: hidden;
+    background: var(--ge-bg-card);
+    border: 1px solid var(--ge-border);
+  }
+
+  /* Cut corner — BYS signature shape scaled up */
+  #{{ section_id }} .ge-hero-inner::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 40px 40px 0;
+    border-color: transparent var(--ge-bg) transparent transparent;
+    z-index: 4;
+  }
+
+  #{{ section_id }} .ge-hero-inner::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 0 40px 40px;
+    border-color: transparent transparent var(--ge-bg) transparent;
+    z-index: 4;
+  }
+
+  #{{ section_id }} .ge-hero-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 8s ease;
+  }
+
+  #{{ section_id }} .ge-hero:hover .ge-hero-img {
+    transform: scale(1.04);
+  }
+
+  /* Hero fallback gradient */
+  #{{ section_id }} .ge-hero-placeholder {
+    width: 100%;
+    height: 100%;
+    background:
+      linear-gradient(135deg,
+        rgba(177,18,38,0.15) 0%,
+        transparent 40%,
+        rgba(0,240,255,0.06) 100%
+      ),
+      repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 20px,
+        rgba(177,18,38,0.03) 20px,
+        rgba(177,18,38,0.03) 21px
+      ),
+      #0D0D0D;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hero overlay gradient (bottom fade) */
+  #{{ section_id }} .ge-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      0deg,
+      rgba(10,10,10,0.95) 0%,
+      rgba(10,10,10,0.4) 35%,
+      rgba(10,10,10,0.1) 60%,
+      transparent 100%
+    );
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Side overlays */
+  #{{ section_id }} .ge-hero-overlay-left {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      rgba(10,10,10,0.7) 0%,
+      transparent 30%
+    );
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* Top accent bar */
+  #{{ section_id }} .ge-hero-accent-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--ge-primary), var(--ge-accent), transparent);
+    box-shadow: var(--ge-glow-red);
+    z-index: 5;
+  }
+
+  /* Hero HUD overlay — corner brackets */
+  #{{ section_id }} .ge-hero-hud {
+    position: absolute;
+    inset: 20px;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .ge-hud-corner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: rgba(255,42,42,0.4);
+    border-style: solid;
+  }
+
+  #{{ section_id }} .ge-hud-corner--tl {
+    top: 0; left: 0;
+    border-width: 2px 0 0 2px;
+  }
+
+  #{{ section_id }} .ge-hud-corner--tr {
+    top: 0; right: 0;
+    border-width: 2px 2px 0 0;
+  }
+
+  #{{ section_id }} .ge-hud-corner--bl {
+    bottom: 0; left: 0;
+    border-width: 0 0 2px 2px;
+  }
+
+  #{{ section_id }} .ge-hud-corner--br {
+    bottom: 0; right: 0;
+    border-width: 0 2px 2px 0;
+  }
+
+  /* HUD status pill */
+  #{{ section_id }} .ge-hud-status {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px;
+    background: rgba(0,0,0,0.6);
+    border: 1px solid rgba(255,42,42,0.25);
+    backdrop-filter: blur(8px);
+    z-index: 3;
+  }
+
+  #{{ section_id }} .ge-hud-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ge-accent);
+    box-shadow: var(--ge-glow-red);
+    animation: ge-pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes ge-pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  #{{ section_id }} .ge-hud-status-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ge-accent);
+  }
+
+  /* Hero quote overlay */
+  #{{ section_id }} .ge-hero-quote {
+    position: absolute;
+    bottom: 40px;
+    left: 48px;
+    z-index: 3;
+    max-width: 560px;
+  }
+
+  #{{ section_id }} .ge-hero-quote-text {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(18px, 2.5vw, 32px);
+    font-weight: 900;
+    color: var(--ge-white);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin: 0 0 12px;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+  }
+
+  #{{ section_id }} .ge-hero-quote-text em {
+    font-style: normal;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ge-accent);
+  }
+
+  #{{ section_id }} .ge-hero-quote-sub {
+    font-size: 13px;
+    color: var(--ge-text-muted);
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+  }
+
+  /* ============================================
+     WHY CHOOSE US — FEATURE BLOCKS
+  ============================================ */
+  #{{ section_id }} .ge-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--ge-border);
+    border: 1px solid var(--ge-border);
+    margin-bottom: 100px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* top accent bar */
+  #{{ section_id }} .ge-features::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ge-primary), var(--ge-accent), var(--ge-cyan), transparent);
+    box-shadow: var(--ge-glow-red);
+    z-index: 2;
+  }
+
+  #{{ section_id }} .ge-feature-card {
+    background: var(--ge-bg-card);
+    padding: 44px 36px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: var(--ge-transition);
+    cursor: default;
+  }
+
+  #{{ section_id }} .ge-feature-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ge-primary), var(--ge-accent), transparent);
+    box-shadow: var(--ge-glow-red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  #{{ section_id }} .ge-feature-card:hover {
+    background: var(--ge-bg-elevated);
+  }
+
+  #{{ section_id }} .ge-feature-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  /* Background number watermark */
+  #{{ section_id }} .ge-feature-watermark {
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 100px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.02);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    transition: var(--ge-transition);
+  }
+
+  #{{ section_id }} .ge-feature-card:hover .ge-feature-watermark {
+    color: rgba(177,18,38,0.06);
+  }
+
+  /* Icon box */
+  #{{ section_id }} .ge-feature-icon-wrap {
+    width: 56px;
+    height: 56px;
+    background: rgba(177,18,38,0.08);
+    border: 1px solid rgba(177,18,38,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: var(--ge-transition);
+    flex-shrink: 0;
+  }
+
+  /* cut corner on icon box */
+  #{{ section_id }} .ge-feature-icon-wrap::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 8px 8px 0;
+    border-color: transparent var(--ge-bg-card) transparent transparent;
+    transition: border-color 0.3s ease;
+  }
+
+  #{{ section_id }} .ge-feature-card:hover .ge-feature-icon-wrap::after {
+    border-color: transparent var(--ge-bg-elevated) transparent transparent;
+  }
+
+  #{{ section_id }} .ge-feature-card:hover .ge-feature-icon-wrap {
+    background: rgba(177,18,38,0.15);
+    border-color: rgba(255,42,42,0.4);
+    box-shadow: var(--ge-glow-red);
+  }
+
+  #{{ section_id }} .ge-feature-icon-wrap svg {
+    color: var(--ge-accent);
+    transition: var(--ge-transition);
+    filter: none;
+  }
+
+  #{{ section_id }} .ge-feature-card:hover .ge-feature-icon-wrap svg {
+    filter: drop-shadow(0 0 6px rgba(255,42,42,0.6));
+    transform: scale(1.1);
+  }
+
+  /* Feature text */
+  #{{ section_id }} .ge-feature-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+  }
+
+  #{{ section_id }} .ge-feature-tag {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ge-accent);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #{{ section_id }} .ge-feature-tag::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 1px;
+    background: var(--ge-accent);
+    box-shadow: var(--ge-glow-red);
+  }
+
+  #{{ section_id }} .ge-feature-title {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(16px, 1.5vw, 22px);
+    font-weight: 900;
+    color: var(--ge-white);
+    text-transform: uppercase;
+    letter-spacing: -0.3px;
+    line-height: 1.15;
+    margin: 0;
+    transition: var(--ge-transition);
+  }
+
+  #{{ section_id }} .ge-feature-card:hover .ge-feature-title {
+    color: var(--ge-white);
+    text-shadow: 0 0 20px rgba(255,255,255,0.1);
+  }
+
+  #{{ section_id }} .ge-feature-desc {
+    font-size: 14px;
+    color: var(--ge-text-muted);
+    line-height: 1.75;
+    margin: 0;
+    transition: var(--ge-transition);
+  }
+
+  #{{ section_id }} .ge-feature-card:hover .ge-feature-desc {
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* Metric callout inside feature */
+  #{{ section_id }} .ge-feature-metric {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    margin-top: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--ge-border);
+  }
+
+  #{{ section_id }} .ge-feature-metric-value {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--ge-white);
+    letter-spacing: -1px;
+    line-height: 1;
+    transition: var(--ge-transition);
+  }
+
+  #{{ section_id }} .ge-feature-card:hover .ge-feature-metric-value {
+    color: var(--ge-accent);
+    text-shadow: var(--ge-glow-red);
+  }
+
+  #{{ section_id }} .ge-feature-metric-suffix {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ge-accent);
+    letter-spacing: 0;
+  }
+
+  #{{ section_id }} .ge-feature-metric-label {
+    font-size: 10px;
+    color: var(--ge-text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-left: 4px;
+    align-self: center;
+  }
+
+  /* ============================================
+     STORYTELLING SPLIT BLOCKS
+  ============================================ */
+  #{{ section_id }} .ge-story-blocks {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+    margin-bottom: 100px;
+  }
+
+  #{{ section_id }} .ge-story-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+
+  #{{ section_id }} .ge-story-block--reverse {
+    direction: rtl;
+  }
+
+  #{{ section_id }} .ge-story-block--reverse > * {
+    direction: ltr;
+  }
+
+  /* Visual side */
+  #{{ section_id }} .ge-story-visual {
+    position: relative;
+  }
+
+  #{{ section_id }} .ge-story-img-wrap {
+    position: relative;
+    overflow: hidden;
+    background: var(--ge-bg-card);
+    border: 1px solid var(--ge-border);
+    aspect-ratio: 4 / 3;
+    transition: var(--ge-transition);
+  }
+
+  /* cut corners */
+  #{{ section_id }} .ge-story-img-wrap::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 24px 24px 0;
+    border-color: transparent var(--ge-bg) transparent transparent;
+    z-index: 3;
+  }
+
+  #{{ section_id }} .ge-story-img-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 0 24px 24px;
+    border-color: transparent transparent var(--ge-bg) transparent;
+    z-index: 3;
+  }
+
+  #{{ section_id }} .ge-story-img-wrap:hover {
+    border-color: var(--ge-border-hover);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), var(--ge-glow-red);
+  }
+
+  #{{ section_id }} .ge-story-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+  }
+
+  #{{ section_id }} .ge-story-img-wrap:hover .ge-story-img {
+    transform: scale(1.04);
+  }
+
+  /* Image placeholder */
+  #{{ section_id }} .ge-story-img-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg,
+      rgba(177,18,38,0.08) 0%,
+      transparent 50%,
+      rgba(0,240,255,0.04) 100%
+    );
+  }
+
+  /* Accent bar on image */
+  #{{ section_id }} .ge-story-img-accent {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ge-primary), var(--ge-accent), transparent);
+    box-shadow: var(--ge-glow-red);
+    z-index: 2;
+  }
+
+  /* Floating stat badge on image */
+  #{{ section_id }} .ge-story-badge {
+    position: absolute;
+    bottom: -16px;
+    right: -16px;
+    background: var(--ge-bg-elevated);
+    border: 1px solid rgba(177,18,38,0.3);
+    padding: 16px 20px;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 120px;
+    box-shadow: var(--ge-glow-red-lg), 0 20px 40px rgba(0,0,0,0.6);
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+
+  #{{ section_id }} .ge-story-badge-value {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--ge-accent);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  #{{ section_id }} .ge-story-badge-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ge-text-muted);
+  }
+
+  /* Story text side */
+  #{{ section_id }} .ge-story-content {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  #{{ section_id }} .ge-story-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ge-accent);
+  }
+
+  #{{ section_id }} .ge-story-eyebrow::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 1px;
+    background: var(--ge-accent);
+    box-shadow: var(--ge-glow-red);
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .ge-story-title {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(22px, 2.5vw, 38px);
+    font-weight: 900;
+    color: var(--ge-white);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  #{{ section_id }} .ge-story-title mark {
+    background: none;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ge-primary);
+  }
+
+  #{{ section_id }} .ge-story-body {
+    font-size: 15px;
+    color: var(--ge-text-muted);
+    line-height: 1.8;
+    margin: 0;
+  }
+
+  /* Bullet list */
+  #{{ section_id }} .ge-story-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #{{ section_id }} .ge-story-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 14px;
+    color: var(--ge-text-muted);
+    line-height: 1.55;
+  }
+
+  #{{ section_id }} .ge-story-list-bullet {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(177,18,38,0.12);
+    border: 1px solid rgba(255,42,42,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  #{{ section_id }} .ge-story-list-bullet svg {
+    color: var(--ge-accent);
+  }
+
+  /* CTA link */
+  #{{ section_id }} .ge-story-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ge-white);
+    text-decoration: none;
+    padding: 14px 28px;
+    background: var(--ge-primary);
+    border: none;
+    cursor: pointer;
+    transition: var(--ge-transition);
+    position: relative;
+    overflow: hidden;
+    font-family: 'Arial Black', sans-serif;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+    align-self: flex-start;
+  }
+
+  #{{ section_id }} .ge-story-cta::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  #{{ section_id }} .ge-story-cta:hover {
+    box-shadow: var(--ge-glow-red-lg), 0 8px 30px rgba(177,18,38,0.4);
+    transform: translateY(-2px);
+    text-decoration: none;
+    color: var(--ge-white);
+  }
+
+  #{{ section_id }} .ge-story-cta:hover::before {
+    opacity: 1;
+  }
+
+  #{{ section_id }} .ge-story-cta svg {
+    transition: transform 0.2s ease;
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .ge-story-cta:hover svg {
+    transform: translateX(4px);
+  }
+
+  #{{ section_id }} .ge-story-cta-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Ghost CTA variant */
+  #{{ section_id }} .ge-story-cta--ghost {
+    background: transparent;
+    color: var(--ge-text-muted);
+    border: 1px solid var(--ge-border);
+    clip-path: none;
+  }
+
+  #{{ section_id }} .ge-story-cta--ghost:hover {
+    color: var(--ge-cyan);
+    border-color: rgba(0,240,255,0.35);
+    box-shadow: var(--ge-glow-cyan);
+    transform: translateY(-2px);
+  }
+
+  /* ============================================
+     MANIFESTO / MISSION STATEMENT STRIP
+  ============================================ */
+  #{{ section_id }} .ge-manifesto {
+    position: relative;
+    padding: 64px 80px;
+    border: 1px solid var(--ge-border);
+    background: var(--ge-bg-card);
+    margin-bottom: 100px;
+    overflow: hidden;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  #{{ section_id }} .ge-manifesto::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--ge-primary), var(--ge-accent), var(--ge-primary), transparent);
+    box-shadow: var(--ge-glow-red);
+  }
+
+  #{{ section_id }} .ge-manifesto::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--ge-primary), var(--ge-accent), var(--ge-primary), transparent);
+    box-shadow: var(--ge-glow-red);
+  }
+
+  /* Glow radial behind manifesto */
+  #{{ section_id }} .ge-manifesto-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 300px;
+    background: radial-gradient(ellipse, rgba(177,18,38,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    filter: blur(40px);
+  }
+
+  /* Cut corners on manifesto */
+  #{{ section_id }} .ge-manifesto-corner-tl {
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 20px 20px 0 0;
+    border-color: rgba(255,42,42,0.2) transparent transparent transparent;
+  }
+
+  #{{ section_id }} .ge-manifesto-corner-br {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 0 20px 20px;
+    border-color: transparent transparent rgba(255,42,42,0.2) transparent;
+  }
+
+  #{{ section_id }} .ge-manifesto-quote-mark {
+    font-family: 'Arial Black', 'Georgia', serif;
+    font-size: 80px;
+    line-height: 0.5;
+    color: rgba(177,18,38,0.15);
+    font-weight: 900;
+    user-select: none;
+    position: relative;
+    z-index: 1;
+  }
+
+  #{{ section_id }} .ge-manifesto-text {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(18px, 2.5vw, 30px);
+    font-weight: 900;
+    color: var(--ge-white);
+    text-transform: uppercase;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+    max-width: 860px;
+    margin: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  #{{ section_id }} .ge-manifesto-text em {
+    font-style: normal;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ge-accent);
+  }
+
+  #{{ section_id }} .ge-manifesto-attr {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ge-text-dim);
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  #{{ section_id }} .ge-manifesto-attr::before,
+  #{{ section_id }} .ge-manifesto-attr::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--ge-text-dim);
+  }
+
+  /* ============================================
+     TESTIMONIALS ROW
+  ============================================ */
+  #{{ section_id }} .ge-testimonials {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 100px;
+  }
+
+  #{{ section_id }} .ge-testimonial-card {
+    background: var(--ge-bg-card);
+    border: 1px solid var(--ge-border);
+    padding: 28px 28px 32px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: var(--ge-transition);
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .ge-testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ge-primary), var(--ge-accent), transparent);
+    box-shadow: var(--ge-glow-red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  #{{ section_id }} .ge-testimonial-card:hover {
+    border-color: var(--ge-border-hover);
+    background: var(--ge-bg-elevated);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.4), var(--ge-glow-red);
+  }
+
+  #{{ section_id }} .ge-testimonial-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  #{{ section_id }} .ge-testimonial-stars {
+    display: flex;
+    gap: 3px;
+  }
+
+  #{{ section_id }} .ge-star {
+    color: var(--ge-gold);
+    font-size: 12px;
+    filter: drop-shadow(0 0 4px rgba(255,184,0,0.4));
+  }
+
+  #{{ section_id }} .ge-testimonial-text {
+    font-size: 14px;
+    color: var(--ge-text-muted);
+    line-height: 1.75;
+    margin: 0;
+    flex: 1;
+    font-style: italic;
+  }
+
+  #{{ section_id }} .ge-testimonial-text::before {
+    content: '"';
+    color: var(--ge-accent);
+    font-size: 20px;
+    font-style: normal;
+    line-height: 0;
+    vertical-align: -4px;
+    margin-right: 4px;
+  }
+
+  #{{ section_id }} .ge-testimonial-text::after {
+    content: '"';
+    color: var(--ge-accent);
+    font-size: 20px;
+    font-style: normal;
+    line-height: 0;
+    vertical-align: -4px;
+    margin-left: 4px;
+  }
+
+  #{{ section_id }} .ge-testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--ge-border);
+  }
+
+  #{{ section_id }} .ge-testimonial-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(177,18,38,0.12);
+    border: 1px solid rgba(255,42,42,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Arial Black', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--ge-accent);
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .ge-testimonial-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #{{ section_id }} .ge-testimonial-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ge-white);
+    letter-spacing: 0.5px;
+  }
+
+  #{{ section_id }} .ge-testimonial-handle {
+    font-size: 10px;
+    color: var(--ge-text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  #{{ section_id }} .ge-testimonial-verified {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ge-accent);
+  }
+
+  /* ============================================
+     FINAL CTA BANNER
+  ============================================ */
+  #{{ section_id }} .ge-final-cta {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(177,18,38,0.3);
+    background: var(--ge-bg-card);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: center;
+    padding: 48px 64px;
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+  }
+
+  #{{ section_id }} .ge-final-cta::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ge-primary), var(--ge-accent), transparent);
+    box-shadow: var(--ge-glow-red);
+  }
+
+  /* Background glow */
+  #{{ section_id }} .ge-final-cta-glow {
+    position: absolute;
+    top: 50%; left: 30%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    height: 200px;
+    background: radial-gradient(ellipse, rgba(177,18,38,0.1) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .ge-final-cta-eyebrow {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ge-accent);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #{{ section_id }} .ge-final-cta-eyebrow::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 1px;
+    background: var(--ge-accent);
+    box-shadow: var(--ge-glow-red);
+  }
+
+  #{{ section_id }} .ge-final-cta-title {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(20px, 3vw, 40px);
+    font-weight: 900;
+    color: var(--ge-white);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.05;
+    margin: 0 0 8px;
+    position: relative;
+    z-index: 1;
+  }
+
+  #{{ section_id }} .ge-final-cta-title mark {
+    background: none;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ge-primary);
+  }
+
+  #{{ section_id }} .ge-final-cta-sub {
+    font-size: 14px;
+    color: var(--ge-text-muted);
+    position: relative;
+    z-index: 1;
+    line-height: 1.6;
+  }
+
+  #{{ section_id }} .ge-final-cta-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============================================
+     RESPONSIVE — TABLET
+  ============================================ */
+  @media (max-width: 1100px) {
+    #{{ section_id }} .ge-features {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    #{{ section_id }} .ge-story-block {
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+
+    #{{ section_id }} .ge-testimonials {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    #{{ section_id }} .ge-final-cta {
+      grid-template-columns: 1fr;
+      gap: 28px;
+      padding: 40px 48px;
+    }
+
+    #{{ section_id }} .ge-final-cta-actions {
+      align-items: flex-start;
+      flex-direction: row;
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE — MOBILE
+  ============================================ */
+  @media (max-width: 768px) {
+    #{{ section_id }} .ge-container {
+      padding: 0 16px;
+    }
+
+    #{{ section_id }} .ge-header {
+      margin-bottom: 48px;
+    }
+
+    #{{ section_id }} .ge-hero {
+      margin-bottom: 64px;
+    }
+
+    #{{ section_id }} .ge-hero-inner {
+      aspect-ratio: 16 / 9;
+    }
+
+    #{{ section_id }} .ge-hero-quote {
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+    }
+
+    #{{ section_id }} .ge-features {
+      grid-template-columns: 1fr;
+      margin-bottom: 64px;
+    }
+
+    #{{ section_id }} .ge-story-blocks {
+      gap: 56px;
+      margin-bottom: 64px;
+    }
+
+    #{{ section_id }} .ge-story-block {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    #{{ section_id }} .ge-story-block--reverse {
+      direction: ltr;
+    }
+
+    #{{ section_id }} .ge-story-badge {
+      right: 0;
+      bottom: -12px;
+    }
+
+    #{{ section_id }} .ge-manifesto {
+      padding: 40px 24px;
+      margin-bottom: 64px;
+    }
+
+    #{{ section_id }} .ge-testimonials {
+      grid-template-columns: 1fr;
+      margin-bottom: 64px;
+    }
+
+    #{{ section_id }} .ge-final-cta {
+      padding: 32px 24px;
+      clip-path: none;
+    }
+
+    #{{ section_id }} .ge-final-cta-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    #{{ section_id }} .ge-story-cta {
+      align-self: stretch;
+      justify-content: center;
+    }
+  }
+
+  /* ============================================
+     REDUCED MOTION
+  ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    #{{ section_id }} * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<section
+  id="{{ section_id }}"
+  class="gaming-experience"
+  aria-label="{{ heading }}"
+>
+  {% comment %} Background {% endcomment %}
+  <div class="ge-bg-grid" aria-hidden="true"></div>
+  <div class="ge-bg-radial-left" aria-hidden="true"></div>
+  <div class="ge-bg-radial-right" aria-hidden="true"></div>
+  <div class="ge-bg-scanlines" aria-hidden="true"></div>
+
+  <div class="ge-container">
+    {% comment %}
+      ============================================
+         SECTION HEADER
+      ============================================
+    {% endcomment %}
+    <div class="ge-header">
+      {% if section.settings.eyebrow != blank %}
+        <div class="ge-eyebrow" aria-hidden="true">{{ section.settings.eyebrow }}</div>
+      {% endif %}
+
+      <h2 class="ge-heading">
+        {{ heading | split: ' ' | first }}
+        <mark>
+          {%- assign words = heading | split: ' ' -%}
+          {%- for w in words -%}
+            {%- unless forloop.first -%}
+              {{ w -}}
+              {%- unless forloop.last %} {% endunless %}
+            {%- endunless -%}
+          {%- endfor -%}
+        </mark>
+      </h2>
+
+      {% if subheading != blank %}
+        <p class="ge-subheading">{{ subheading }}</p>
+      {% endif %}
+    </div>
+
+    {% comment %}
+      ============================================
+         HERO VISUAL
+      ============================================
+    {% endcomment %}
+    {% if section.settings.show_hero %}
+      <div class="ge-hero">
+        <div class="ge-hero-inner">
+          <div class="ge-hero-accent-top" aria-hidden="true"></div>
+          <div class="ge-hero-overlay" aria-hidden="true"></div>
+          <div class="ge-hero-overlay-left" aria-hidden="true"></div>
+
+          {% if section.settings.hero_image != blank %}
+            {%- assign hero_alt = section.settings.hero_image.alt | default: heading | escape -%}
+
+            {{
+              section.settings.hero_image
+              | image_url: width: 2000
+              | image_tag:
+                class: 'ge-hero-img',
+                loading: 'lazy',
+                alt: hero_alt,
+                widths: '800, 1200, 1600, 2000',
+                sizes: '100vw'
+            }}
+          {% else %}
+            <div class="ge-hero-placeholder" aria-hidden="true">
+              <svg
+                width="80"
+                height="80"
+                viewBox="0 0 80 80"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <rect x="10" y="20" width="60" height="40" rx="4" stroke="rgba(177,18,38,0.3)" stroke-width="2"/>
+                <circle cx="28" cy="40" r="8" stroke="rgba(177,18,38,0.3)" stroke-width="2"/>
+                <path d="M48 32H64M56 28V36" stroke="rgba(177,18,38,0.3)" stroke-width="2" stroke-linecap="round"/>
+                <path d="M40 15V20M40 60V65" stroke="rgba(177,18,38,0.2)" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          {% endif %}
+
+          {% comment %} HUD Overlay {% endcomment %}
+          <div class="ge-hero-hud" aria-hidden="true">
+            <div class="ge-hud-corner ge-hud-corner--tl"></div>
+            <div class="ge-hud-corner ge-hud-corner--tr"></div>
+            <div class="ge-hud-corner ge-hud-corner--bl"></div>
+            <div class="ge-hud-corner ge-hud-corner--br"></div>
+          </div>
+
+          {% comment %} Live status badge {% endcomment %}
+          <div class="ge-hud-status" aria-hidden="true">
+            <div class="ge-hud-status-dot"></div>
+            <span class="ge-hud-status-label">{{ section.settings.hero_status | default: 'Level Up Your Game' }}</span>
+          </div>
+
+          {% comment %} Hero quote {% endcomment %}
+          {% if section.settings.hero_quote != blank %}
+            <div class="ge-hero-quote">
+              <p class="ge-hero-quote-text">
+                {{ section.settings.hero_quote | replace: '*', '<em>' | replace: '*', '</em>' }}
+              </p>
+              {% if section.settings.hero_quote_sub != blank %}
+                <p class="ge-hero-quote-sub">{{ section.settings.hero_quote_sub }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %}
+      ============================================
+         WHY CHOOSE US — FEATURE CARDS
+      ============================================
+    {% endcomment %}
+    {% if section.settings.show_features %}
+      <div class="ge-features" role="list" aria-label="Why choose us">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'feature' -%}
+            <div
+              class="ge-feature-card"
+              role="listitem"
+              {{ block.shopify_attributes }}
+            >
+              <span class="ge-feature-watermark" aria-hidden="true">0{{ forloop.index }}</span>
+
+              <div class="ge-feature-icon-wrap" aria-hidden="true">
+                {%- case block.settings.icon -%}
+                  {%- when 'shield' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 3L4 7V13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13V7L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                      <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  {%- when 'bolt' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M13 2L4 14H12L11 22L20 10H12L13 2Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  {%- when 'trophy' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 21H16M12 17V21M6 3H18V11C18 14.314 15.314 17 12 17C8.686 17 6 14.314 6 11V3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M6 7H4C3 7 2 8 2 9V10C2 11.5 3 13 4 13L6 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <path d="M18 7H20C21 7 22 8 22 9V10C22 11.5 21 13 20 13L18 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  {%- when 'truck' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 3H15V16H1V3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M15 8H19L23 12V16H15V8Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="5" cy="19" r="2" stroke="currentColor" stroke-width="1.8"/>
+                      <circle cx="19" cy="19" r="2" stroke="currentColor" stroke-width="1.8"/>
+                    </svg>
+                  {%- when 'headset' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M3 14C3 10.134 6.134 7 10 7H14C17.866 7 21 10.134 21 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <rect x="2" y="14" width="4" height="6" rx="1" stroke="currentColor" stroke-width="1.8"/>
+                      <rect x="18" y="14" width="4" height="6" rx="1" stroke="currentColor" stroke-width="1.8"/>
+                    </svg>
+                  {%- when 'star' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    </svg>
+                  {%- when 'refresh' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 4V10H7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M3.51 15C4.57 18.05 7.47 20 10.73 20C14.84 20 18.17 16.67 18.17 12.56C18.17 8.44 14.84 5.11 10.73 5.11C7.69 5.11 5.01 6.85 3.73 9.44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  {%- when 'lock' -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M7 11V7C7 4.239 9.239 2 12 2C14.761 2 17 4.239 17 7V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                      <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
+                    </svg>
+                  {%- else -%}
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.8"/>
+                      <path d="M12 8V12M12 16H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                {%- endcase -%}
+              </div>
+
+              <div class="ge-feature-content">
+                <span class="ge-feature-tag">{{ block.settings.tag | default: 'Feature' }}</span>
+                <h3 class="ge-feature-title">{{ block.settings.title | default: 'Feature Title' }}</h3>
+                <p class="ge-feature-desc">
+                  {{ block.settings.description | default: 'Describe this feature in a compelling way.' }}
+                </p>
+
+                {% if block.settings.metric_value != blank %}
+                  <div
+                    class="ge-feature-metric"
+                    aria-label="{{ block.settings.metric_value }}{{ block.settings.metric_suffix }} {{ block.settings.metric_label }}"
+                  >
+                    <span class="ge-feature-metric-value">{{ block.settings.metric_value }}</span>
+                    <span class="ge-feature-metric-suffix">{{ block.settings.metric_suffix }}</span>
+                    <span class="ge-feature-metric-label">{{ block.settings.metric_label }}</span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {% endif %}
+
+    {% comment %}
+      ============================================
+         STORYTELLING SPLIT BLOCKS
+      ============================================
+    {% endcomment %}
+    {% if section.settings.show_stories %}
+      <div class="ge-story-blocks">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'story' -%}
+            {%- assign is_reverse = false -%}
+            {%- assign remainder = forloop.index | modulo: 2 -%}
+
+            {%- if remainder == 0 -%}
+              {%- assign is_reverse = true -%}
+            {%- endif -%}
+
+            <div
+              class="ge-story-block{% if is_reverse %} ge-story-block--reverse{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              {% comment %} Visual Side {% endcomment %}
+              <div class="ge-story-visual">
+                <div class="ge-story-img-wrap">
+                  <div class="ge-story-img-accent" aria-hidden="true"></div>
+
+                  {% if block.settings.image != blank %}
+                    {%- assign story_alt = block.settings.image.alt | default: block.settings.title | escape -%}
+
+                    {{
+                      block.settings.image
+                      | image_url: width: 900
+                      | image_tag:
+                        class: 'ge-story-img',
+                        loading: 'lazy',
+                        alt: story_alt,
+                        widths: '400, 600, 800, 900',
+                        sizes: '(max-width: 768px) 100vw, 50vw'
+                    }}
+                  {% else %}
+                    <div class="ge-story-img-placeholder" aria-hidden="true">
+                      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="8" y="16" width="48" height="32" rx="3" stroke="rgba(177,18,38,0.35)" stroke-width="1.5"/>
+                        <circle cx="22" cy="32" r="6" stroke="rgba(177,18,38,0.35)" stroke-width="1.5"/>
+                        <path d="M38 26H52M44 22V30" stroke="rgba(177,18,38,0.35)" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    </div>
+                  {% endif %}
+                </div>
+
+                {% if block.settings.badge_value != blank %}
+                  <div
+                    class="ge-story-badge"
+                    aria-label="{{ block.settings.badge_value }} {{ block.settings.badge_label }}"
+                  >
+                    <div class="ge-story-badge-value">{{ block.settings.badge_value }}</div>
+                    <div class="ge-story-badge-label">{{ block.settings.badge_label | default: 'Verified' }}</div>
+                  </div>
+                {% endif %}
+              </div>
+
+              {% comment %} Content Side {% endcomment %}
+              <div class="ge-story-content">
+                {% if block.settings.eyebrow != blank %}
+                  <div class="ge-story-eyebrow">{{ block.settings.eyebrow }}</div>
+                {% endif %}
+
+                <h3 class="ge-story-title">
+                  {{ block.settings.title | split: ' ' | first }}
+                  <mark>
+                    {%- assign story_words = block.settings.title | split: ' ' -%}
+                    {%- for w in story_words -%}
+                      {%- unless forloop.first -%}
+                        {{ w -}}
+                        {%- unless forloop.last %} {% endunless %}
+                      {%- endunless -%}
+                    {%- endfor -%}
+                  </mark>
+                </h3>
+
+                {% if block.settings.body != blank %}
+                  <p class="ge-story-body">{{ block.settings.body }}</p>
+                {% endif %}
+
+                {% if block.settings.bullet_1 != blank
+                  or block.settings.bullet_2 != blank
+                  or block.settings.bullet_3 != blank
+                %}
+                  <ul class="ge-story-list">
+                    {%- for i in (1..3) -%}
+                      {%- assign bullet_key = 'bullet_' | append: i -%}
+                      {%- if block.settings[bullet_key] != blank -%}
+                        <li class="ge-story-list-item">
+                          <div class="ge-story-list-bullet" aria-hidden="true">
+                            <svg
+                              width="8"
+                              height="8"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </div>
+                          {{ block.settings[bullet_key] }}
+                        </li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                {% endif %}
+
+                {% if block.settings.cta_text != blank and block.settings.cta_url != blank %}
+                  <a
+                    href="{{ block.settings.cta_url }}"
+                    class="ge-story-cta"
+                  >
+                    <span class="ge-story-cta-text">{{ block.settings.cta_text }}</span>
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                {% endif %}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {% endif %}
+
+    {% comment %}
+      ============================================
+         MANIFESTO STRIP
+      ============================================
+    {% endcomment %}
+    {% if section.settings.show_manifesto and section.settings.manifesto_text != blank %}
+      <div class="ge-manifesto">
+        <div class="ge-manifesto-glow" aria-hidden="true"></div>
+        <div class="ge-manifesto-corner-tl" aria-hidden="true"></div>
+        <div class="ge-manifesto-corner-br" aria-hidden="true"></div>
+
+        <div class="ge-manifesto-quote-mark" aria-hidden="true">"</div>
+
+        <blockquote class="ge-manifesto-text">
+          {{ section.settings.manifesto_text | replace: '*', '<em>' | replace: '*', '</em>' }}
+        </blockquote>
+
+        {% if section.settings.manifesto_attr != blank %}
+          <p class="ge-manifesto-attr">{{ section.settings.manifesto_attr }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% comment %}
+      ============================================
+         TESTIMONIALS
+      ============================================
+    {% endcomment %}
+    {% if section.settings.show_testimonials %}
+      <div class="ge-testimonials" role="list" aria-label="Customer testimonials">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'testimonial' -%}
+            <article
+              class="ge-testimonial-card"
+              role="listitem"
+              {{ block.shopify_attributes }}
+            >
+              <div class="ge-testimonial-stars" aria-label="5 star rating">
+                {%- assign rating = block.settings.rating | default: 5 | plus: 0 -%}
+                {%- for i in (1..5) -%}
+                  <span class="ge-star" aria-hidden="true">★</span>
+                {%- endfor -%}
+              </div>
+
+              <p class="ge-testimonial-text">
+                {{
+                  block.settings.text
+                  | default: 'This is an amazing product. I would highly recommend it to any gamer.'
+                }}
+              </p>
+
+              <div class="ge-testimonial-author">
+                <div class="ge-testimonial-avatar" aria-hidden="true">
+                  {% if block.settings.avatar != blank %}
+                    {{
+                      block.settings.avatar
+                      | image_url: width: 72
+                      | image_tag: loading: 'lazy', alt: block.settings.name
+                    }}
+                  {% else %}
+                    {{ block.settings.name | slice: 0, 1 | upcase }}
+                  {% endif %}
+                </div>
+
+                <div>
+                  <div class="ge-testimonial-name">{{ block.settings.name | default: 'Gamer' }}</div>
+                  <div class="ge-testimonial-handle">{{ block.settings.handle | default: '@player' }}</div>
+                </div>
+
+                {% if block.settings.verified %}
+                  <div class="ge-testimonial-verified" aria-label="Verified purchase">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      aria-hidden="true"
+                    >
+                      <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Verified
+                  </div>
+                {% endif %}
+              </div>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {% endif %}
+
+    {% comment %}
+      ============================================
+         FINAL CTA BANNER
+      ============================================
+    {% endcomment %}
+    {% if section.settings.show_final_cta %}
+      <div class="ge-final-cta">
+        <div class="ge-final-cta-glow" aria-hidden="true"></div>
+
+        <div>
+          {% if section.settings.final_cta_eyebrow != blank %}
+            <div class="ge-final-cta-eyebrow">{{ section.settings.final_cta_eyebrow }}</div>
+          {% endif %}
+          <h3 class="ge-final-cta-title">
+            {{ section.settings.final_cta_heading | default: 'Ready to Level Up?' | split: ' ' | first }}
+            <mark>
+              {%- assign cta_words = section.settings.final_cta_heading | default: 'Ready to Level Up?' | split: ' ' -%}
+              {%- for w in cta_words -%}
+                {%- unless forloop.first -%}
+                  {{ w -}}
+                  {%- unless forloop.last %} {% endunless %}
+                {%- endunless -%}
+              {%- endfor -%}
+            </mark>
+          </h3>
+          {% if section.settings.final_cta_sub != blank %}
+            <p class="ge-final-cta-sub">{{ section.settings.final_cta_sub }}</p>
+          {% endif %}
+        </div>
+
+        <div class="ge-final-cta-actions">
+          {% if section.settings.final_cta_primary_text != blank %}
+            <a
+              href="{{ section.settings.final_cta_primary_url | default: '#' }}"
+              class="ge-story-cta"
+            >
+              <span class="ge-story-cta-text">{{ section.settings.final_cta_primary_text }}</span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+              >
+                <path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          {% endif %}
+
+          {% if section.settings.final_cta_secondary_text != blank %}
+            <a
+              href="{{ section.settings.final_cta_secondary_url | default: '#' }}"
+              class="ge-story-cta ge-story-cta--ghost"
+            >
+              <span class="ge-story-cta-text">{{ section.settings.final_cta_secondary_text }}</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+  {% comment %} END .ge-container {% endcomment %}
+</section>
+
+{% schema %}
+{
+  "name": "Gaming Experience",
+  "tag": "div",
+  "class": "gaming-experience-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Why Choose Us"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "The Gaming Experience"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "We are not just a store. We are your competitive edge."
+    },
+    {
+      "type": "header",
+      "content": "Hero Visual"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero",
+      "label": "Show Hero Visual",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image",
+      "info": "Recommended: 2000×760px or wider. Landscape / cinematic format."
+    },
+    {
+      "type": "text",
+      "id": "hero_status",
+      "label": "HUD Status Label",
+      "default": "Level Up Your Game"
+    },
+    {
+      "type": "text",
+      "id": "hero_quote",
+      "label": "Hero Quote",
+      "default": "Gear built for *champions*",
+      "info": "Wrap a word in * asterisks * to render it as an outlined style. E.g. Built for *winners*"
+    },
+    {
+      "type": "text",
+      "id": "hero_quote_sub",
+      "label": "Hero Quote Subtext",
+      "default": "Every peripheral engineered to give you the edge."
+    },
+    {
+      "type": "header",
+      "content": "Feature Cards"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show Feature Cards",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Story Blocks"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stories",
+      "label": "Show Story Blocks",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Manifesto Strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_manifesto",
+      "label": "Show Manifesto",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "manifesto_text",
+      "label": "Manifesto Quote",
+      "default": "We believe every gamer deserves *professional-grade* gear — without compromise.",
+      "info": "Wrap words in * asterisks * for the outlined text effect."
+    },
+    {
+      "type": "text",
+      "id": "manifesto_attr",
+      "label": "Attribution",
+      "default": "Our Promise"
+    },
+    {
+      "type": "header",
+      "content": "Testimonials"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_testimonials",
+      "label": "Show Testimonials",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Final CTA Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_final_cta",
+      "label": "Show Final CTA",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "final_cta_eyebrow",
+      "label": "CTA Eyebrow",
+      "default": "Your Setup Awaits"
+    },
+    {
+      "type": "text",
+      "id": "final_cta_heading",
+      "label": "CTA Heading",
+      "default": "Ready to Level Up?"
+    },
+    {
+      "type": "text",
+      "id": "final_cta_sub",
+      "label": "CTA Subtext",
+      "default": "Browse our full range of professional gaming gear and build your ultimate setup today."
+    },
+    {
+      "type": "text",
+      "id": "final_cta_primary_text",
+      "label": "Primary Button Text",
+      "default": "Shop All Gear"
+    },
+    {
+      "type": "url",
+      "id": "final_cta_primary_url",
+      "label": "Primary Button URL"
+    },
+    {
+      "type": "text",
+      "id": "final_cta_secondary_text",
+      "label": "Secondary Button Text",
+      "default": "Build My Setup"
+    },
+    {
+      "type": "url",
+      "id": "final_cta_secondary_url",
+      "label": "Secondary Button URL"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "shield", "label": "Shield / Guarantee" },
+            { "value": "bolt", "label": "Lightning / Speed" },
+            { "value": "trophy", "label": "Trophy / Performance" },
+            { "value": "truck", "label": "Truck / Shipping" },
+            { "value": "headset", "label": "Headset / Support" },
+            { "value": "star", "label": "Star / Quality" },
+            { "value": "refresh", "label": "Refresh / Returns" },
+            { "value": "lock", "label": "Lock / Security" }
+          ],
+          "default": "shield"
+        },
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag Label",
+          "default": "Guarantee"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Feature Title",
+          "default": "Built to Last"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Every product in our lineup is stress-tested and built with pro-grade materials. We stand behind every item we sell."
+        },
+        {
+          "type": "text",
+          "id": "metric_value",
+          "label": "Metric Value",
+          "default": "2",
+          "info": "Optional stat shown at the bottom of the card. Leave blank to hide."
+        },
+        {
+          "type": "text",
+          "id": "metric_suffix",
+          "label": "Metric Suffix",
+          "default": "yr"
+        },
+        {
+          "type": "text",
+          "id": "metric_label",
+          "label": "Metric Label",
+          "default": "Warranty"
+        }
+      ]
+    },
+    {
+      "type": "story",
+      "name": "Story Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Story Image",
+          "info": "Recommended: 900×675px (4:3 ratio)."
+        },
+        {
+          "type": "text",
+          "id": "badge_value",
+          "label": "Floating Badge Value",
+          "default": "50K+",
+          "info": "Stat badge shown on the image corner. Leave blank to hide."
+        },
+        {
+          "type": "text",
+          "id": "badge_label",
+          "label": "Floating Badge Label",
+          "default": "Happy Customers"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow Text",
+          "default": "Our Story"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Pro Gear for Every Player"
+        },
+        {
+          "type": "textarea",
+          "id": "body",
+          "label": "Body Text",
+          "default": "Founded by gamers, for gamers. We source only the best gear from the world's leading brands — so you can focus on the game, not the equipment."
+        },
+        {
+          "type": "text",
+          "id": "bullet_1",
+          "label": "Bullet Point 1",
+          "default": "Hand-picked from 50+ professional gaming brands"
+        },
+        {
+          "type": "text",
+          "id": "bullet_2",
+          "label": "Bullet Point 2",
+          "default": "Expert team available 7 days a week"
+        },
+        {
+          "type": "text",
+          "id": "bullet_3",
+          "label": "Bullet Point 3",
+          "default": "Free shipping on all orders over $99"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Button Text",
+          "default": "Explore Our Story"
+        },
+        {
+          "type": "url",
+          "id": "cta_url",
+          "label": "CTA Button URL"
+        }
+      ]
+    },
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Testimonial Text",
+          "default": "Absolute game changer. The setup I built from this store completely transformed how I play. 10/10 would recommend."
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "label": "Star Rating",
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Customer Name",
+          "default": "Alex M."
+        },
+        {
+          "type": "text",
+          "id": "handle",
+          "label": "Handle / Location",
+          "default": "@alexgaming"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Avatar Image",
+          "info": "Small square image. If blank, initials are shown."
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Show Verified Badge",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gaming Experience",
+      "category": "Custom Sections",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "shield",
+            "tag": "Guarantee",
+            "title": "Built to Last",
+            "description": "Every product is stress-tested to pro-grade standards. We stand behind everything we sell with an industry-leading warranty.",
+            "metric_value": "2",
+            "metric_suffix": "yr",
+            "metric_label": "Warranty"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "bolt",
+            "tag": "Performance",
+            "title": "Zero Compromise Speed",
+            "description": "From ultra-low latency mice to 165Hz monitors — our gear is tuned for peak competitive performance at every price point.",
+            "metric_value": "1",
+            "metric_suffix": "ms",
+            "metric_label": "Response Time"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "icon": "truck",
+            "tag": "Delivery",
+            "title": "Fast Free Shipping",
+            "description": "Get your gear fast. Free express shipping on all orders over $99, with same-day dispatch on in-stock items ordered before 2pm.",
+            "metric_value": "24",
+            "metric_suffix": "hr",
+            "metric_label": "Dispatch"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "eyebrow": "Who We Are",
+            "title": "Pro Gear for Every Player",
+            "body": "Founded by competitive gamers, we understand what it takes to perform at the highest level. That is why we handpick every product in our catalog from the world's top gaming brands.",
+            "bullet_1": "Hand-picked from 50+ professional gaming brands",
+            "bullet_2": "Expert support team available 7 days a week",
+            "bullet_3": "Free shipping on all orders over $99",
+            "badge_value": "50K+",
+            "badge_label": "Happy Gamers",
+            "cta_text": "Shop All Gear"
+          }
+        },
+        {
+          "type": "story",
+          "settings": {
+            "eyebrow": "Our Commitment",
+            "title": "The Ultimate Setup Experience",
+            "body": "We do not just sell gear. We help you build a complete gaming environment optimised for your playstyle, budget, and space — from chair to monitor to peripherals.",
+            "bullet_1": "Bundle builder to match gear across categories",
+            "bullet_2": "Expert setup guides and comparison tools",
+            "bullet_3": "30-day hassle-free returns on everything",
+            "badge_value": "4.9★",
+            "badge_label": "Avg. Rating",
+            "cta_text": "Build My Setup"
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "text": "Absolute game changer. The setup I built from this store completely transformed how I play. The quality is insane for the price.",
+            "rating": 5,
+            "name": "Alex M.",
+            "handle": "@alexgaming · Pro Ranked",
+            "verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "text": "Fast shipping, incredible packaging, and the gear is exactly as described. I have ordered three times now and every experience has been flawless.",
+            "rating": 5,
+            "name": "Jordan K.",
+            "handle": "@jkplays · Streamer",
+            "verified": true
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "text": "Used the bundle builder to put together my whole setup. Saved a ton compared to buying separately. 10 out of 10 experience start to finish.",
+            "rating": 5,
+            "name": "Sam R.",
+            "handle": "@samrigs · Content Creator",
+            "verified": true
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12
+}
+{% endschema %}

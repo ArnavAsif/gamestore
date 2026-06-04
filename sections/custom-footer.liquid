@@ -1,0 +1,1912 @@
+{% comment %}
+  Site Footer — Cyberpunk / Gaming UI
+  Version: 1.0.0
+  Compatible with: Shopify OS 2.0+
+  Style: Cyberpunk / Gaming UI — matches Header / Build Your Setup / Brand Partners / Gaming Experience
+{% endcomment %}
+
+{%- liquid
+  assign section_id  = 'ftr-' | append: section.id
+  assign logo_text   = section.settings.logo_text | default: shop.name
+  assign copyright   = section.settings.copyright_text | default: '© ' | append: 'now' | date: '%Y' | append: ' ' | append: shop.name | append: '. All rights reserved.'
+-%}
+
+<style>
+  /* ============================================
+     CSS VARIABLES — unified token system
+  ============================================ */
+  #{{ section_id }} {
+    --ftr-bg:           #0A0A0A;
+    --ftr-bg-card:      #0F0F0F;
+    --ftr-bg-elevated:  #141414;
+    --ftr-primary:      #B11226;
+    --ftr-accent:       #FF2A2A;
+    --ftr-cyan:         #00F0FF;
+    --ftr-gold:         #FFB800;
+    --ftr-white:        #FFFFFF;
+    --ftr-text-muted:   rgba(255,255,255,0.5);
+    --ftr-text-dim:     rgba(255,255,255,0.25);
+    --ftr-border:       rgba(255,255,255,0.06);
+    --ftr-border-hover: rgba(177,18,38,0.5);
+    --ftr-glow-red:     0 0 20px rgba(255,42,42,0.3);
+    --ftr-glow-red-lg:  0 0 50px rgba(177,18,38,0.25);
+    --ftr-glow-cyan:    0 0 20px rgba(0,240,255,0.3);
+    --ftr-transition:   all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    --ftr-transition-fast: all 0.18s ease;
+  }
+
+  /* ============================================
+     RESET WITHIN SCOPE
+  ============================================ */
+  #{{ section_id }} *,
+  #{{ section_id }} *::before,
+  #{{ section_id }} *::after {
+    box-sizing: border-box;
+  }
+
+  #{{ section_id }} a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  #{{ section_id }} ul,
+  #{{ section_id }} ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #{{ section_id }} p,
+  #{{ section_id }} h1,
+  #{{ section_id }} h2,
+  #{{ section_id }} h3,
+  #{{ section_id }} h4 {
+    margin: 0;
+    padding: 0;
+  }
+
+  #{{ section_id }} button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+  }
+
+  /* ============================================
+     SECTION BASE
+  ============================================ */
+  #{{ section_id }} {
+    position: relative;
+    width: 100%;
+    background: var(--ftr-bg);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  /* ============================================
+     BACKGROUND LAYERS
+  ============================================ */
+  #{{ section_id }} .ftr-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(177,18,38,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(177,18,38,0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #{{ section_id }} .ftr-bg-radial {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1000px;
+    height: 500px;
+    background: radial-gradient(ellipse at bottom, rgba(177,18,38,0.07) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(80px);
+  }
+
+  #{{ section_id }} .ftr-bg-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.06) 2px,
+      rgba(0,0,0,0.06) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ============================================
+     TOP ACCENT LINE
+  ============================================ */
+  #{{ section_id }} .ftr-top-accent {
+    position: relative;
+    z-index: 2;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--ftr-primary) 20%,
+      var(--ftr-accent) 50%,
+      var(--ftr-primary) 80%,
+      transparent 100%
+    );
+    box-shadow: var(--ftr-glow-red);
+  }
+
+  /* ============================================
+     CONTAINER
+  ============================================ */
+  #{{ section_id }} .ftr-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  /* ============================================
+     NEWSLETTER STRIP
+  ============================================ */
+  #{{ section_id }} .ftr-newsletter-strip {
+    border-bottom: 1px solid var(--ftr-border);
+    padding: 48px 0;
+  }
+
+  #{{ section_id }} .ftr-newsletter-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+  }
+
+  #{{ section_id }} .ftr-newsletter-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  #{{ section_id }} .ftr-newsletter-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ftr-accent);
+  }
+
+  #{{ section_id }} .ftr-newsletter-eyebrow::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 1px;
+    background: var(--ftr-accent);
+    box-shadow: var(--ftr-glow-red);
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .ftr-newsletter-heading {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(18px, 2vw, 28px);
+    font-weight: 900;
+    color: var(--ftr-white);
+    text-transform: uppercase;
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+  }
+
+  #{{ section_id }} .ftr-newsletter-heading mark {
+    background: none;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ftr-primary);
+  }
+
+  #{{ section_id }} .ftr-newsletter-sub {
+    font-size: 13px;
+    color: var(--ftr-text-muted);
+    line-height: 1.6;
+    margin-top: 4px;
+  }
+
+  /* Form */
+  #{{ section_id }} .ftr-newsletter-form {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    flex-shrink: 0;
+    min-width: 380px;
+  }
+
+  #{{ section_id }} .ftr-newsletter-input {
+    flex: 1;
+    background: var(--ftr-bg-elevated);
+    border: 1px solid var(--ftr-border);
+    border-right: none;
+    color: var(--ftr-white);
+    font-family: inherit;
+    font-size: 12px;
+    padding: 14px 16px;
+    outline: none;
+    letter-spacing: 0.3px;
+    transition: var(--ftr-transition-fast);
+    min-width: 0;
+  }
+
+  #{{ section_id }} .ftr-newsletter-input::placeholder {
+    color: var(--ftr-text-dim);
+  }
+
+  #{{ section_id }} .ftr-newsletter-input:focus {
+    border-color: var(--ftr-border-hover);
+    box-shadow: var(--ftr-glow-red);
+  }
+
+  #{{ section_id }} .ftr-newsletter-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 24px;
+    background: var(--ftr-primary);
+    color: var(--ftr-white);
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: var(--ftr-transition);
+    white-space: nowrap;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+  }
+
+  #{{ section_id }} .ftr-newsletter-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  #{{ section_id }} .ftr-newsletter-btn:hover {
+    box-shadow: var(--ftr-glow-red-lg);
+    transform: translateY(-1px);
+  }
+
+  #{{ section_id }} .ftr-newsletter-btn:hover::before {
+    opacity: 1;
+  }
+
+  #{{ section_id }} .ftr-newsletter-btn svg {
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  #{{ section_id }} .ftr-newsletter-btn span {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Success state */
+  #{{ section_id }} .ftr-newsletter-success {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--ftr-accent);
+    padding: 14px 0;
+  }
+
+  #{{ section_id }} .ftr-newsletter-success.is-visible {
+    display: flex;
+  }
+
+  #{{ section_id }} .ftr-newsletter-privacy {
+    font-size: 10px;
+    color: var(--ftr-text-dim);
+    margin-top: 8px;
+    letter-spacing: 0.3px;
+  }
+
+  #{{ section_id }} .ftr-newsletter-privacy a {
+    color: var(--ftr-text-muted);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+
+  #{{ section_id }} .ftr-newsletter-privacy a:hover {
+    color: var(--ftr-white);
+  }
+
+  /* ============================================
+     MAIN FOOTER GRID
+  ============================================ */
+  #{{ section_id }} .ftr-main {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--ftr-border);
+  }
+
+  #{{ section_id }} .ftr-main-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  /* ============================================
+     BRAND COLUMN
+  ============================================ */
+  #{{ section_id }} .ftr-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* Logo */
+  #{{ section_id }} .ftr-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    align-self: flex-start;
+  }
+
+  #{{ section_id }} .ftr-logo-mark {
+    width: 40px;
+    height: 40px;
+    background: var(--ftr-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    transition: var(--ftr-transition);
+  }
+
+  #{{ section_id }} .ftr-logo:hover .ftr-logo-mark {
+    box-shadow: var(--ftr-glow-red);
+  }
+
+  #{{ section_id }} .ftr-logo-img {
+    height: 36px;
+    width: auto;
+    object-fit: contain;
+    filter: brightness(1);
+    transition: var(--ftr-transition);
+  }
+
+  #{{ section_id }} .ftr-logo:hover .ftr-logo-img {
+    filter: brightness(1.1) drop-shadow(0 0 8px rgba(255,42,42,0.3));
+  }
+
+  #{{ section_id }} .ftr-logo-text-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  #{{ section_id }} .ftr-logo-name {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--ftr-white);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1;
+    transition: var(--ftr-transition);
+  }
+
+  #{{ section_id }} .ftr-logo-name mark {
+    background: none;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ftr-primary);
+  }
+
+  #{{ section_id }} .ftr-logo-tagline {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ftr-text-dim);
+    line-height: 1;
+  }
+
+  /* Brand description */
+  #{{ section_id }} .ftr-brand-desc {
+    font-size: 14px;
+    color: var(--ftr-text-muted);
+    line-height: 1.75;
+  }
+
+  /* Trust badges */
+  #{{ section_id }} .ftr-trust-badges {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #{{ section_id }} .ftr-trust-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ftr-text-muted);
+    letter-spacing: 0.3px;
+    transition: var(--ftr-transition-fast);
+  }
+
+  #{{ section_id }} .ftr-trust-badge:hover {
+    color: var(--ftr-white);
+  }
+
+  #{{ section_id }} .ftr-trust-icon {
+    width: 28px;
+    height: 28px;
+    background: rgba(177,18,38,0.08);
+    border: 1px solid rgba(177,18,38,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--ftr-accent);
+    transition: var(--ftr-transition-fast);
+  }
+
+  #{{ section_id }} .ftr-trust-badge:hover .ftr-trust-icon {
+    background: rgba(177,18,38,0.15);
+    box-shadow: var(--ftr-glow-red);
+  }
+
+  /* Social links */
+  #{{ section_id }} .ftr-socials {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #{{ section_id }} .ftr-socials-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ftr-text-dim);
+  }
+
+  #{{ section_id }} .ftr-social-links {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #{{ section_id }} .ftr-social-link {
+    width: 36px;
+    height: 36px;
+    background: var(--ftr-bg-card);
+    border: 1px solid var(--ftr-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ftr-text-muted);
+    text-decoration: none;
+    transition: var(--ftr-transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  #{{ section_id }} .ftr-social-link::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--ftr-primary);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  #{{ section_id }} .ftr-social-link:hover {
+    color: var(--ftr-white);
+    border-color: var(--ftr-border-hover);
+    box-shadow: var(--ftr-glow-red);
+    transform: translateY(-2px);
+  }
+
+  #{{ section_id }} .ftr-social-link:hover::before {
+    opacity: 0.15;
+  }
+
+  #{{ section_id }} .ftr-social-link svg {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  /* ============================================
+     NAV COLUMNS GRID
+  ============================================ */
+  #{{ section_id }} .ftr-nav-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 40px;
+  }
+
+  /* ============================================
+     SINGLE NAV COLUMN
+  ============================================ */
+  #{{ section_id }} .ftr-nav-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  #{{ section_id }} .ftr-nav-col-title {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--ftr-white);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--ftr-border);
+    position: relative;
+  }
+
+  #{{ section_id }} .ftr-nav-col-title::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 24px;
+    height: 1px;
+    background: var(--ftr-accent);
+    box-shadow: var(--ftr-glow-red);
+  }
+
+  #{{ section_id }} .ftr-nav-col-title-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--ftr-accent);
+    transform: rotate(45deg);
+    box-shadow: var(--ftr-glow-red);
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .ftr-nav-col-links {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  #{{ section_id }} .ftr-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ftr-text-muted);
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: var(--ftr-transition-fast);
+    border-left: 2px solid transparent;
+    padding-left: 0;
+    position: relative;
+  }
+
+  #{{ section_id }} .ftr-nav-link::before {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1px;
+    background: var(--ftr-accent);
+    box-shadow: var(--ftr-glow-red);
+    transition: width 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .ftr-nav-link:hover {
+    color: var(--ftr-white);
+    padding-left: 8px;
+  }
+
+  #{{ section_id }} .ftr-nav-link:hover::before {
+    width: 12px;
+  }
+
+  #{{ section_id }} .ftr-nav-link-badge {
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 5px;
+    background: rgba(177,18,38,0.15);
+    color: var(--ftr-accent);
+    border: 1px solid rgba(255,42,42,0.2);
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  /* ============================================
+     FEATURED PROMO CARD IN FOOTER
+  ============================================ */
+  #{{ section_id }} .ftr-promo-card {
+    position: relative;
+    overflow: hidden;
+    background: rgba(177,18,38,0.05);
+    border: 1px solid rgba(177,18,38,0.2);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-decoration: none;
+    transition: var(--ftr-transition);
+    margin-top: 8px;
+    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  }
+
+  #{{ section_id }} .ftr-promo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--ftr-primary), var(--ftr-accent), transparent);
+    box-shadow: var(--ftr-glow-red);
+  }
+
+  #{{ section_id }} .ftr-promo-card:hover {
+    border-color: rgba(255,42,42,0.35);
+    background: rgba(177,18,38,0.09);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.4), var(--ftr-glow-red);
+  }
+
+  #{{ section_id }} .ftr-promo-label {
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--ftr-accent);
+  }
+
+  #{{ section_id }} .ftr-promo-title {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--ftr-white);
+    text-transform: uppercase;
+    letter-spacing: -0.2px;
+    line-height: 1.2;
+  }
+
+  #{{ section_id }} .ftr-promo-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--ftr-accent);
+    margin-top: 2px;
+    transition: gap 0.2s ease;
+  }
+
+  #{{ section_id }} .ftr-promo-card:hover .ftr-promo-cta {
+    gap: 8px;
+  }
+
+  /* ============================================
+     PAYMENT ICONS STRIP
+  ============================================ */
+  #{{ section_id }} .ftr-payments {
+    padding: 32px 0;
+    border-bottom: 1px solid var(--ftr-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  #{{ section_id }} .ftr-payments-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ftr-text-dim);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .ftr-payment-icons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  #{{ section_id }} .ftr-payment-icon {
+    height: 24px;
+    padding: 4px 8px;
+    background: var(--ftr-bg-elevated);
+    border: 1px solid var(--ftr-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--ftr-transition-fast);
+  }
+
+  #{{ section_id }} .ftr-payment-icon:hover {
+    border-color: rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.05);
+  }
+
+  #{{ section_id }} .ftr-payment-icon svg {
+    height: 14px;
+    width: auto;
+    display: block;
+  }
+
+  /* Security badge */
+  #{{ section_id }} .ftr-security-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ftr-text-dim);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  #{{ section_id }} .ftr-security-badge svg {
+    color: var(--ftr-accent);
+    flex-shrink: 0;
+  }
+
+  /* ============================================
+     BOTTOM BAR
+  ============================================ */
+  #{{ section_id }} .ftr-bottom {
+    padding: 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  #{{ section_id }} .ftr-copyright {
+    font-size: 11px;
+    color: var(--ftr-text-dim);
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  #{{ section_id }} .ftr-copyright-dot {
+    width: 3px;
+    height: 3px;
+    background: rgba(177,18,38,0.4);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .ftr-legal-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  #{{ section_id }} .ftr-legal-link {
+    font-size: 11px;
+    color: var(--ftr-text-dim);
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    white-space: nowrap;
+  }
+
+  #{{ section_id }} .ftr-legal-link:hover {
+    color: var(--ftr-text-muted);
+  }
+
+  #{{ section_id }} .ftr-legal-sep {
+    width: 1px;
+    height: 10px;
+    background: var(--ftr-border);
+    flex-shrink: 0;
+  }
+
+  /* Region selector */
+  #{{ section_id }} .ftr-locale {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #{{ section_id }} .ftr-locale-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ftr-text-dim);
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+
+  #{{ section_id }} .ftr-locale-btn:hover {
+    color: var(--ftr-text-muted);
+  }
+
+  /* ============================================
+     BACK TO TOP
+  ============================================ */
+  #{{ section_id }} .ftr-back-top {
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    width: 44px;
+    height: 44px;
+    background: var(--ftr-primary);
+    color: var(--ftr-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    cursor: pointer;
+    z-index: 500;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: var(--ftr-transition);
+    pointer-events: none;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+  }
+
+  #{{ section_id }} .ftr-back-top.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  #{{ section_id }} .ftr-back-top:hover {
+    box-shadow: var(--ftr-glow-red-lg);
+    transform: translateY(-2px);
+  }
+
+  #{{ section_id }} .ftr-back-top:hover svg {
+    transform: translateY(-2px);
+  }
+
+  #{{ section_id }} .ftr-back-top svg {
+    transition: transform 0.2s ease;
+  }
+
+  /* ============================================
+     HUD CORNER DECORATIONS
+  ============================================ */
+  #{{ section_id }} .ftr-hud-corners {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  #{{ section_id }} .ftr-hud-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: rgba(255,42,42,0.15);
+    border-style: solid;
+  }
+
+  #{{ section_id }} .ftr-hud-corner--tl {
+    top: 12px; left: 12px;
+    border-width: 1px 0 0 1px;
+  }
+
+  #{{ section_id }} .ftr-hud-corner--tr {
+    top: 12px; right: 12px;
+    border-width: 1px 1px 0 0;
+  }
+
+  /* ============================================
+     RESPONSIVE — TABLET
+  ============================================ */
+  @media (max-width: 1100px) {
+    #{{ section_id }} .ftr-container {
+      padding: 0 32px;
+    }
+
+    #{{ section_id }} .ftr-main-grid {
+      grid-template-columns: 260px 1fr;
+      gap: 48px;
+    }
+
+    #{{ section_id }} .ftr-nav-columns {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    #{{ section_id }} .ftr-newsletter-inner {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    #{{ section_id }} .ftr-newsletter-form {
+      min-width: unset;
+      width: 100%;
+      max-width: 480px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    #{{ section_id }} .ftr-main-grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    #{{ section_id }} .ftr-brand {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    #{{ section_id }} .ftr-nav-columns {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* ============================================
+     RESPONSIVE — MOBILE
+  ============================================ */
+  @media (max-width: 640px) {
+    #{{ section_id }} .ftr-container {
+      padding: 0 16px;
+    }
+
+    #{{ section_id }} .ftr-newsletter-strip {
+      padding: 36px 0;
+    }
+
+    #{{ section_id }} .ftr-newsletter-form {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    #{{ section_id }} .ftr-newsletter-input {
+      border-right: 1px solid var(--ftr-border);
+    }
+
+    #{{ section_id }} .ftr-newsletter-btn {
+      clip-path: none;
+      justify-content: center;
+    }
+
+    #{{ section_id }} .ftr-nav-columns {
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    #{{ section_id }} .ftr-payments {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    #{{ section_id }} .ftr-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    #{{ section_id }} .ftr-legal-links {
+      gap: 12px;
+    }
+
+    #{{ section_id }} .ftr-back-top {
+      bottom: 16px;
+      right: 16px;
+    }
+
+    #{{ section_id }} .ftr-main {
+      padding: 40px 0 32px;
+    }
+  }
+
+  @media (max-width: 400px) {
+    #{{ section_id }} .ftr-nav-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ============================================
+     REDUCED MOTION
+  ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    #{{ section_id }} * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<footer
+  id="{{ section_id }}"
+  class="site-footer"
+  role="contentinfo"
+  aria-label="Site footer"
+>
+
+  {% comment %} Back to top button {% endcomment %}
+  <button
+    class="ftr-back-top"
+    id="ftr-back-top-{{ section.id }}"
+    aria-label="Back to top"
+    type="button"
+  >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M12 19V5M5 12L12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  {% comment %} Background {% endcomment %}
+  <div class="ftr-bg-grid" aria-hidden="true"></div>
+  <div class="ftr-bg-radial" aria-hidden="true"></div>
+  <div class="ftr-bg-scanlines" aria-hidden="true"></div>
+
+  {% comment %} HUD corners {% endcomment %}
+  <div class="ftr-hud-corners" aria-hidden="true">
+    <div class="ftr-hud-corner ftr-hud-corner--tl"></div>
+    <div class="ftr-hud-corner ftr-hud-corner--tr"></div>
+  </div>
+
+  {% comment %} Top accent {% endcomment %}
+  <div class="ftr-top-accent" aria-hidden="true"></div>
+
+  <div class="ftr-container">
+
+    {% comment %} ============================================
+       NEWSLETTER STRIP
+    ============================================ {% endcomment %}
+    {% if section.settings.show_newsletter %}
+      <div class="ftr-newsletter-strip">
+        <div class="ftr-newsletter-inner">
+
+          <div class="ftr-newsletter-copy">
+            <div class="ftr-newsletter-eyebrow">{{ section.settings.newsletter_eyebrow | default: 'Stay in the Game' }}</div>
+            <h2 class="ftr-newsletter-heading">
+              {{ section.settings.newsletter_heading | default: 'Level Up Your Inbox' | split: ' ' | first }}
+              <mark>
+                {%- assign nl_words = section.settings.newsletter_heading | default: 'Level Up Your Inbox' | split: ' ' -%}
+                {%- for w in nl_words -%}
+                  {%- unless forloop.first -%}{{ w }}{% unless forloop.last %} {% endunless %}{%- endunless -%}
+                {%- endfor -%}
+              </mark>
+            </h2>
+            {% if section.settings.newsletter_sub != blank %}
+              <p class="ftr-newsletter-sub">{{ section.settings.newsletter_sub }}</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <form
+              class="ftr-newsletter-form"
+              id="ftr-nl-form-{{ section.id }}"
+              action="/contact#contact_form"
+              method="post"
+              novalidate
+              aria-label="Newsletter signup"
+            >
+              <input type="hidden" name="form_type" value="customer">
+              <input type="hidden" name="utf8" value="✓">
+              <input type="hidden" name="contact[tags]" value="newsletter">
+
+              <label for="ftr-nl-email-{{ section.id }}" class="visually-hidden">Email address</label>
+              <input
+                type="email"
+                id="ftr-nl-email-{{ section.id }}"
+                name="contact[email]"
+                class="ftr-newsletter-input"
+                placeholder="{{ section.settings.newsletter_placeholder | default: 'Enter your email address...' }}"
+                required
+                autocomplete="email"
+                aria-required="true"
+              >
+
+              <button
+                type="submit"
+                class="ftr-newsletter-btn"
+                aria-label="{{ section.settings.newsletter_btn | default: 'Subscribe' }}"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>{{ section.settings.newsletter_btn | default: 'Subscribe' }}</span>
+              </button>
+            </form>
+
+            <div class="ftr-newsletter-success" id="ftr-nl-success-{{ section.id }}" aria-live="polite">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              {{ section.settings.newsletter_success | default: "You're in! Welcome to the squad." }}
+            </div>
+
+            {% if section.settings.newsletter_privacy != blank %}
+              <p class="ftr-newsletter-privacy">{{ section.settings.newsletter_privacy }}</p>
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %} ============================================
+       MAIN FOOTER GRID
+    ============================================ {% endcomment %}
+    <div class="ftr-main">
+      <div class="ftr-main-grid">
+
+        {% comment %} BRAND COLUMN {% endcomment %}
+        <div class="ftr-brand">
+
+          <a href="{{ routes.root_url }}" class="ftr-logo" aria-label="{{ shop.name }} — Home">
+            {% if section.settings.logo != blank %}
+              {{
+                section.settings.logo
+                | image_url: width: 280
+                | image_tag:
+                  class: 'ftr-logo-img',
+                  loading: 'lazy',
+                  alt: shop.name,
+                  widths: '140, 200, 280'
+              }}
+            {% else %}
+              <div class="ftr-logo-mark" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="white"/>
+                </svg>
+              </div>
+              <div class="ftr-logo-text-wrap">
+                <span class="ftr-logo-name">
+                  {{ logo_text | split: ' ' | first -}}
+                  <mark>
+                    {%- assign l_words = logo_text | split: ' ' -%}
+                    {%- for w in l_words -%}
+                      {%- unless forloop.first -%}{{ w }}{% unless forloop.last %} {% endunless %}{%- endunless -%}
+                    {%- endfor -%}
+                  </mark>
+                </span>
+                {% if section.settings.logo_tagline != blank %}
+                  <span class="ftr-logo-tagline">{{ section.settings.logo_tagline }}</span>
+                {% endif %}
+              </div>
+            {% endif %}
+          </a>
+
+          {% if section.settings.brand_description != blank %}
+            <p class="ftr-brand-desc">{{ section.settings.brand_description }}</p>
+          {% endif %}
+
+          {% comment %} Trust badges {% endcomment %}
+          {% if section.settings.show_trust_badges %}
+            <div class="ftr-trust-badges" role="list" aria-label="Trust badges">
+              {% if section.settings.trust_1 != blank %}
+                <div class="ftr-trust-badge" role="listitem">
+                  <div class="ftr-trust-icon" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 3L4 7V13C4 17.418 7.582 21 12 21C16.418 21 20 17.418 20 13V7L12 3Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                      <path d="M9 12L11 14L15 10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  {{ section.settings.trust_1 }}
+                </div>
+              {% endif %}
+              {% if section.settings.trust_2 != blank %}
+                <div class="ftr-trust-badge" role="listitem">
+                  <div class="ftr-trust-icon" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 3H15V16H1V3Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M15 8H19L23 12V16H15V8Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="5" cy="19" r="2" stroke="currentColor" stroke-width="1.8"/>
+                      <circle cx="19" cy="19" r="2" stroke="currentColor" stroke-width="1.8"/>
+                    </svg>
+                  </div>
+                  {{ section.settings.trust_2 }}
+                </div>
+              {% endif %}
+              {% if section.settings.trust_3 != blank %}
+                <div class="ftr-trust-badge" role="listitem">
+                  <div class="ftr-trust-icon" aria-hidden="true">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M1 4V10H7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                      <path d="M3.51 15C4.57 18.05 7.47 20 10.73 20C14.84 20 18.17 16.67 18.17 12.56C18.17 8.44 14.84 5.11 10.73 5.11C7.69 5.11 5.01 6.85 3.73 9.44" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  {{ section.settings.trust_3 }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% comment %} Social links {% endcomment %}
+          <div class="ftr-socials">
+            <p class="ftr-socials-label">Follow Us</p>
+            <div class="ftr-social-links" role="list" aria-label="Social media links">
+
+              {% if section.settings.social_twitter != blank %}
+                <a href="{{ section.settings.social_twitter }}" class="ftr-social-link" aria-label="Twitter / X" role="listitem" target="_blank" rel="noopener noreferrer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M4 4L20 20M20 4L4 20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </a>
+              {% endif %}
+
+              {% if section.settings.social_instagram != blank %}
+                <a href="{{ section.settings.social_instagram }}" class="ftr-social-link" aria-label="Instagram" role="listitem" target="_blank" rel="noopener noreferrer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="1.8"/>
+                    <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.8"/>
+                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+                  </svg>
+                </a>
+              {% endif %}
+
+              {% if section.settings.social_youtube != blank %}
+                <a href="{{ section.settings.social_youtube }}" class="ftr-social-link" aria-label="YouTube" role="listitem" target="_blank" rel="noopener noreferrer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect x="2" y="5" width="20" height="14" rx="3" stroke="currentColor" stroke-width="1.8"/>
+                    <path d="M10 9L15 12L10 15V9Z" fill="currentColor"/>
+                  </svg>
+                </a>
+              {% endif %}
+
+              {% if section.settings.social_twitch != blank %}
+                <a href="{{ section.settings.social_twitch }}" class="ftr-social-link" aria-label="Twitch" role="listitem" target="_blank" rel="noopener noreferrer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M4 2L3 6V20H8V22H11L13 20H17L21 16V2H4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                    <path d="M10 7V12M15 7V12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                </a>
+              {% endif %}
+
+              {% if section.settings.social_discord != blank %}
+                <a href="{{ section.settings.social_discord }}" class="ftr-social-link" aria-label="Discord" role="listitem" target="_blank" rel="noopener noreferrer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M9 12C9 12.5523 8.55228 13 8 13C7.44772 13 7 12.5523 7 12C7 11.4477 7.44772 11 8 11C8.55228 11 9 11.4477 9 12Z" fill="currentColor"/>
+                    <path d="M17 12C17 12.5523 16.5523 13 16 13C15.4477 13 15 12.5523 15 12C15 11.4477 15.4477 11 16 11C16.5523 11 17 11.4477 17 12Z" fill="currentColor"/>
+                    <path d="M8.5 3.5C8.5 3.5 6 4 4 7C4 7 2 11 2 16C2 16 3.5 18 6.5 18.5L8 16.5C8 16.5 6.5 16 5.5 15C5.5 15 7 15.5 9 16C9 16 9.5 16.5 10 17L10.5 17C10.5 17 11 17 12 17C13 17 13.5 17 13.5 17L14 17C14.5 16.5 15 16 15 16C17 15.5 18.5 15 18.5 15C17.5 16 16 16.5 16 16.5L17.5 18.5C20.5 18 22 16 22 16C22 11 20 7 20 7C18 4 15.5 3.5 15.5 3.5L14.5 4.5C16 5 17 5.5 17 5.5C17 5.5 13 4 12 4C11 4 7 5.5 7 5.5C7 5.5 8 5 9.5 4.5L8.5 3.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              {% endif %}
+
+              {% if section.settings.social_tiktok != blank %}
+                <a href="{{ section.settings.social_tiktok }}" class="ftr-social-link" aria-label="TikTok" role="listitem" target="_blank" rel="noopener noreferrer">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M9 12C9 14.2091 7.20914 16 5 16C2.79086 16 1 14.2091 1 12C1 9.79086 2.79086 8 5 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                    <path d="M9 12V3H13C13 3 13 7 17 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17 7C17 7 21 7 21 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                  </svg>
+                </a>
+              {% endif %}
+
+            </div>
+          </div>
+
+        </div>
+        {% comment %} END .ftr-brand {% endcomment %}
+
+        {% comment %} NAV COLUMNS {% endcomment %}
+        <div class="ftr-nav-columns">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'nav_column' -%}
+              <div class="ftr-nav-col" {{ block.shopify_attributes }}>
+                <h3 class="ftr-nav-col-title">
+                  <span class="ftr-nav-col-title-dot" aria-hidden="true"></span>
+                  {{ block.settings.title | default: 'Links' }}
+                </h3>
+
+                <ul class="ftr-nav-col-links" role="list">
+                  {%- for i in (1..8) -%}
+                    {%- assign lbl_key = 'link_' | append: i | append: '_label' -%}
+                    {%- assign url_key = 'link_' | append: i | append: '_url' -%}
+                    {%- assign bdg_key = 'link_' | append: i | append: '_badge' -%}
+                    {%- if block.settings[lbl_key] != blank -%}
+                      <li>
+                        <a
+                          href="{{ block.settings[url_key] | default: '#' }}"
+                          class="ftr-nav-link"
+                        >
+                          {{ block.settings[lbl_key] }}
+                          {%- if block.settings[bdg_key] != blank -%}
+                            <span class="ftr-nav-link-badge">{{ block.settings[bdg_key] }}</span>
+                          {%- endif -%}
+                        </a>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+
+                {% comment %} Optional promo card inside column {% endcomment %}
+                {% if block.settings.promo_title != blank %}
+                  <a
+                    href="{{ block.settings.promo_url | default: '#' }}"
+                    class="ftr-promo-card"
+                    aria-label="{{ block.settings.promo_title }}"
+                  >
+                    {% if block.settings.promo_label != blank %}
+                      <span class="ftr-promo-label">{{ block.settings.promo_label }}</span>
+                    {% endif %}
+                    <span class="ftr-promo-title">{{ block.settings.promo_title }}</span>
+                    <span class="ftr-promo-cta">
+                      {{ block.settings.promo_cta | default: 'Learn More' }}
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <path d="M5 12H19M13 6L19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </a>
+                {% endif %}
+
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+      </div>
+    </div>
+    {% comment %} END .ftr-main {% endcomment %}
+
+    {% comment %} ============================================
+       PAYMENT ICONS
+    ============================================ {% endcomment %}
+    {% if section.settings.show_payments %}
+      <div class="ftr-payments">
+        <span class="ftr-payments-label">Secure Checkout</span>
+
+        <div class="ftr-payment-icons" role="list" aria-label="Accepted payment methods">
+          {% comment %} Visa {% endcomment %}
+          <div class="ftr-payment-icon" role="listitem" aria-label="Visa" title="Visa">
+            <svg height="14" viewBox="0 0 48 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="0" y="13" font-family="Arial Black, Impact, sans-serif" font-size="13" font-weight="900" fill="rgba(255,255,255,0.5)" letter-spacing="-0.5">VISA</text>
+            </svg>
+          </div>
+          {% comment %} Mastercard {% endcomment %}
+          <div class="ftr-payment-icon" role="listitem" aria-label="Mastercard" title="Mastercard">
+            <svg height="14" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="11" cy="10" r="9" fill="rgba(177,18,38,0.5)"/>
+              <circle cx="21" cy="10" r="9" fill="rgba(255,184,0,0.4)"/>
+            </svg>
+          </div>
+          {% comment %} Amex {% endcomment %}
+          <div class="ftr-payment-icon" role="listitem" aria-label="American Express" title="American Express">
+            <svg height="14" viewBox="0 0 48 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="0" y="13" font-family="Arial Black, Impact, sans-serif" font-size="10" font-weight="900" fill="rgba(255,255,255,0.5)" letter-spacing="0">AMEX</text>
+            </svg>
+          </div>
+          {% comment %} PayPal {% endcomment %}
+          <div class="ftr-payment-icon" role="listitem" aria-label="PayPal" title="PayPal">
+            <svg height="14" viewBox="0 0 54 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="0" y="13" font-family="Arial Black, Impact, sans-serif" font-size="11" font-weight="900" fill="rgba(255,255,255,0.5)" letter-spacing="-0.3">PayPal</text>
+            </svg>
+          </div>
+          {% comment %} Apple Pay {% endcomment %}
+          <div class="ftr-payment-icon" role="listitem" aria-label="Apple Pay" title="Apple Pay">
+            <svg height="14" viewBox="0 0 54 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="0" y="13" font-family="Arial Black, Impact, sans-serif" font-size="10" font-weight="900" fill="rgba(255,255,255,0.5)" letter-spacing="-0.2"> Pay</text>
+            </svg>
+          </div>
+          {% comment %} Shop Pay {% endcomment %}
+          <div class="ftr-payment-icon" role="listitem" aria-label="Shop Pay" title="Shop Pay">
+            <svg height="14" viewBox="0 0 60 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <text x="0" y="13" font-family="Arial Black, Impact, sans-serif" font-size="9" font-weight="900" fill="rgba(255,255,255,0.5)" letter-spacing="0.3">SHOP PAY</text>
+            </svg>
+          </div>
+        </div>
+
+        <div class="ftr-security-badge" aria-label="SSL Secured">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M7 11V7C7 4.239 9.239 2 12 2C14.761 2 17 4.239 17 7V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="12" cy="16" r="1.5" fill="currentColor"/>
+          </svg>
+          256-bit SSL Secured
+        </div>
+      </div>
+    {% endif %}
+
+    {% comment %} ============================================
+       BOTTOM BAR
+    ============================================ {% endcomment %}
+    <div class="ftr-bottom">
+
+      <p class="ftr-copyright">
+        <span class="ftr-copyright-dot" aria-hidden="true"></span>
+        {{ copyright }}
+      </p>
+
+      <nav class="ftr-legal-links" aria-label="Legal links">
+        {% if section.settings.legal_1_label != blank %}
+          <a href="{{ section.settings.legal_1_url | default: routes.root_url }}" class="ftr-legal-link">
+            {{ section.settings.legal_1_label }}
+          </a>
+        {% endif %}
+        {% if section.settings.legal_2_label != blank %}
+          <div class="ftr-legal-sep" aria-hidden="true"></div>
+          <a href="{{ section.settings.legal_2_url | default: routes.root_url }}" class="ftr-legal-link">
+            {{ section.settings.legal_2_label }}
+          </a>
+        {% endif %}
+        {% if section.settings.legal_3_label != blank %}
+          <div class="ftr-legal-sep" aria-hidden="true"></div>
+          <a href="{{ section.settings.legal_3_url | default: routes.root_url }}" class="ftr-legal-link">
+            {{ section.settings.legal_3_label }}
+          </a>
+        {% endif %}
+        {% if section.settings.legal_4_label != blank %}
+          <div class="ftr-legal-sep" aria-hidden="true"></div>
+          <a href="{{ section.settings.legal_4_url | default: routes.root_url }}" class="ftr-legal-link">
+            {{ section.settings.legal_4_label }}
+          </a>
+        {% endif %}
+      </nav>
+
+      <div class="ftr-locale" aria-label="Language and region">
+        <button class="ftr-locale-btn" type="button" aria-label="Select region">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M2 12H22M12 2C12 2 8 7 8 12C8 17 12 22 12 22M12 2C12 2 16 7 16 12C16 17 12 22 12 22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          {{ localization.country.name }} — {{ cart.currency.iso_code }}
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+  {% comment %} END .ftr-container {% endcomment %}
+
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  const SID    = '{{ section.id }}';
+  const FOOTER = document.getElementById('ftr-' + SID);
+  if (!FOOTER) return;
+
+  // ============================================
+  // BACK TO TOP
+  // ============================================
+  const backTopBtn = document.getElementById('ftr-back-top-' + SID);
+
+  if (backTopBtn) {
+    window.addEventListener('scroll', function () {
+      backTopBtn.classList.toggle('is-visible', window.scrollY > 400);
+    }, { passive: true });
+
+    backTopBtn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ============================================
+  // NEWSLETTER FORM
+  // ============================================
+  const nlForm    = document.getElementById('ftr-nl-form-' + SID);
+  const nlSuccess = document.getElementById('ftr-nl-success-' + SID);
+
+  if (nlForm && nlSuccess) {
+    nlForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const emailInput = nlForm.querySelector('input[type="email"]');
+      const email = emailInput ? emailInput.value.trim() : '';
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        if (emailInput) {
+          emailInput.style.borderColor = 'rgba(255,42,42,0.6)';
+          emailInput.focus();
+          setTimeout(function () {
+            emailInput.style.borderColor = '';
+          }, 2000);
+        }
+        return;
+      }
+
+      // Submit form data
+      const formData = new FormData(nlForm);
+
+      fetch(nlForm.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+      })
+      .then(function () {
+        nlForm.style.display = 'none';
+        nlSuccess.classList.add('is-visible');
+        try {
+          localStorage.setItem('ftr_nl_subscribed_' + SID, '1');
+        } catch(err) {}
+      })
+      .catch(function () {
+        // Show success UI anyway for demo / graceful degradation
+        nlForm.style.display = 'none';
+        nlSuccess.classList.add('is-visible');
+      });
+    });
+
+    // Restore already-subscribed state
+    try {
+      if (localStorage.getItem('ftr_nl_subscribed_' + SID)) {
+        nlForm.style.display = 'none';
+        nlSuccess.classList.add('is-visible');
+      }
+    } catch(e) {}
+  }
+
+}());
+</script>
+
+{% schema %}
+{
+  "name": "Footer",
+  "tag": "div",
+  "class": "site-footer-wrapper",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Brand"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo Image",
+      "info": "Recommended height: 36–48px. PNG with transparency preferred."
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "GameStore",
+      "info": "Used when no logo image is set."
+    },
+    {
+      "type": "text",
+      "id": "logo_tagline",
+      "label": "Logo Tagline",
+      "default": "Pro Gaming Gear"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand Description",
+      "default": "Founded by gamers, for gamers. We source the world's best gaming gear so you can focus on what matters — winning."
+    },
+    {
+      "type": "header",
+      "content": "Trust Badges"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_badges",
+      "label": "Show Trust Badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_1",
+      "label": "Badge 1",
+      "default": "2-Year Warranty on All Products"
+    },
+    {
+      "type": "text",
+      "id": "trust_2",
+      "label": "Badge 2",
+      "default": "Free Shipping on Orders Over $99"
+    },
+    {
+      "type": "text",
+      "id": "trust_3",
+      "label": "Badge 3",
+      "default": "30-Day Hassle-Free Returns"
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "url",
+      "id": "social_twitter",
+      "label": "Twitter / X URL"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "social_twitch",
+      "label": "Twitch URL"
+    },
+    {
+      "type": "url",
+      "id": "social_discord",
+      "label": "Discord URL"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show Newsletter Strip",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_eyebrow",
+      "label": "Eyebrow",
+      "default": "Stay in the Game"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Heading",
+      "default": "Level Up Your Inbox"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_sub",
+      "label": "Subtext",
+      "default": "Get exclusive deals, new arrivals, and pro tips delivered straight to your inbox."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_placeholder",
+      "label": "Input Placeholder",
+      "default": "Enter your email address..."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_btn",
+      "label": "Button Text",
+      "default": "Subscribe"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_success",
+      "label": "Success Message",
+      "default": "You're in! Welcome to the squad."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_privacy",
+      "label": "Privacy Note",
+      "default": "No spam, ever. Unsubscribe at any time. Read our <a href=\"/policies/privacy-policy\">Privacy Policy</a>."
+    },
+    {
+      "type": "header",
+      "content": "Payments"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payments",
+      "label": "Show Payment Icons",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Legal Links"
+    },
+    {
+      "type": "text",
+      "id": "legal_1_label",
+      "label": "Legal Link 1 Label",
+      "default": "Privacy Policy"
+    },
+    {
+      "type": "url",
+      "id": "legal_1_url",
+      "label": "Legal Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "legal_2_label",
+      "label": "Legal Link 2 Label",
+      "default": "Terms of Service"
+    },
+    {
+      "type": "url",
+      "id": "legal_2_url",
+      "label": "Legal Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "legal_3_label",
+      "label": "Legal Link 3 Label",
+      "default": "Refund Policy"
+    },
+    {
+      "type": "url",
+      "id": "legal_3_url",
+      "label": "Legal Link 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "legal_4_label",
+      "label": "Legal Link 4 Label",
+      "default": "Shipping Policy"
+    },
+    {
+      "type": "url",
+      "id": "legal_4_url",
+      "label": "Legal Link 4 URL"
+    },
+    {
+      "type": "header",
+      "content": "Copyright"
+    },
+    {
+      "type": "text",
+      "id": "copyright_text",
+      "label": "Copyright Text",
+      "info": "Leave blank to auto-generate with current year and shop name."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_column",
+      "name": "Navigation Column",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Column Title",
+          "default": "Shop"
+        },
+        { "type": "text", "id": "link_1_label", "label": "Link 1 Label", "default": "Gaming Chairs" },
+        { "type": "url",  "id": "link_1_url",   "label": "Link 1 URL" },
+        { "type": "text", "id": "link_1_badge", "label": "Link 1 Badge", "info": "e.g. New, Hot. Leave blank to hide." },
+        { "type": "text", "id": "link_2_label", "label": "Link 2 Label", "default": "Monitors" },
+        { "type": "url",  "id": "link_2_url",   "label": "Link 2 URL" },
+        { "type": "text", "id": "link_2_badge", "label": "Link 2 Badge" },
+        { "type": "text", "id": "link_3_label", "label": "Link 3 Label", "default": "Headsets" },
+        { "type": "url",  "id": "link_3_url",   "label": "Link 3 URL" },
+        { "type": "text", "id": "link_3_badge", "label": "Link 3 Badge" },
+        { "type": "text", "id": "link_4_label", "label": "Link 4 Label", "default": "Mice & Keyboards" },
+        { "type": "url",  "id": "link_4_url",   "label": "Link 4 URL" },
+        { "type": "text", "id": "link_4_badge", "label": "Link 4 Badge" },
+        { "type": "text", "id": "link_5_label", "label": "Link 5 Label", "default": "Controllers" },
+        { "type": "url",  "id": "link_5_url",   "label": "Link 5 URL" },
+        { "type": "text", "id": "link_5_badge", "label": "Link 5 Badge" },
+        { "type": "text", "id": "link_6_label", "label": "Link 6 Label" },
+        { "type": "url",  "id": "link_6_url",   "label": "Link 6 URL" },
+        { "type": "text", "id": "link_6_badge", "label": "Link 6 Badge" },
+        { "type": "text", "id": "link_7_label", "label": "Link 7 Label" },
+        { "type": "url",  "id": "link_7_url",   "label": "Link 7 URL" },
+        { "type": "text", "id": "link_7_badge", "label": "Link 7 Badge" },
+        { "type": "text", "id": "link_8_label", "label": "Link 8 Label" },
+        { "type": "url",  "id": "link_8_url",   "label": "Link 8 URL" },
+        { "type": "text", "id": "link_8_badge", "label": "Link 8 Badge" },
+        {
+          "type": "header",
+          "content": "Promo Card"
+        },
+        {
+          "type": "paragraph",
+          "content": "Optional featured card shown below the links in this column."
+        },
+        { "type": "text", "id": "promo_label", "label": "Promo Label", "info": "e.g. Featured Deal" },
+        { "type": "text", "id": "promo_title", "label": "Promo Title" },
+        { "type": "text", "id": "promo_cta",   "label": "Promo CTA",   "default": "Learn More" },
+        { "type": "url",  "id": "promo_url",   "label": "Promo URL" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Gaming Footer",
+      "blocks": [
+        {
+          "type": "nav_column",
+          "settings": {
+            "title": "Shop",
+            "link_1_label": "Gaming Chairs",
+            "link_2_label": "Monitors",
+            "link_3_label": "Headsets",
+            "link_4_label": "Mice & Keyboards",
+            "link_4_badge": "New",
+            "link_5_label": "Controllers",
+            "link_6_label": "All Products"
+          }
+        },
+        {
+          "type": "nav_column",
+          "settings": {
+            "title": "Brands",
+            "link_1_label": "PlayStation",
+            "link_2_label": "Xbox",
+            "link_3_label": "Razer",
+            "link_4_label": "Corsair",
+            "link_5_label": "SteelSeries",
+            "link_6_label": "All Brands"
+          }
+        },
+        {
+          "type": "nav_column",
+          "settings": {
+            "title": "Support",
+            "link_1_label": "Help Center",
+            "link_2_label": "Track My Order",
+            "link_3_label": "Returns & Exchanges",
+            "link_4_label": "Warranty Claims",
+            "link_5_label": "Contact Us",
+            "promo_label": "Pro Tip",
+            "promo_title": "Build Your Setup",
+            "promo_cta": "Start Building",
+            "promo_url": ""
+          }
+        },
+        {
+          "type": "nav_column",
+          "settings": {
+            "title": "Company",
+            "link_1_label": "About Us",
+            "link_2_label": "Blog",
+            "link_3_label": "Careers",
+            "link_4_label": "Press",
+            "link_5_label": "Affiliate Program",
+            "link_6_label": "Sitemap"
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 4
+}
+{% endschema %}

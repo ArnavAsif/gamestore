@@ -1,0 +1,1282 @@
+{% comment %}
+  Brand Partners - Cyberpunk Gaming UI
+  Version: 1.0.0
+  Compatible with: Shopify OS 2.0+
+  Style: Cyberpunk / Gaming UI — matches Build Your Setup section
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'bp-' | append: section.id
+  assign heading = section.settings.heading | default: 'Brand Partners'
+  assign subheading = section.settings.subheading | default: 'Powered by the worlds most trusted gaming brands'
+-%}
+
+<style>
+  /* ============================================
+     CSS VARIABLES — mirrors BYS token system
+  ============================================ */
+  #{{ section_id }} {
+    --bp-bg: #0A0A0A;
+    --bp-bg-card: #0F0F0F;
+    --bp-bg-elevated: #141414;
+    --bp-primary: #B11226;
+    --bp-accent: #FF2A2A;
+    --bp-cyan: #00F0FF;
+    --bp-gold: #FFB800;
+    --bp-white: #FFFFFF;
+    --bp-text-muted: rgba(255,255,255,0.5);
+    --bp-text-dim: rgba(255,255,255,0.25);
+    --bp-border: rgba(255,255,255,0.06);
+    --bp-border-hover: rgba(177,18,38,0.5);
+    --bp-glow-red: 0 0 20px rgba(255,42,42,0.3);
+    --bp-glow-red-lg: 0 0 50px rgba(177,18,38,0.25);
+    --bp-glow-cyan: 0 0 20px rgba(0,240,255,0.3);
+    --bp-glow-gold: 0 0 20px rgba(255,184,0,0.3);
+    --bp-transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    --bp-transition-fast: all 0.18s ease;
+  }
+
+  /* ============================================
+     SECTION BASE
+  ============================================ */
+  #{{ section_id }} {
+    position: relative;
+    width: 100%;
+    background: var(--bp-bg);
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  /* ============================================
+     BACKGROUND — identical to BYS
+  ============================================ */
+  #{{ section_id }} .bp-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(177,18,38,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(177,18,38,0.025) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #{{ section_id }} .bp-bg-radial {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px;
+    height: 600px;
+    background: radial-gradient(ellipse, rgba(177,18,38,0.06) 0%, transparent 65%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(60px);
+  }
+
+  /* scanline overlay */
+  #{{ section_id }} .bp-bg-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ============================================
+     CONTAINER
+  ============================================ */
+  #{{ section_id }} .bp-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  /* ============================================
+     SECTION HEADER — mirrors BYS .bys-header
+  ============================================ */
+  #{{ section_id }} .bp-header {
+    text-align: center;
+    margin-bottom: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  #{{ section_id }} .bp-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--bp-accent);
+  }
+
+  #{{ section_id }} .bp-eyebrow::before,
+  #{{ section_id }} .bp-eyebrow::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 1px;
+    background: var(--bp-accent);
+    box-shadow: var(--bp-glow-red);
+  }
+
+  #{{ section_id }} .bp-heading {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(30px, 4vw, 56px);
+    font-weight: 900;
+    color: var(--bp-white);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  #{{ section_id }} .bp-heading mark {
+    background: none;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--bp-primary);
+  }
+
+  #{{ section_id }} .bp-subheading {
+    font-size: 15px;
+    color: var(--bp-text-muted);
+    max-width: 500px;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* ============================================
+     DIVIDER LINE — decorative HUD rule
+  ============================================ */
+  #{{ section_id }} .bp-rule {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 56px;
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #{{ section_id }} .bp-rule-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bp-border), transparent);
+  }
+
+  #{{ section_id }} .bp-rule-diamond {
+    width: 6px;
+    height: 6px;
+    background: var(--bp-accent);
+    transform: rotate(45deg);
+    box-shadow: var(--bp-glow-red);
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .bp-rule-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--bp-text-dim);
+    white-space: nowrap;
+  }
+
+  /* ============================================
+     MARQUEE TRACK WRAPPER
+  ============================================ */
+  #{{ section_id }} .bp-marquee-wrapper {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: {{ section.settings.show_static_grid | default: false | json | replace: 'true', '48' | replace: 'false', '0' }}px;
+  }
+
+  /* Edge fade masks */
+  #{{ section_id }} .bp-marquee-wrapper::before,
+  #{{ section_id }} .bp-marquee-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 140px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .bp-marquee-wrapper::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bp-bg) 0%, transparent 100%);
+  }
+
+  #{{ section_id }} .bp-marquee-wrapper::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--bp-bg) 0%, transparent 100%);
+  }
+
+  /* ============================================
+     MARQUEE TRACK
+  ============================================ */
+  #{{ section_id }} .bp-marquee-track {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    width: max-content;
+    animation: bp-marquee {{ section.settings.scroll_speed | default: 30 }}s linear infinite;
+  }
+
+  #{{ section_id }} .bp-marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes bp-marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* Reverse direction variant */
+  #{{ section_id }} .bp-marquee-track--reverse {
+    animation-direction: reverse;
+  }
+
+  /* ============================================
+     BRAND LOGO CARD
+  ============================================ */
+  #{{ section_id }} .bp-logo-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 200px;
+    height: 110px;
+    margin: 0 8px;
+    background: var(--bp-bg-card);
+    border: 1px solid var(--bp-border);
+    cursor: pointer;
+    transition: var(--bp-transition);
+    overflow: hidden;
+    flex-shrink: 0;
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+  }
+
+  /* Corner cut — BYS signature shape (smaller) */
+  #{{ section_id }} .bp-logo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 0; height: 0;
+    border-style: solid;
+    border-width: 0 14px 14px 0;
+    border-color: transparent var(--bp-bg) transparent transparent;
+    z-index: 2;
+    transition: border-color 0.3s ease;
+  }
+
+  /* Bottom-left cut */
+  #{{ section_id }} .bp-logo-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0.015) 100%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Top accent bar — hidden by default */
+  #{{ section_id }} .bp-logo-card .bp-card-accent-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--bp-primary), var(--bp-accent), transparent);
+    box-shadow: var(--bp-glow-red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+    z-index: 3;
+  }
+
+  /* Glow circle behind logo */
+  #{{ section_id }} .bp-logo-card .bp-card-glow {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: var(--bp-primary);
+    filter: blur(30px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ---- HOVER STATE ---- */
+  #{{ section_id }} .bp-logo-card:hover {
+    border-color: var(--bp-border-hover);
+    background: var(--bp-bg-elevated);
+    transform: translateY(-3px);
+    box-shadow:
+      0 12px 40px rgba(0,0,0,0.5),
+      var(--bp-glow-red);
+  }
+
+  #{{ section_id }} .bp-logo-card:hover::after {
+    opacity: 1;
+  }
+
+  #{{ section_id }} .bp-logo-card:hover .bp-card-accent-bar {
+    transform: scaleX(1);
+  }
+
+  #{{ section_id }} .bp-logo-card:hover .bp-card-glow {
+    opacity: 0.12;
+  }
+
+  #{{ section_id }} .bp-logo-card:focus-visible {
+    outline: 2px solid var(--bp-accent);
+    outline-offset: 2px;
+  }
+
+  /* Brand-specific glow colors */
+  #{{ section_id }} .bp-logo-card[data-brand-color="playstation"] .bp-card-glow,
+  #{{ section_id }} .bp-logo-card[data-brand-color="playstation"]:hover {
+    --brand-glow-color: rgba(0, 112, 209, 0.15);
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="playstation"] .bp-card-glow {
+    background: #0070D1;
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="playstation"]:hover {
+    border-color: rgba(0,112,209,0.5);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(0,112,209,0.3);
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="playstation"]:hover .bp-card-accent-bar {
+    background: linear-gradient(90deg, #0070D1, #00A8FF, transparent);
+    box-shadow: 0 0 20px rgba(0,112,209,0.4);
+  }
+
+  #{{ section_id }} .bp-logo-card[data-brand-color="xbox"] .bp-card-glow {
+    background: #107C10;
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="xbox"]:hover {
+    border-color: rgba(16,124,16,0.5);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(16,124,16,0.3);
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="xbox"]:hover .bp-card-accent-bar {
+    background: linear-gradient(90deg, #107C10, #52B043, transparent);
+    box-shadow: 0 0 20px rgba(16,124,16,0.4);
+  }
+
+  #{{ section_id }} .bp-logo-card[data-brand-color="razer"] .bp-card-glow {
+    background: #44D62C;
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="razer"]:hover {
+    border-color: rgba(68,214,44,0.4);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(68,214,44,0.25);
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="razer"]:hover .bp-card-accent-bar {
+    background: linear-gradient(90deg, #44D62C, #9BF086, transparent);
+    box-shadow: 0 0 20px rgba(68,214,44,0.4);
+  }
+
+  #{{ section_id }} .bp-logo-card[data-brand-color="corsair"] .bp-card-glow {
+    background: #FFD700;
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="corsair"]:hover {
+    border-color: rgba(255,215,0,0.35);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255,215,0,0.2);
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="corsair"]:hover .bp-card-accent-bar {
+    background: linear-gradient(90deg, #FFD700, #FFF176, transparent);
+    box-shadow: 0 0 20px rgba(255,215,0,0.4);
+  }
+
+  #{{ section_id }} .bp-logo-card[data-brand-color="steelseries"] .bp-card-glow {
+    background: #FF6600;
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="steelseries"]:hover {
+    border-color: rgba(255,102,0,0.4);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px rgba(255,102,0,0.25);
+  }
+  #{{ section_id }} .bp-logo-card[data-brand-color="steelseries"]:hover .bp-card-accent-bar {
+    background: linear-gradient(90deg, #FF6600, #FFB347, transparent);
+    box-shadow: 0 0 20px rgba(255,102,0,0.4);
+  }
+
+  /* ============================================
+     LOGO INNER CONTENT
+  ============================================ */
+  #{{ section_id }} .bp-logo-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: var(--bp-transition);
+  }
+
+  #{{ section_id }} .bp-logo-card:hover .bp-logo-inner {
+    transform: translateY(-2px);
+  }
+
+  /* SVG logo wrapper */
+  #{{ section_id }} .bp-logo-svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.3);
+    transition: var(--bp-transition);
+    filter: none;
+  }
+
+  #{{ section_id }} .bp-logo-card:hover .bp-logo-svg {
+    color: var(--bp-white);
+    filter: drop-shadow(0 0 8px rgba(255,255,255,0.25));
+  }
+
+  /* Custom image logo */
+  #{{ section_id }} .bp-logo-img {
+    max-width: 120px;
+    max-height: 48px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.35;
+    transition: var(--bp-transition);
+    filter: grayscale(1) brightness(2);
+  }
+
+  #{{ section_id }} .bp-logo-card:hover .bp-logo-img {
+    opacity: 0.9;
+    filter: grayscale(0) brightness(1);
+  }
+
+  /* Brand name label */
+  #{{ section_id }} .bp-logo-name {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--bp-text-dim);
+    transition: var(--bp-transition);
+    white-space: nowrap;
+  }
+
+  #{{ section_id }} .bp-logo-card:hover .bp-logo-name {
+    color: var(--bp-text-muted);
+  }
+
+  /* ============================================
+     STATIC GRID (optional below marquee)
+  ============================================ */
+  #{{ section_id }} .bp-static-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 48px;
+  }
+
+  /* ============================================
+     STATS STRIP (optional)
+  ============================================ */
+  #{{ section_id }} .bp-stats-strip {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--bp-border);
+    margin-top: 56px;
+    background: var(--bp-bg-card);
+    overflow: hidden;
+    position: relative;
+  }
+
+  #{{ section_id }} .bp-stats-strip::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--bp-primary), var(--bp-accent), transparent);
+    box-shadow: var(--bp-glow-red);
+  }
+
+  #{{ section_id }} .bp-stat-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 24px 16px;
+    border-right: 1px solid var(--bp-border);
+    position: relative;
+    transition: var(--bp-transition);
+  }
+
+  #{{ section_id }} .bp-stat-item:last-child {
+    border-right: none;
+  }
+
+  #{{ section_id }} .bp-stat-item:hover {
+    background: rgba(177,18,38,0.04);
+  }
+
+  #{{ section_id }} .bp-stat-value {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(22px, 3vw, 36px);
+    font-weight: 900;
+    color: var(--bp-white);
+    letter-spacing: -1px;
+    line-height: 1;
+  }
+
+  #{{ section_id }} .bp-stat-value span {
+    color: var(--bp-accent);
+    font-size: 0.6em;
+    vertical-align: super;
+    letter-spacing: 0;
+  }
+
+  #{{ section_id }} .bp-stat-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--bp-text-dim);
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  #{{ section_id }} .bp-stat-divider {
+    width: 20px;
+    height: 1px;
+    background: var(--bp-accent);
+    box-shadow: var(--bp-glow-red);
+    margin: 2px auto 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  #{{ section_id }} .bp-stat-item:hover .bp-stat-divider {
+    opacity: 1;
+  }
+
+  /* ============================================
+     SECOND MARQUEE ROW WRAPPER
+  ============================================ */
+  #{{ section_id }} .bp-marquee-row {
+    overflow: hidden;
+    position: relative;
+  }
+
+  #{{ section_id }} .bp-marquee-row::before,
+  #{{ section_id }} .bp-marquee-row::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 140px;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .bp-marquee-row::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--bp-bg) 0%, transparent 100%);
+  }
+
+  #{{ section_id }} .bp-marquee-row::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--bp-bg) 0%, transparent 100%);
+  }
+
+  #{{ section_id }} .bp-marquee-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* ============================================
+     SEPARATOR between rows
+  ============================================ */
+  #{{ section_id }} .bp-row-sep {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 4px 0;
+  }
+
+  #{{ section_id }} .bp-row-sep-line {
+    flex: 1;
+    height: 1px;
+    background: var(--bp-border);
+    max-width: 200px;
+  }
+
+  #{{ section_id }} .bp-row-sep-icon {
+    color: var(--bp-text-dim);
+    display: flex;
+    align-items: center;
+  }
+
+  /* ============================================
+     RESPONSIVE
+  ============================================ */
+  @media (max-width: 1024px) {
+    #{{ section_id }} .bp-container {
+      padding: 0 32px;
+    }
+
+    #{{ section_id }} .bp-stats-strip {
+      flex-wrap: wrap;
+    }
+
+    #{{ section_id }} .bp-stat-item {
+      flex: 1 1 50%;
+      border-bottom: 1px solid var(--bp-border);
+    }
+
+    #{{ section_id }} .bp-stat-item:nth-child(even) {
+      border-right: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    #{{ section_id }} .bp-container {
+      padding: 0 16px;
+    }
+
+    #{{ section_id }} .bp-header {
+      margin-bottom: 40px;
+    }
+
+    #{{ section_id }} .bp-logo-card {
+      width: 160px;
+      height: 90px;
+    }
+
+    #{{ section_id }} .bp-marquee-wrapper::before,
+    #{{ section_id }} .bp-marquee-wrapper::after,
+    #{{ section_id }} .bp-marquee-row::before,
+    #{{ section_id }} .bp-marquee-row::after {
+      width: 60px;
+    }
+
+    #{{ section_id }} .bp-stats-strip {
+      flex-direction: column;
+    }
+
+    #{{ section_id }} .bp-stat-item {
+      border-right: none;
+      border-bottom: 1px solid var(--bp-border);
+      padding: 18px 16px;
+    }
+
+    #{{ section_id }} .bp-stat-item:last-child {
+      border-bottom: none;
+    }
+  }
+
+  /* ============================================
+     REDUCED MOTION
+  ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    #{{ section_id }} .bp-marquee-track {
+      animation: none;
+    }
+
+    #{{ section_id }} * {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<section
+  id="{{ section_id }}"
+  class="brand-partners"
+  aria-label="{{ heading }}"
+>
+
+  {% comment %} Background {% endcomment %}
+  <div class="bp-bg-grid" aria-hidden="true"></div>
+  <div class="bp-bg-radial" aria-hidden="true"></div>
+  <div class="bp-bg-scanlines" aria-hidden="true"></div>
+
+  <div class="bp-container">
+
+    {% comment %} ============================================
+       SECTION HEADER
+    ============================================ {% endcomment %}
+    {% if section.settings.show_header %}
+      <div class="bp-header">
+        {% if section.settings.eyebrow != blank %}
+          <div class="bp-eyebrow" aria-hidden="true">{{ section.settings.eyebrow }}</div>
+        {% endif %}
+
+        <h2 class="bp-heading">
+          {{ heading | split: ' ' | first }}
+          <mark>
+            {%- assign words = heading | split: ' ' -%}
+            {%- for w in words -%}
+              {%- unless forloop.first -%}{{ w }}{% unless forloop.last %} {% endunless %}{%- endunless -%}
+            {%- endfor -%}
+          </mark>
+        </h2>
+
+        {% if subheading != blank %}
+          <p class="bp-subheading">{{ subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% comment %} Decorative rule {% endcomment %}
+    <div class="bp-rule" aria-hidden="true">
+      <div class="bp-rule-line"></div>
+      <div class="bp-rule-diamond"></div>
+      <span class="bp-rule-label">Official Partners</span>
+      <div class="bp-rule-diamond"></div>
+      <div class="bp-rule-line"></div>
+    </div>
+
+    {% comment %} ============================================
+       MARQUEE ROWS
+    ============================================ {% endcomment %}
+    <div class="bp-marquee-rows">
+
+      {% comment %} ROW 1 — forward {% endcomment %}
+      <div class="bp-marquee-row">
+        <div class="bp-marquee-track" aria-hidden="true">
+
+          {%- comment -%} Duplicate set × 2 for seamless loop {%- endcomment -%}
+          {%- for _set in (1..2) -%}
+
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign brand_name  = block.settings.brand_name | default: 'Brand'
+                assign brand_color = block.settings.brand_color | default: 'default'
+                assign brand_url   = block.settings.brand_url   | default: '#'
+                assign brand_image = block.settings.brand_image
+              -%}
+
+              <a
+                href="{{ brand_url }}"
+                class="bp-logo-card"
+                data-brand-color="{{ brand_color }}"
+                aria-label="{{ brand_name }} - Official Partner"
+                {% if brand_url == '#' %}aria-disabled="true" tabindex="-1"{% endif %}
+                {{ block.shopify_attributes }}
+              >
+                {% comment %} Decorative elements {% endcomment %}
+                <div class="bp-card-accent-bar" aria-hidden="true"></div>
+                <div class="bp-card-glow" aria-hidden="true"></div>
+
+                <div class="bp-logo-inner">
+
+                  {% comment %} Custom image takes priority {% endcomment %}
+                  {%- if brand_image != blank -%}
+                    {{
+                      brand_image
+                      | image_url: width: 240
+                      | image_tag:
+                        class: 'bp-logo-img',
+                        loading: 'lazy',
+                        alt: brand_name,
+                        widths: '120, 180, 240'
+                    }}
+
+                  {%- else -%}
+                    {% comment %} Inline SVG logos {% endcomment %}
+                    <div class="bp-logo-svg" aria-hidden="true">
+                      {%- case brand_color -%}
+
+                        {%- when 'playstation' -%}
+                          <svg width="64" height="48" viewBox="0 0 120 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- PS stylized mark -->
+                            <path d="M44 38V10L52 8C56 7 59 8.5 60 12C61 15 60 18 57 19.5L48 22V38H44Z" fill="currentColor"/>
+                            <path d="M48 19L57 16C59 15 60 13 59.5 11C59 9 57 8.5 55 9L48 11V19Z" fill="currentColor" opacity="0.4"/>
+                            <path d="M60 38L68 35V29L60 32V38Z" fill="currentColor"/>
+                            <path d="M62 27C66 25.5 70 23 72 19C73.5 16 73 12.5 70 11C67 9.5 63 10 60 11.5L68 14C70 15 70 17 69 18.5C68 20 66 21 64 22L62 27Z" fill="currentColor"/>
+                            <!-- PS letters -->
+                            <text x="6" y="36" font-family="Arial Black, Impact, sans-serif" font-size="22" font-weight="900" letter-spacing="-1" fill="currentColor">P</text>
+                            <text x="22" y="36" font-family="Arial Black, Impact, sans-serif" font-size="22" font-weight="900" letter-spacing="-1" fill="currentColor" opacity="0.55">S</text>
+                          </svg>
+
+                        {%- when 'xbox' -%}
+                          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Xbox sphere -->
+                            <circle cx="28" cy="28" r="26" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                            <!-- Xbox X -->
+                            <path d="M15 15C19 19 22 22 28 28C34 22 37 19 41 15C37 11 33 9 28 9C23 9 19 11 15 15Z" fill="currentColor" opacity="0.7"/>
+                            <path d="M15 41C19 37 22 34 28 28C22 22 19 19 15 15C11 19 9 23 9 28C9 33 11 37 15 41Z" fill="currentColor" opacity="0.5"/>
+                            <path d="M41 41C37 37 34 34 28 28C34 34 37 37 41 41C45 37 47 33 47 28C47 23 45 19 41 15C37 19 34 22 28 28C34 34 37 37 41 41Z" fill="currentColor" opacity="0.5"/>
+                            <path d="M15 41C19 37 22 34 28 28C34 34 37 37 41 41C37 45 33 47 28 47C23 47 19 45 15 41Z" fill="currentColor" opacity="0.7"/>
+                            <circle cx="28" cy="28" r="7" fill="currentColor"/>
+                          </svg>
+
+                        {%- when 'razer' -%}
+                          <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Razer three-snake mark (simplified) -->
+                            <path d="M26 4L6 16V36L26 48L46 36V16L26 4Z" stroke="currentColor" stroke-width="1.5" opacity="0.3"/>
+                            <path d="M26 10L12 18V34L26 42L40 34V18L26 10Z" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.5"/>
+                            <path d="M16 20L26 14L36 20V32L26 38L16 32V20Z" fill="currentColor" opacity="0.15"/>
+                            <!-- R mark -->
+                            <path d="M20 22V32M20 22H26C28 22 30 23.5 30 26C30 28.5 28 30 26 30H20M26 30L30 32" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+
+                        {%- when 'corsair' -%}
+                          <svg width="56" height="40" viewBox="0 0 100 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Corsair anchor/sail mark -->
+                            <path d="M50 4L66 16H34L50 4Z" fill="currentColor"/>
+                            <path d="M34 16H66V26C66 33 58 38 50 38C42 38 34 33 34 26V16Z" fill="currentColor" opacity="0.25"/>
+                            <path d="M50 16V38M44 20L56 20M42 26H58" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+                            <rect x="18" y="14" width="10" height="2" rx="1" fill="currentColor" opacity="0.4"/>
+                            <rect x="72" y="14" width="10" height="2" rx="1" fill="currentColor" opacity="0.4"/>
+                          </svg>
+
+                        {%- when 'steelseries' -%}
+                          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- SteelSeries S mark -->
+                            <path d="M32 12H18C15 12 13 14 13 17C13 20 15 22 18 22H30C33 22 35 24 35 27C35 30 33 32 30 32H14" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                            <path d="M14 37H28" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+                          </svg>
+
+                        {%- when 'logitech' -%}
+                          <svg width="52" height="48" viewBox="0 0 80 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Logi G mark -->
+                            <circle cx="36" cy="30" r="18" stroke="currentColor" stroke-width="2.5" opacity="0.4"/>
+                            <path d="M36 18C29 18 24 23 24 30C24 37 29 42 36 42C40 42 44 40 46 37V30H38" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M56 20V42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+                          </svg>
+
+                        {%- when 'hyperx' -%}
+                          <svg width="60" height="36" viewBox="0 0 96 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- HyperX H mark -->
+                            <path d="M8 6V30M8 18H24M24 6V30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                            <!-- X mark -->
+                            <path d="M54 6L70 30M70 6L54 30" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+                            <!-- divider -->
+                            <path d="M38 4L42 32" stroke="currentColor" stroke-width="1" opacity="0.2" stroke-linecap="round"/>
+                          </svg>
+
+                        {%- when 'asus' -%}
+                          <svg width="64" height="32" viewBox="0 0 110 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- ASUS diagonal mark -->
+                            <path d="M6 28L22 4H30L14 28H6Z" fill="currentColor"/>
+                            <path d="M16 28L32 4H40L24 28H16Z" fill="currentColor" opacity="0.45"/>
+                            <!-- ROG eye sub-mark -->
+                            <path d="M54 16C54 12 57 9 61 9C65 9 68 12 68 16C68 20 65 23 61 23C57 23 54 20 54 16Z" stroke="currentColor" stroke-width="1.8" opacity="0.5"/>
+                            <circle cx="61" cy="16" r="3" fill="currentColor" opacity="0.7"/>
+                            <path d="M74 8V24M74 16H86M86 8V24" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+                          </svg>
+
+                        {%- else -%}
+                          {% comment %} Generic brand mark {% endcomment %}
+                          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 4L28 16H40L30 23L34 35L24 28L14 35L18 23L8 16H20L24 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                          </svg>
+
+                      {%- endcase -%}
+                    </div>
+                  {%- endif -%}
+
+                  <span class="bp-logo-name">{{ brand_name }}</span>
+                </div>
+              </a>
+
+            {%- endfor -%}
+          {%- endfor -%}
+
+        </div>
+      </div>
+
+      {% comment %} Separator between rows {% endcomment %}
+      {% if section.settings.show_second_row and section.blocks.size > 0 %}
+        <div class="bp-row-sep" aria-hidden="true">
+          <div class="bp-row-sep-line"></div>
+          <div class="bp-row-sep-icon">
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="4" height="4" fill="rgba(255,42,42,0.4)" transform="rotate(45 5 5)"/>
+            </svg>
+          </div>
+          <div class="bp-row-sep-line"></div>
+        </div>
+
+        {% comment %} ROW 2 — reverse direction {% endcomment %}
+        <div class="bp-marquee-row">
+          <div class="bp-marquee-track bp-marquee-track--reverse" aria-hidden="true">
+
+            {%- for _set in (1..2) -%}
+              {%- assign reversed_blocks = section.blocks | reverse -%}
+              {%- for block in reversed_blocks -%}
+                {%- liquid
+                  assign brand_name  = block.settings.brand_name | default: 'Brand'
+                  assign brand_color = block.settings.brand_color | default: 'default'
+                  assign brand_url   = block.settings.brand_url   | default: '#'
+                  assign brand_image = block.settings.brand_image
+                -%}
+
+                <a
+                  href="{{ brand_url }}"
+                  class="bp-logo-card"
+                  data-brand-color="{{ brand_color }}"
+                  aria-label="{{ brand_name }} - Official Partner"
+                  tabindex="-1"
+                  aria-hidden="true"
+                >
+                  <div class="bp-card-accent-bar" aria-hidden="true"></div>
+                  <div class="bp-card-glow" aria-hidden="true"></div>
+
+                  <div class="bp-logo-inner">
+                    {%- if brand_image != blank -%}
+                      {{
+                        brand_image
+                        | image_url: width: 240
+                        | image_tag:
+                          class: 'bp-logo-img',
+                          loading: 'lazy',
+                          alt: brand_name,
+                          widths: '120, 180, 240'
+                      }}
+                    {%- else -%}
+                      <div class="bp-logo-svg" aria-hidden="true">
+                        {%- case brand_color -%}
+                          {%- when 'playstation' -%}
+                            <svg width="64" height="48" viewBox="0 0 120 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M44 38V10L52 8C56 7 59 8.5 60 12C61 15 60 18 57 19.5L48 22V38H44Z" fill="currentColor"/>
+                              <path d="M60 38L68 35V29L60 32V38Z" fill="currentColor"/>
+                              <path d="M62 27C66 25.5 70 23 72 19C73.5 16 73 12.5 70 11C67 9.5 63 10 60 11.5L68 14C70 15 70 17 69 18.5C68 20 66 21 64 22L62 27Z" fill="currentColor"/>
+                              <text x="6" y="36" font-family="Arial Black, Impact, sans-serif" font-size="22" font-weight="900" fill="currentColor">P</text>
+                              <text x="22" y="36" font-family="Arial Black, Impact, sans-serif" font-size="22" font-weight="900" fill="currentColor" opacity="0.55">S</text>
+                            </svg>
+                          {%- when 'xbox' -%}
+                            <svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="28" cy="28" r="26" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                              <path d="M15 15C19 19 22 22 28 28C34 22 37 19 41 15C37 11 33 9 28 9C23 9 19 11 15 15Z" fill="currentColor" opacity="0.7"/>
+                              <path d="M15 41C19 37 22 34 28 28C22 22 19 19 15 15C11 19 9 23 9 28C9 33 11 37 15 41Z" fill="currentColor" opacity="0.5"/>
+                              <path d="M41 15C37 19 34 22 28 28C34 34 37 37 41 41C45 37 47 33 47 28C47 23 45 19 41 15Z" fill="currentColor" opacity="0.5"/>
+                              <path d="M15 41C19 37 22 34 28 28C34 34 37 37 41 41C37 45 33 47 28 47C23 47 19 45 15 41Z" fill="currentColor" opacity="0.7"/>
+                              <circle cx="28" cy="28" r="7" fill="currentColor"/>
+                            </svg>
+                          {%- else -%}
+                            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M24 4L28 16H40L30 23L34 35L24 28L14 35L18 23L8 16H20L24 4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                            </svg>
+                        {%- endcase -%}
+                      </div>
+                    {%- endif -%}
+                    <span class="bp-logo-name">{{ brand_name }}</span>
+                  </div>
+                </a>
+
+              {%- endfor -%}
+            {%- endfor -%}
+
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+    {% comment %} END .bp-marquee-rows {% endcomment %}
+
+    {% comment %} ============================================
+       STATS STRIP
+    ============================================ {% endcomment %}
+    {% if section.settings.show_stats %}
+      <div class="bp-stats-strip" role="list" aria-label="Partnership statistics">
+
+        {% if section.settings.stat_1_value != blank %}
+          <div class="bp-stat-item" role="listitem">
+            <div class="bp-stat-value">
+              {{ section.settings.stat_1_value }}<span>{{ section.settings.stat_1_suffix | default: '+' }}</span>
+            </div>
+            <div class="bp-stat-label">{{ section.settings.stat_1_label | default: 'Brand Partners' }}</div>
+            <div class="bp-stat-divider" aria-hidden="true"></div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.stat_2_value != blank %}
+          <div class="bp-stat-item" role="listitem">
+            <div class="bp-stat-value">
+              {{ section.settings.stat_2_value }}<span>{{ section.settings.stat_2_suffix | default: '+' }}</span>
+            </div>
+            <div class="bp-stat-label">{{ section.settings.stat_2_label | default: 'Products Available' }}</div>
+            <div class="bp-stat-divider" aria-hidden="true"></div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.stat_3_value != blank %}
+          <div class="bp-stat-item" role="listitem">
+            <div class="bp-stat-value">
+              {{ section.settings.stat_3_value }}<span>{{ section.settings.stat_3_suffix | default: '+' }}</span>
+            </div>
+            <div class="bp-stat-label">{{ section.settings.stat_3_label | default: 'Happy Gamers' }}</div>
+            <div class="bp-stat-divider" aria-hidden="true"></div>
+          </div>
+        {% endif %}
+
+        {% if section.settings.stat_4_value != blank %}
+          <div class="bp-stat-item" role="listitem">
+            <div class="bp-stat-value">
+              {{ section.settings.stat_4_value }}<span>{{ section.settings.stat_4_suffix | default: '' }}</span>
+            </div>
+            <div class="bp-stat-label">{{ section.settings.stat_4_label | default: 'Years of Trust' }}</div>
+            <div class="bp-stat-divider" aria-hidden="true"></div>
+          </div>
+        {% endif %}
+
+      </div>
+    {% endif %}
+
+  </div>
+  {% comment %} END .bp-container {% endcomment %}
+
+</section>
+
+{% schema %}
+{
+  "name": "Brand Partners",
+  "tag": "div",
+  "class": "brand-partners-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show Section Header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Text",
+      "default": "Trusted By The Best"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Brand Partners"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Powered by the world's most trusted gaming brands"
+    },
+    {
+      "type": "header",
+      "content": "Marquee Settings"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "s",
+      "label": "Scroll Speed",
+      "default": 30,
+      "info": "Lower = faster. Higher = slower."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_second_row",
+      "label": "Show Second Marquee Row",
+      "default": true,
+      "info": "Displays a second row scrolling in reverse."
+    },
+    {
+      "type": "header",
+      "content": "Stats Strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show Stats Strip",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_1_value",
+      "label": "Stat 1 — Value",
+      "default": "50"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_suffix",
+      "label": "Stat 1 — Suffix",
+      "default": "+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 — Label",
+      "default": "Brand Partners"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_value",
+      "label": "Stat 2 — Value",
+      "default": "10K"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_suffix",
+      "label": "Stat 2 — Suffix",
+      "default": "+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 — Label",
+      "default": "Products Available"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_value",
+      "label": "Stat 3 — Value",
+      "default": "500K"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_suffix",
+      "label": "Stat 3 — Suffix",
+      "default": "+"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 — Label",
+      "default": "Happy Gamers"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_value",
+      "label": "Stat 4 — Value",
+      "default": "8"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_suffix",
+      "label": "Stat 4 — Suffix",
+    },
+    {
+      "type": "text",
+      "id": "stat_4_label",
+      "label": "Stat 4 — Label",
+      "default": "Years of Trust"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 80
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        {
+          "type": "text",
+          "id": "brand_name",
+          "label": "Brand Name",
+          "default": "PlayStation"
+        },
+        {
+          "type": "select",
+          "id": "brand_color",
+          "label": "Brand Glow Color",
+          "info": "Controls hover glow and accent bar color. Also selects the built-in SVG logo.",
+          "options": [
+            { "value": "playstation", "label": "PlayStation (Blue)" },
+            { "value": "xbox",        "label": "Xbox (Green)" },
+            { "value": "razer",       "label": "Razer (Neon Green)" },
+            { "value": "corsair",     "label": "Corsair (Gold)" },
+            { "value": "steelseries", "label": "SteelSeries (Orange)" },
+            { "value": "logitech",    "label": "Logitech G (Purple)" },
+            { "value": "hyperx",      "label": "HyperX (Red)" },
+            { "value": "asus",        "label": "ASUS ROG (Red)" },
+            { "value": "default",     "label": "Default (Red)" }
+          ],
+          "default": "playstation"
+        },
+        {
+          "type": "image_picker",
+          "id": "brand_image",
+          "label": "Custom Logo Image",
+          "info": "Upload a logo (PNG with transparency recommended). Overrides the built-in SVG."
+        },
+        {
+          "type": "url",
+          "id": "brand_url",
+          "label": "Brand Link URL",
+          "info": "Leave empty or use # to disable linking."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Partners",
+      "category": "Custom Sections",
+      "blocks": [
+        { "type": "brand", "settings": { "brand_name": "PlayStation", "brand_color": "playstation" } },
+        { "type": "brand", "settings": { "brand_name": "Xbox",        "brand_color": "xbox"        } },
+        { "type": "brand", "settings": { "brand_name": "Razer",       "brand_color": "razer"       } },
+        { "type": "brand", "settings": { "brand_name": "Corsair",     "brand_color": "corsair"     } },
+        { "type": "brand", "settings": { "brand_name": "SteelSeries", "brand_color": "steelseries" } },
+        { "type": "brand", "settings": { "brand_name": "Logitech G",  "brand_color": "logitech"    } },
+        { "type": "brand", "settings": { "brand_name": "HyperX",      "brand_color": "hyperx"      } },
+        { "type": "brand", "settings": { "brand_name": "ASUS ROG",    "brand_color": "asus"        } }
+      ]
+    }
+  ],
+  "max_blocks": 16
+}
+{% endschema %}

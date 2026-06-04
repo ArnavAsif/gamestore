@@ -1,0 +1,1420 @@
+{% comment %}
+  Featured Categories Section - Interactive 3D Cards
+  Version: 1.0.0
+  Compatible with: Shopify OS 2.0+
+  Style: Cyberpunk / Gaming UI
+{% endcomment %}
+
+{%- liquid
+  assign section_id = 'fc-' | append: section.id
+  assign heading = section.settings.heading | default: 'Shop By Category'
+  assign subheading = section.settings.subheading | default: 'Find the perfect gear for your setup'
+-%}
+
+<style>
+  /* ============================================
+     CSS VARIABLES
+  ============================================ */
+  #{{ section_id }} {
+    --fc-bg: #0D0D0D;
+    --fc-secondary: #111111;
+    --fc-card-bg: #0F0F0F;
+    --fc-primary: #B11226;
+    --fc-accent: #FF2A2A;
+    --fc-cyan: #00F0FF;
+    --fc-white: #FFFFFF;
+    --fc-text-muted: rgba(255, 255, 255, 0.55);
+    --fc-text-dim: rgba(255, 255, 255, 0.35);
+    --fc-border: rgba(255, 255, 255, 0.06);
+    --fc-border-hover: rgba(177, 18, 38, 0.6);
+    --fc-glow-red: 0 0 20px rgba(255, 42, 42, 0.35);
+    --fc-glow-red-lg: 0 0 50px rgba(177, 18, 38, 0.3);
+    --fc-glow-cyan: 0 0 20px rgba(0, 240, 255, 0.3);
+    --fc-transition-fast: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --fc-transition-med: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --fc-transition-slow: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --fc-radius: 2px;
+    --fc-card-perspective: 1000px;
+  }
+
+  /* ============================================
+     SECTION BASE
+  ============================================ */
+  #{{ section_id }} {
+    position: relative;
+    width: 100%;
+    background-color: var(--fc-bg);
+    padding: {{ section.settings.section_padding_top }}px 0 {{ section.settings.section_padding_bottom }}px;
+    overflow: hidden;
+  }
+
+  /* ============================================
+     BACKGROUND EFFECTS
+  ============================================ */
+  #{{ section_id }} .fc-bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(177, 18, 38, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(177, 18, 38, 0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #{{ section_id }} .fc-bg-glow-left {
+    position: absolute;
+    left: -200px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(177, 18, 38, 0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(40px);
+  }
+
+  #{{ section_id }} .fc-bg-glow-right {
+    position: absolute;
+    right: -200px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(0, 240, 255, 0.04) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(60px);
+  }
+
+  /* ============================================
+     CONTAINER
+  ============================================ */
+  #{{ section_id }} .fc-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 60px;
+  }
+
+  /* ============================================
+     SECTION HEADER
+  ============================================ */
+  #{{ section_id }} .fc-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 52px;
+    gap: 24px;
+  }
+
+  #{{ section_id }} .fc-header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #{{ section_id }} .fc-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--fc-accent);
+  }
+
+  #{{ section_id }} .fc-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--fc-accent);
+    box-shadow: var(--fc-glow-red);
+  }
+
+  #{{ section_id }} .fc-heading {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(28px, 3vw, 46px);
+    font-weight: 900;
+    color: var(--fc-white);
+    text-transform: uppercase;
+    letter-spacing: -0.5px;
+    line-height: 1.05;
+    margin: 0;
+  }
+
+  #{{ section_id }} .fc-heading-accent {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--fc-primary);
+  }
+
+  #{{ section_id }} .fc-subheading {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 15px;
+    color: var(--fc-text-muted);
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  #{{ section_id }} .fc-view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--fc-text-muted);
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 10px 20px;
+    border: 1px solid var(--fc-border);
+    transition: var(--fc-transition-med);
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  #{{ section_id }} .fc-view-all::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(177, 18, 38, 0.06);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  #{{ section_id }} .fc-view-all:hover {
+    color: var(--fc-accent);
+    border-color: var(--fc-border-hover);
+    box-shadow: var(--fc-glow-red);
+    text-decoration: none;
+  }
+
+  #{{ section_id }} .fc-view-all:hover::before {
+    transform: scaleX(1);
+  }
+
+  #{{ section_id }} .fc-view-all svg {
+    transition: transform 0.25s ease;
+    position: relative;
+    z-index: 1;
+  }
+
+  #{{ section_id }} .fc-view-all:hover svg {
+    transform: translateX(4px);
+  }
+
+  #{{ section_id }} .fc-view-all-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ============================================
+     CARDS GRID
+  ============================================ */
+  #{{ section_id }} .fc-grid {
+    display: grid;
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr);
+    gap: {{ section.settings.card_gap }}px;
+  }
+
+  /* ============================================
+     CATEGORY CARD - BASE
+  ============================================ */
+  #{{ section_id }} .fc-card {
+    position: relative;
+    perspective: var(--fc-card-perspective);
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+    outline: none;
+  }
+
+  #{{ section_id }} .fc-card:focus-visible .fc-card-inner {
+    border-color: var(--fc-accent);
+    box-shadow: var(--fc-glow-red), 0 0 0 2px var(--fc-accent);
+  }
+
+  #{{ section_id }} .fc-card-inner {
+    position: relative;
+    width: 100%;
+    border: 1px solid var(--fc-border);
+    background: var(--fc-card-bg);
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transform: perspective(var(--fc-card-perspective)) rotateX(0deg) rotateY(0deg);
+    transition:
+      transform 0.1s ease,
+      border-color 0.35s ease,
+      box-shadow 0.35s ease;
+    will-change: transform;
+  }
+
+  /* ============================================
+     CARD ASPECT RATIO & HEIGHT
+  ============================================ */
+  #{{ section_id }} .fc-card--tall .fc-card-inner {
+    aspect-ratio: 3 / 4;
+  }
+
+  #{{ section_id }} .fc-card--wide .fc-card-inner {
+    aspect-ratio: 16 / 9;
+  }
+
+  #{{ section_id }} .fc-card--square .fc-card-inner {
+    aspect-ratio: 1 / 1;
+  }
+
+  /* ============================================
+     CARD IMAGE
+  ============================================ */
+  #{{ section_id }} .fc-card-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  #{{ section_id }} .fc-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-image img,
+  #{{ section_id }} .fc-card:focus-visible .fc-card-image img {
+    transform: scale(1.08);
+  }
+
+  /* Image placeholder */
+  #{{ section_id }} .fc-card-placeholder {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #{{ section_id }} .fc-card-placeholder svg {
+    opacity: 0.15;
+  }
+
+  /* ============================================
+     GRADIENT OVERLAY
+  ============================================ */
+  #{{ section_id }} .fc-card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(13, 13, 13, 0.3) 40%,
+      rgba(13, 13, 13, 0.85) 100%
+    );
+    transition: opacity 0.35s ease;
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(13, 13, 13, 0.1) 0%,
+      rgba(13, 13, 13, 0.3) 30%,
+      rgba(13, 13, 13, 0.92) 100%
+    );
+  }
+
+  /* Red tint on hover */
+  #{{ section_id }} .fc-card-tint {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: radial-gradient(ellipse at center top, rgba(177, 18, 38, 0.12) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-tint {
+    opacity: 1;
+  }
+
+  /* ============================================
+     NEON BORDER EFFECT
+  ============================================ */
+  #{{ section_id }} .fc-card-neon-border {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+
+  /* Top border */
+  #{{ section_id }} .fc-card-neon-border::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--fc-accent), transparent);
+    box-shadow: 0 0 8px var(--fc-accent), 0 0 20px rgba(255, 42, 42, 0.5);
+  }
+
+  /* Bottom border */
+  #{{ section_id }} .fc-card-neon-border::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--fc-primary), transparent);
+    box-shadow: 0 0 8px var(--fc-primary);
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-neon-border,
+  #{{ section_id }} .fc-card:focus-visible .fc-card-neon-border {
+    opacity: 1;
+  }
+
+  /* Side neon lines */
+  #{{ section_id }} .fc-card-neon-left,
+  #{{ section_id }} .fc-card-neon-right {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 100%;
+    z-index: 3;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.35s ease, height 0.4s ease;
+    height: 0%;
+  }
+
+  #{{ section_id }} .fc-card-neon-left {
+    left: 0;
+    background: linear-gradient(180deg, var(--fc-accent), transparent);
+    box-shadow: 0 0 6px var(--fc-accent);
+  }
+
+  #{{ section_id }} .fc-card-neon-right {
+    right: 0;
+    background: linear-gradient(180deg, transparent, var(--fc-primary));
+    box-shadow: 0 0 6px var(--fc-primary);
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-neon-left,
+  #{{ section_id }} .fc-card:hover .fc-card-neon-right,
+  #{{ section_id }} .fc-card:focus-visible .fc-card-neon-left,
+  #{{ section_id }} .fc-card:focus-visible .fc-card-neon-right {
+    opacity: 1;
+    height: 100%;
+  }
+
+  /* ============================================
+     CARD CORNER ACCENTS
+  ============================================ */
+  #{{ section_id }} .fc-card-corner {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  #{{ section_id }} .fc-card-corner--tl {
+    top: 8px;
+    left: 8px;
+    border-top: 1.5px solid var(--fc-cyan);
+    border-left: 1.5px solid var(--fc-cyan);
+    box-shadow: var(--fc-glow-cyan);
+  }
+
+  #{{ section_id }} .fc-card-corner--tr {
+    top: 8px;
+    right: 8px;
+    border-top: 1.5px solid var(--fc-accent);
+    border-right: 1.5px solid var(--fc-accent);
+    box-shadow: var(--fc-glow-red);
+  }
+
+  #{{ section_id }} .fc-card-corner--bl {
+    bottom: 8px;
+    left: 8px;
+    border-bottom: 1.5px solid var(--fc-accent);
+    border-left: 1.5px solid var(--fc-accent);
+    box-shadow: var(--fc-glow-red);
+  }
+
+  #{{ section_id }} .fc-card-corner--br {
+    bottom: 8px;
+    right: 8px;
+    border-bottom: 1.5px solid var(--fc-cyan);
+    border-right: 1.5px solid var(--fc-cyan);
+    box-shadow: var(--fc-glow-cyan);
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-corner,
+  #{{ section_id }} .fc-card:focus-visible .fc-card-corner {
+    opacity: 1;
+  }
+
+  /* ============================================
+     CARD CONTENT
+  ============================================ */
+  #{{ section_id }} .fc-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    padding: 24px 24px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transform: translateY(0);
+    transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* ============================================
+     CATEGORY TAG
+  ============================================ */
+  #{{ section_id }} .fc-card-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--fc-accent);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
+    width: fit-content;
+  }
+
+  #{{ section_id }} .fc-card-tag::before {
+    content: '';
+    width: 16px;
+    height: 1px;
+    background: var(--fc-accent);
+    box-shadow: var(--fc-glow-red);
+    display: block;
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-tag,
+  #{{ section_id }} .fc-card:focus-visible .fc-card-tag {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============================================
+     CARD TITLE
+  ============================================ */
+  #{{ section_id }} .fc-card-title {
+    font-family: 'Arial Black', 'Impact', sans-serif;
+    font-size: clamp(18px, 1.8vw, 26px);
+    font-weight: 900;
+    color: var(--fc-white);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    line-height: 1.1;
+    margin: 0;
+    transition: color 0.25s ease, text-shadow 0.25s ease;
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-title,
+  #{{ section_id }} .fc-card:focus-visible .fc-card-title {
+    color: var(--fc-white);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+  }
+
+  /* ============================================
+     PRODUCT COUNT
+  ============================================ */
+  #{{ section_id }} .fc-card-count {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 12px;
+    color: var(--fc-text-muted);
+    letter-spacing: 0.5px;
+    transition: color 0.25s ease;
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-count {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  /* ============================================
+     CTA ROW
+  ============================================ */
+  #{{ section_id }} .fc-card-cta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-cta,
+  #{{ section_id }} .fc-card:focus-visible .fc-card-cta {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #{{ section_id }} .fc-card-cta-text {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--fc-accent);
+  }
+
+  #{{ section_id }} .fc-card-cta-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(255, 42, 42, 0.4);
+    background: rgba(177, 18, 38, 0.1);
+    color: var(--fc-accent);
+    flex-shrink: 0;
+    transition: var(--fc-transition-fast);
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-cta-arrow {
+    background: var(--fc-primary);
+    border-color: var(--fc-primary);
+    box-shadow: var(--fc-glow-red);
+    transform: translateX(3px);
+  }
+
+  /* ============================================
+     SHINE EFFECT (Mouse Tracking)
+  ============================================ */
+  #{{ section_id }} .fc-card-shine {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 255, 255, 0.04) 0%,
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    will-change: background;
+  }
+
+  #{{ section_id }} .fc-card:hover .fc-card-shine {
+    opacity: 1;
+  }
+
+  /* ============================================
+     CARD HOVER STATE - Border & Shadow
+  ============================================ */
+  #{{ section_id }} .fc-card:hover .fc-card-inner {
+    border-color: rgba(177, 18, 38, 0.4);
+    box-shadow:
+      var(--fc-glow-red-lg),
+      0 20px 60px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* ============================================
+     FEATURED / LARGE CARD VARIANT
+  ============================================ */
+  #{{ section_id }} .fc-card--featured .fc-card-title {
+    font-size: clamp(22px, 2.5vw, 30px);
+  }
+
+  #{{ section_id }} .fc-card--featured .fc-card-content {
+    padding: 32px;
+  }
+
+  /* ============================================
+     ENTRANCE ANIMATIONS
+  ============================================ */
+  #{{ section_id }} [data-fc-animate] {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  #{{ section_id }} [data-fc-animate].fc-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #{{ section_id }} [data-fc-delay="0"] { transition-delay: 0s; }
+  #{{ section_id }} [data-fc-delay="1"] { transition-delay: 0.08s; }
+  #{{ section_id }} [data-fc-delay="2"] { transition-delay: 0.16s; }
+  #{{ section_id }} [data-fc-delay="3"] { transition-delay: 0.24s; }
+  #{{ section_id }} [data-fc-delay="4"] { transition-delay: 0.32s; }
+
+  /* ============================================
+     SECTION DIVIDER
+  ============================================ */
+  #{{ section_id }} .fc-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 52px;
+  }
+
+  #{{ section_id }} .fc-divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--fc-border), transparent);
+  }
+
+  #{{ section_id }} .fc-divider-diamond {
+    width: 6px;
+    height: 6px;
+    background: var(--fc-primary);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+    box-shadow: var(--fc-glow-red);
+  }
+
+  /* ============================================
+     TABLET RESPONSIVE
+  ============================================ */
+  @media (max-width: 1200px) {
+    #{{ section_id }} .fc-container {
+      padding: 0 40px;
+    }
+
+    #{{ section_id }} .fc-grid {
+      grid-template-columns: repeat({{ section.settings.columns_tablet }}, 1fr);
+      gap: 16px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    #{{ section_id }} .fc-header {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 36px;
+    }
+
+    #{{ section_id }} .fc-view-all {
+      align-self: flex-start;
+    }
+  }
+
+  /* ============================================
+     MOBILE RESPONSIVE
+  ============================================ */
+  @media (max-width: 768px) {
+    #{{ section_id }} .fc-container {
+      padding: 0 20px;
+    }
+
+    #{{ section_id }} .fc-grid {
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+      gap: 12px;
+    }
+
+    #{{ section_id }} .fc-card--tall .fc-card-inner {
+      aspect-ratio: 3 / 4;
+    }
+
+    #{{ section_id }} .fc-card-content {
+      padding: 16px 16px 14px;
+      gap: 4px;
+    }
+
+    #{{ section_id }} .fc-card-title {
+      font-size: 18px;
+    }
+
+    #{{ section_id }} .fc-card-cta {
+      display: none;
+    }
+
+    #{{ section_id }} .fc-card-tag {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Disable 3D tilt on mobile */
+    #{{ section_id }} .fc-card-inner {
+      transform: none !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    #{{ section_id }} .fc-grid {
+      gap: 10px;
+    }
+
+    #{{ section_id }} .fc-heading {
+      font-size: 24px;
+    }
+  }
+
+  /* ============================================
+     REDUCED MOTION
+  ============================================ */
+  @media (prefers-reduced-motion: reduce) {
+    #{{ section_id }} .fc-card-inner,
+    #{{ section_id }} .fc-card-image img,
+    #{{ section_id }} .fc-card-tag,
+    #{{ section_id }} .fc-card-cta,
+    #{{ section_id }} .fc-card-neon-left,
+    #{{ section_id }} .fc-card-neon-right {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    #{{ section_id }} .fc-card-inner {
+      transform: none !important;
+    }
+
+    #{{ section_id }} [data-fc-animate] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+</style>
+
+<section
+  id="{{ section_id }}"
+  class="featured-categories"
+  aria-label="{{ heading }}"
+>
+
+  {% comment %} Background Effects {% endcomment %}
+  <div class="fc-bg-grid" aria-hidden="true"></div>
+  <div class="fc-bg-glow-left" aria-hidden="true"></div>
+  <div class="fc-bg-glow-right" aria-hidden="true"></div>
+
+  <div class="fc-container">
+
+    {% comment %} ============================================
+       SECTION HEADER
+    ============================================ {% endcomment %}
+    <div class="fc-header" data-fc-animate data-fc-delay="0">
+      <div class="fc-header-left">
+        {% if section.settings.eyebrow != blank %}
+          <div class="fc-eyebrow" aria-hidden="true">{{ section.settings.eyebrow }}</div>
+        {% endif %}
+
+        <h2 class="fc-heading">
+          {{ heading | split: ' ' | first }}
+          <span class="fc-heading-accent">
+            {%- assign heading_parts = heading | split: ' ' -%}
+            {%- for word in heading_parts -%}
+              {%- unless forloop.first -%}
+                {{ word }}{% unless forloop.last %} {% endunless %}
+              {%- endunless -%}
+            {%- endfor -%}
+          </span>
+        </h2>
+
+        {% if subheading != blank %}
+          <p class="fc-subheading">{{ subheading }}</p>
+        {% endif %}
+      </div>
+
+      {% if section.settings.view_all_text != blank and section.settings.view_all_link != blank %}
+        <a
+          href="{{ section.settings.view_all_link }}"
+          class="fc-view-all"
+          aria-label="{{ section.settings.view_all_text }}"
+        >
+          <span class="fc-view-all-text">{{ section.settings.view_all_text }}</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+
+    {% comment %} ============================================
+       CATEGORIES GRID
+    ============================================ {% endcomment %}
+    <div class="fc-grid" role="list">
+
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign card_url = block.settings.card_link | default: '#'
+          assign card_title = block.settings.title | default: 'Category'
+          assign card_tag = block.settings.tag_text | default: 'Category'
+          assign card_count = block.settings.product_count
+          assign card_size = block.settings.card_size | default: 'tall'
+          assign card_featured = block.settings.featured
+        -%}
+
+        <a
+          href="{{ card_url }}"
+          class="fc-card fc-card--{{ card_size }}{% if card_featured %} fc-card--featured{% endif %}"
+          role="listitem"
+          aria-label="{{ card_title }}{% if card_count != blank %} - {{ card_count }}{% endif %}"
+          data-fc-animate
+          data-fc-delay="{{ forloop.index0 | modulo: 5 }}"
+          data-fc-card
+          {{ block.shopify_attributes }}
+        >
+          <div class="fc-card-inner" data-fc-tilt>
+
+            {% comment %} Image {% endcomment %}
+            <div class="fc-card-image">
+              {% if block.settings.image != blank %}
+  {%- assign alt_text = block.settings.image.alt | default: card_title | escape -%}
+  
+  {{ block.settings.image | image_url: width: 800 | image_tag:
+    loading: 'lazy',
+    alt: alt_text,
+    widths: '400, 600, 800',
+    sizes: '(max-width: 768px) 50vw, 25vw'
+  }}
+{% else %}
+                <div class="fc-card-placeholder" aria-hidden="true">
+                  {%- case block.settings.placeholder_icon -%}
+                    {%- when 'playstation' -%}
+                      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M29.5 56V24L49.5 30C55 31.8 57 34.5 57 39C57 43.5 54 46 49.5 47.5L38 51.5V44.5L46.5 41.5C48.5 40.8 49.5 39.8 49.5 38.5C49.5 37.2 48.5 36.5 46.5 35.8L38 33V56H29.5Z" fill="rgba(177,18,38,0.5)"/>
+                        <path d="M20 52.5L29.5 56V50L20 47V52.5Z" fill="rgba(177,18,38,0.3)"/>
+                        <path d="M57 52L47 55.5V49L57 46V52Z" fill="rgba(177,18,38,0.3)"/>
+                      </svg>
+                    {%- when 'xbox' -%}
+                      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="40" cy="40" r="22" stroke="rgba(177,18,38,0.4)" stroke-width="1.5"/>
+                        <path d="M28 28C28 28 34 36 40 40C46 36 52 28 52 28C48 24 44 22 40 22C36 22 32 24 28 28Z" fill="rgba(177,18,38,0.3)"/>
+                        <path d="M52 52C52 52 46 44 40 40C34 44 28 52 28 52C32 56 36 58 40 58C44 58 48 56 52 52Z" fill="rgba(177,18,38,0.3)"/>
+                        <path d="M28 52C28 52 22 46 22 40C22 34 28 28 28 28C24 32 22 36 22 40C22 44 24 48 28 52Z" fill="rgba(177,18,38,0.2)"/>
+                        <path d="M52 28C52 28 58 34 58 40C58 46 52 52 52 52C56 48 58 44 58 40C58 36 56 32 52 28Z" fill="rgba(177,18,38,0.2)"/>
+                        <circle cx="40" cy="40" r="5" fill="rgba(177,18,38,0.5)"/>
+                      </svg>
+                    {%- when 'chair' -%}
+                      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="28" y="18" width="24" height="22" rx="3" stroke="rgba(177,18,38,0.4)" stroke-width="1.5"/>
+                        <rect x="24" y="40" width="32" height="8" rx="2" stroke="rgba(177,18,38,0.4)" stroke-width="1.5"/>
+                        <line x1="31" y1="48" x2="28" y2="62" stroke="rgba(177,18,38,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="49" y1="48" x2="52" y2="62" stroke="rgba(177,18,38,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="28" y1="62" x2="52" y2="62" stroke="rgba(177,18,38,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="22" y1="40" x2="22" y2="52" stroke="rgba(177,18,38,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="58" y1="40" x2="58" y2="52" stroke="rgba(177,18,38,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                    {%- else -%}
+                      <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="18" y="26" width="44" height="30" rx="4" stroke="rgba(177,18,38,0.4)" stroke-width="1.5"/>
+                        <circle cx="28" cy="41" r="4" stroke="rgba(177,18,38,0.4)" stroke-width="1.5"/>
+                        <line x1="50" y1="35" x2="56" y2="35" stroke="rgba(177,18,38,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="50" y1="41" x2="56" y2="41" stroke="rgba(177,18,38,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="50" y1="47" x2="56" y2="47" stroke="rgba(177,18,38,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                        <line x1="36" y1="56" x2="44" y2="56" stroke="rgba(177,18,38,0.3)" stroke-width="1.5" stroke-linecap="round"/>
+                      </svg>
+                  {%- endcase -%}
+                </div>
+              {% endif %}
+            </div>
+
+            {% comment %} Overlays {% endcomment %}
+            <div class="fc-card-overlay" aria-hidden="true"></div>
+            <div class="fc-card-tint" aria-hidden="true"></div>
+
+            {% comment %} Neon Borders {% endcomment %}
+            <div class="fc-card-neon-border" aria-hidden="true"></div>
+            <div class="fc-card-neon-left" aria-hidden="true"></div>
+            <div class="fc-card-neon-right" aria-hidden="true"></div>
+
+            {% comment %} Corner Accents {% endcomment %}
+            <div class="fc-card-corner fc-card-corner--tl" aria-hidden="true"></div>
+            <div class="fc-card-corner fc-card-corner--tr" aria-hidden="true"></div>
+            <div class="fc-card-corner fc-card-corner--bl" aria-hidden="true"></div>
+            <div class="fc-card-corner fc-card-corner--br" aria-hidden="true"></div>
+
+            {% comment %} Shine Layer {% endcomment %}
+            <div class="fc-card-shine" aria-hidden="true" data-fc-shine></div>
+
+            {% comment %} Content {% endcomment %}
+            <div class="fc-card-content">
+
+              {% if card_tag != blank %}
+                <div class="fc-card-tag" aria-hidden="true">{{ card_tag }}</div>
+              {% endif %}
+
+              <h3 class="fc-card-title">{{ card_title }}</h3>
+
+              {% if card_count != blank %}
+                <span class="fc-card-count">{{ card_count }}</span>
+              {% endif %}
+
+              <div class="fc-card-cta" aria-hidden="true">
+                <span class="fc-card-cta-text">{{ block.settings.cta_text | default: 'Shop Now' }}</span>
+                <span class="fc-card-cta-arrow">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </div>
+
+            </div>
+            {% comment %} END .fc-card-content {% endcomment %}
+
+          </div>
+          {% comment %} END .fc-card-inner {% endcomment %}
+        </a>
+        {% comment %} END .fc-card {% endcomment %}
+
+      {%- else -%}
+        {% comment %} Fallback when no blocks are added {% endcomment %}
+        <div style="
+          grid-column: 1 / -1;
+          text-align: center;
+          padding: 80px 40px;
+          color: rgba(255,255,255,0.3);
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          font-size: 14px;
+          letter-spacing: 1px;
+          border: 1px dashed rgba(177,18,38,0.2);
+        ">
+          Add category blocks in the theme editor to display your categories.
+        </div>
+      {%- endfor -%}
+
+    </div>
+    {% comment %} END .fc-grid {% endcomment %}
+
+  </div>
+  {% comment %} END .fc-container {% endcomment %}
+
+</section>
+
+<script>
+(function() {
+  'use strict';
+
+  const SECTION_ID = '{{ section_id }}';
+
+  function onReady(fn) {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+
+  onReady(function() {
+    const section = document.getElementById(SECTION_ID);
+    if (!section) return;
+
+    // ============================================
+    // ENTRANCE ANIMATIONS - Intersection Observer
+    // ============================================
+    const animatables = section.querySelectorAll('[data-fc-animate]');
+
+    if (animatables.length > 0 && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            requestAnimationFrame(function() {
+              entry.target.classList.add('fc-visible');
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      animatables.forEach(function(el) { observer.observe(el); });
+    } else {
+      // Fallback: show all immediately
+      animatables.forEach(function(el) { el.classList.add('fc-visible'); });
+    }
+
+    // ============================================
+    // 3D TILT EFFECT
+    // ============================================
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!isMobile && !prefersReduced) {
+      const cards = section.querySelectorAll('[data-fc-card]');
+
+      cards.forEach(function(card) {
+        const inner = card.querySelector('[data-fc-tilt]');
+        const shine = card.querySelector('[data-fc-shine]');
+        if (!inner) return;
+
+        const config = {
+          max: 10,           // max degrees of tilt
+          scale: 1.02,       // slight scale on hover
+          speed: 300,        // transition speed (ms) for snapping back
+          perspective: 1000, // perspective value
+          shineStrength: 0.08 // shine intensity
+        };
+
+        let bounds = null;
+        let rafId = null;
+        let targetX = 0;
+        let targetY = 0;
+        let currentX = 0;
+        let currentY = 0;
+        let isHovering = false;
+
+        function lerp(a, b, t) {
+          return a + (b - a) * t;
+        }
+
+        function getRelativePosition(e, rect) {
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          return {
+            x: (x / rect.width) * 2 - 1,   // -1 to 1
+            y: (y / rect.height) * 2 - 1    // -1 to 1
+          };
+        }
+
+        function animateFrame() {
+          currentX = lerp(currentX, targetX, 0.12);
+          currentY = lerp(currentY, targetY, 0.12);
+
+          const rotX = -currentY * config.max;
+          const rotY = currentX * config.max;
+
+          inner.style.transform =
+            'perspective(' + config.perspective + 'px) ' +
+            'rotateX(' + rotX + 'deg) ' +
+            'rotateY(' + rotY + 'deg) ' +
+            'scale(' + config.scale + ')';
+
+          // Update shine position
+          if (shine) {
+            const shineX = ((currentX + 1) / 2) * 100;
+            const shineY = ((currentY + 1) / 2) * 100;
+            shine.style.background =
+              'radial-gradient(circle at ' + shineX + '% ' + shineY + '%, ' +
+              'rgba(255,255,255,' + config.shineStrength + ') 0%, ' +
+              'transparent 60%)';
+          }
+
+          if (isHovering) {
+            rafId = requestAnimationFrame(animateFrame);
+          } else {
+            // Ease back to neutral
+            currentX = lerp(currentX, 0, 0.08);
+            currentY = lerp(currentY, 0, 0.08);
+
+            if (Math.abs(currentX) > 0.01 || Math.abs(currentY) > 0.01) {
+              rafId = requestAnimationFrame(animateFrame);
+            } else {
+              // Fully reset
+              currentX = 0;
+              currentY = 0;
+              inner.style.transform = '';
+              inner.style.transition =
+                'transform ' + config.speed + 'ms cubic-bezier(0.25, 0.46, 0.45, 0.94), ' +
+                'border-color 0.35s ease, box-shadow 0.35s ease';
+              rafId = null;
+            }
+          }
+        }
+
+        card.addEventListener('mouseenter', function() {
+          isHovering = true;
+          bounds = card.getBoundingClientRect();
+          inner.style.transition = 'border-color 0.35s ease, box-shadow 0.35s ease';
+          if (!rafId) rafId = requestAnimationFrame(animateFrame);
+        });
+
+        card.addEventListener('mousemove', function(e) {
+          if (!bounds) bounds = card.getBoundingClientRect();
+          const pos = getRelativePosition(e, bounds);
+          targetX = pos.x;
+          targetY = pos.y;
+        });
+
+        card.addEventListener('mouseleave', function() {
+          isHovering = false;
+          targetX = 0;
+          targetY = 0;
+          if (!rafId) rafId = requestAnimationFrame(animateFrame);
+        });
+
+        // Touch: disable tilt, allow normal tap
+        card.addEventListener('touchstart', function() {
+          inner.style.transform = '';
+        }, { passive: true });
+      });
+    }
+
+  }); // end onReady
+
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Featured Categories",
+  "tag": "div",
+  "class": "featured-categories-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Header"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow Label",
+      "default": "Browse By"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Shop By Category"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Find the perfect gear for your setup"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All Button Text",
+      "default": "All Categories"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All Button Link"
+    },
+    {
+      "type": "header",
+      "content": "Grid Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Columns on Desktop",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Columns on Tablet",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "label": "Columns on Mobile",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Card Gap",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 160,
+      "step": 8,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 96
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category_card",
+      "name": "Category Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Card Content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category Title",
+          "default": "PlayStation"
+        },
+        {
+          "type": "text",
+          "id": "tag_text",
+          "label": "Tag Label",
+          "default": "Console"
+        },
+        {
+          "type": "text",
+          "id": "product_count",
+          "label": "Product Count Text",
+          "default": "120+ Products",
+          "info": "e.g. '120+ Products' or '50 Items'"
+        },
+        {
+          "type": "text",
+          "id": "cta_text",
+          "label": "CTA Button Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "card_link",
+          "label": "Card Link URL"
+        },
+        {
+          "type": "header",
+          "content": "Card Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Category Image",
+          "info": "Recommended: 600x800px (portrait) for tall cards. Use high-contrast images."
+        },
+        {
+          "type": "select",
+          "id": "placeholder_icon",
+          "label": "Placeholder Icon (if no image)",
+          "options": [
+            { "value": "playstation", "label": "PlayStation" },
+            { "value": "xbox", "label": "Xbox" },
+            { "value": "chair", "label": "Gaming Chair" },
+            { "value": "controller", "label": "Controller / Default" }
+          ],
+          "default": "controller"
+        },
+        {
+          "type": "header",
+          "content": "Card Style"
+        },
+        {
+          "type": "select",
+          "id": "card_size",
+          "label": "Card Aspect Ratio",
+          "options": [
+            { "value": "tall", "label": "Tall (3:4 Portrait)" },
+            { "value": "square", "label": "Square (1:1)" },
+            { "value": "wide", "label": "Wide (16:9 Landscape)" }
+          ],
+          "default": "tall"
+        },
+        {
+          "type": "checkbox",
+          "id": "featured",
+          "label": "Featured Card (larger text)",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Categories",
+      "category": "Categories",
+      "blocks": [
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "PlayStation",
+            "tag_text": "Console",
+            "product_count": "240+ Products",
+            "cta_text": "Shop Now",
+            "placeholder_icon": "playstation",
+            "card_size": "tall",
+            "featured": true
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Xbox",
+            "tag_text": "Console",
+            "product_count": "180+ Products",
+            "cta_text": "Shop Now",
+            "placeholder_icon": "xbox",
+            "card_size": "tall",
+            "featured": false
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Gaming Chairs",
+            "tag_text": "Furniture",
+            "product_count": "60+ Products",
+            "cta_text": "Shop Now",
+            "placeholder_icon": "chair",
+            "card_size": "tall",
+            "featured": false
+          }
+        },
+        {
+          "type": "category_card",
+          "settings": {
+            "title": "Accessories",
+            "tag_text": "Peripherals",
+            "product_count": "500+ Products",
+            "cta_text": "Shop Now",
+            "placeholder_icon": "controller",
+            "card_size": "tall",
+            "featured": false
+          }
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12
+}
+{% endschema %}
